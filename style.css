@@ -1,0 +1,137 @@
+:root{
+  --creme:#F5F1EA; --creme2:#EFE7DD; --encre:#1D1D1B; --titre:#8F7060; --brun:#70574A;
+  --rose:#DCA39A; --rosep:#F6E1DC; --rosef:#A8665C; --sauge:#9FACA4; --saugep:#E3EAE5;
+  --ligne:#E3D9CE; --doux:#6B5E55; --blanc:#FFFDF9;
+  --pf:'Playfair Display',Georgia,serif; --jo:Jost,system-ui,sans-serif; --al:Allura,cursive;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--creme);color:var(--encre);font:400 16px/1.6 var(--jo)}
+.enveloppe{max-width:880px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:var(--pf);font-weight:500;letter-spacing:-.01em;margin:0}
+i{font-style:italic}
+button{font:inherit;cursor:pointer}
+
+/* En-tête */
+.haut{background:var(--creme);border-bottom:1px solid var(--ligne);position:sticky;top:0;z-index:10}
+.haut-in{display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:10px}
+.logo{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--encre);line-height:1}
+.logo-script{font:400 26px var(--al)}
+.logo-nom{font:600 13px var(--jo);letter-spacing:.42em;padding-left:.42em;color:var(--rose);margin-top:1px}
+.logo-sous{font:400 9px var(--jo);letter-spacing:.55em;padding-left:.55em;margin-top:2px}
+.haut-droite{display:flex;gap:14px;align-items:center;font-size:14px;color:var(--doux)}
+.lien{background:none;border:0;padding:0;color:var(--brun);text-decoration:underline;text-underline-offset:3px}
+
+/* Connexion */
+.connexion{max-width:440px;margin:12vh auto 40px;text-align:center}
+.connexion .maison{width:54px;height:54px;fill:none;stroke:var(--rose);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.connexion h1{font-size:34px;margin:10px 0 8px}
+.connexion p{color:var(--doux)}
+.connexion form{display:flex;flex-direction:column;gap:10px;text-align:left;margin-top:22px}
+.connexion label{font-weight:500;font-size:14px}
+input,textarea{font:inherit;width:100%;padding:12px 14px;border:1px solid #D6CABD;border-radius:10px;background:var(--blanc);color:var(--encre)}
+input:focus,textarea:focus{outline:2px solid var(--rose);outline-offset:1px;border-color:transparent}
+.message{min-height:1.6em;font-size:14.5px}
+.message.ok{color:#4F6B5A}.message.erreur{color:var(--rosef)}
+
+/* Boutons */
+.bouton{background:var(--encre);color:var(--creme);border:0;border-radius:999px;padding:11px 20px;font-weight:500;font-size:15px}
+.bouton:hover{background:var(--brun)}
+.bouton:disabled{opacity:.5;cursor:default}
+.bouton.secondaire{background:transparent;color:var(--encre);border:1px solid var(--encre)}
+.bouton.secondaire:hover{background:var(--creme2)}
+
+/* Intro */
+.intro{padding:34px 0 18px}
+.surtitre{font:600 12px var(--jo);letter-spacing:.2em;text-transform:uppercase;color:var(--titre);margin:0 0 6px}
+.intro h1{font-size:40px}
+.intro h1 i{color:var(--titre)}
+.chapo{color:var(--doux);max-width:640px;margin:8px 0 18px}
+.progression .barre{height:6px;background:var(--creme2);border-radius:99px;overflow:hidden}
+.progression .barre span{display:block;height:100%;background:var(--sauge);border-radius:99px;transition:width .4s}
+.progression p{font-size:14px;color:var(--doux);margin:8px 0 0}
+.p-ok{color:#4F6B5A}.p-modif{color:var(--rosef)}
+
+/* Onglets et filtres */
+.onglets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0 6px}
+.onglets button{background:var(--blanc);border:1px solid var(--ligne);border-radius:14px;padding:12px 14px;text-align:left;color:var(--encre)}
+.onglets button span{display:block;font:500 15.5px/1.25 var(--pf)}
+.onglets button small{display:block;font-size:12.5px;color:var(--doux);margin-top:3px}
+.onglets button.actif{background:var(--encre);color:var(--creme);border-color:var(--encre)}
+.onglets button.actif small{color:#D9CFC5}
+.entete-section p{color:var(--doux);font-size:15px;margin:12px 0 4px}
+.filtres{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0 4px;position:sticky;top:64px;background:var(--creme);padding:8px 0;z-index:5}
+.puce{background:transparent;border:1px solid #D6CABD;border-radius:999px;padding:5px 13px;font-size:13.5px;color:var(--doux)}
+.puce.actif{background:var(--rosep);border-color:var(--rose);color:var(--encre)}
+.sep{width:1px;height:20px;background:var(--ligne);margin:0 4px}
+
+/* Liste et cartes */
+.groupe{font-size:24px;margin:30px 0 10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.groupe small{font:400 14px var(--jo);color:var(--doux)}
+.carte{background:var(--blanc);border:1px solid var(--ligne);border-radius:18px;padding:20px 20px 16px;margin:12px 0;border-left:5px solid var(--ligne)}
+.carte.s-ok{border-left-color:var(--sauge)}
+.carte.s-modif{border-left-color:var(--rose)}
+.carte-tete{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.carte h3{font-size:21px;line-height:1.25}
+.sous{font-size:12.5px;color:var(--titre);letter-spacing:.04em;margin:0 0 3px}
+.statut{flex:none;font:600 11px var(--jo);letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--creme2);color:var(--brun);white-space:nowrap}
+.s-ok .statut{background:var(--saugep);color:#4F6B5A}
+.s-modif .statut{background:var(--rosep);color:var(--rosef)}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.tag{font-size:11.5px;padding:2px 9px;border-radius:99px;background:var(--creme2);color:var(--brun)}
+.tag-alerte{background:#FBEDE3;color:#9A5B2E}
+.corps{margin-top:10px}
+.corps p{margin:8px 0}
+.corps ul{margin:6px 0;padding-left:20px}
+.corps b{font-weight:600}
+.champs{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:6px 14px;margin:12px 0 0;font-size:14.5px}
+.champs dt{color:var(--doux)}
+.champs dd{margin:0}
+.champs a{color:var(--brun)}
+.contexte{font-size:13.5px;color:var(--doux);font-style:italic;margin:10px 0 0;padding-left:10px;border-left:2px solid var(--ligne)}
+.legende{margin-top:10px;font-size:14px}
+.legende summary{cursor:pointer;color:var(--brun)}
+.legende pre{white-space:pre-wrap;font:400 14px/1.55 var(--jo);background:var(--creme);border-radius:10px;padding:12px 14px;margin:8px 0 0}
+
+/* Médias */
+.medias{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.medias figure{margin:0}
+.medias figcaption{font-size:12px;color:var(--doux);margin-top:4px;max-width:220px}
+.m-video video{width:220px;aspect-ratio:9/16;border-radius:14px;background:var(--encre);object-fit:cover;display:block}
+.m-image img{width:220px;border-radius:10px;display:block;box-shadow:0 4px 14px rgba(29,29,27,.12)}
+.galerie{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-right:-20px}
+.galerie figure{scroll-snap-align:start;flex:none}
+.galerie .m-image img{width:240px;aspect-ratio:4/5;object-fit:cover}
+
+/* Fil et actions */
+.fil{list-style:none;padding:0;margin:14px 0 0;border-top:1px solid var(--ligne)}
+.fil li{padding:9px 0 7px;border-bottom:1px dashed var(--ligne);font-size:14.5px}
+.c-tete{margin:0;color:var(--doux);font-size:13px}
+.c-tete b{color:var(--encre);font-weight:600}
+.c-texte{margin:3px 0 0;white-space:pre-wrap}
+.c-approbation .c-tete b::before{content:'✓ ';color:#4F6B5A}
+.c-modifications .c-texte{background:var(--rosep);border-radius:8px;padding:6px 10px}
+.c-reponse .c-texte{background:var(--creme);border-radius:8px;padding:6px 10px}
+.actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:14px}
+.saisie{width:100%;display:flex;flex-direction:column;gap:6px}
+.saisie label{font-size:14px;font-weight:500}
+.saisie-actions{display:flex;gap:14px;align-items:center}
+.vide{color:var(--doux);text-align:center;padding:40px 0}
+.chargement{color:var(--doux);text-align:center;padding:30vh 0}
+.pied{text-align:center;color:var(--doux);font-size:12.5px;padding:40px 0 60px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--encre);color:var(--creme);padding:10px 18px;border-radius:12px;font-size:14px;z-index:20;max-width:90vw}
+
+@media (max-width:640px){
+  .intro h1{font-size:32px}
+  .onglets{grid-template-columns:1fr}
+  .onglets button{display:flex;justify-content:space-between;align-items:center}
+  .onglets button small{margin:0}
+  .carte{padding:16px 14px 14px}
+  .carte-tete{flex-direction:column-reverse;gap:8px}
+  .champs{grid-template-columns:1fr;gap:2px}
+  .champs dd{margin-bottom:8px}
+  .m-video video,.m-image img{width:min(220px,70vw)}
+  .haut-droite #qui{display:none}
+  .filtres{top:60px}
+}
+[hidden]{display:none!important}
