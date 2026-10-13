@@ -141,7 +141,10 @@ async function charger() {
   etat.commentaires = data.commentaires || [];
   document.getElementById('haut-droite').hidden = false;
   document.getElementById('qui').textContent = etat.membre.nom;
-  if (!['accueil', 'ressources'].includes(etat.vue) && !etat.sections.find((x) => x.id === etat.vue)) etat.vue = 'accueil';
+  const admin = etat.membre.role === 'admin';
+  if (!lireStockage('vue') && admin) etat.vue = 'console';
+  if (etat.vue === 'console' && !admin) etat.vue = 'accueil';
+  if (!['accueil', 'ressources', 'console'].includes(etat.vue) && !etat.sections.find((x) => x.id === etat.vue)) etat.vue = admin ? 'console' : 'accueil';
   rendre();
   if (!lireStockage('intro-v2') && etat.membre.role !== 'admin') ouvrirIntro();
 }
@@ -173,6 +176,15 @@ async function envoyerNote(id, decision, blob, duree, texte) {
   if (error || !data) return { ok: false, message: error?.message };
   majLocale(id, data);
   return { ok: true };
+}
+
+async function renvoyer(id, texte) {
+  const { data, error } = await sb.rpc('portail_admin_statut', { p_jeton: etat.jeton, p_element: id, p_statut: 'a_valider', p_texte: texte || null });
+  if (error || !data) { alerte(error?.message || 'Erreur'); return false; }
+  majLocale(id, data);
+  alerte('Renvoyé en validation ✓', 'ok');
+  rendre();
+  return true;
 }
 
 async function ecouter(btn, commentaireId) {
@@ -212,7 +224,8 @@ function navigation() {
     onclick: () => aller(vue),
   }, txt, badge ? el('span', { class: 'nav-b' }, badge) : null);
   return el('nav', { class: 'nav-portail', 'aria-label': 'Sections' },
-    pastille('Accueil', 'accueil', n || null),
+    etat.membre.role === 'admin' ? pastille('Console', 'console', etat.elements.filter((x) => x.statut === 'modifications').length || null) : null,
+    pastille(etat.membre.role === 'admin' ? 'Vue cliente' : 'Accueil', 'accueil', n || null),
     etat.sections.map((s) => pastille(s.titre, s.id, aValider(etat.elements.filter((x) => x.section_id === s.id)).length || null)),
     pastille('Ressources', 'ressources'));
 }
@@ -220,7 +233,8 @@ function navigation() {
 function rendre() {
   const scrollY = window.scrollY;
   let contenu;
-  if (etat.vue === 'accueil') contenu = vueAccueil();
+  if (etat.vue === 'console') contenu = vueConsole();
+  else if (etat.vue === 'accueil') contenu = vueAccueil();
   else if (etat.vue === 'ressources') contenu = vueRessources();
   else contenu = vueSection();
   app.replaceChildren(navigation(), contenu,
@@ -295,6 +309,148 @@ function vueAccueil() {
     modifs.length > 8 ? el('p', { class: 'lot-note' }, `et ${modifs.length - 8} autres`) : null) : null;
 
   return el('div', {}, intro, lot, progression, lots, demandes);
+}
+
+// ---------- Console (William) ----------
+const ICONES_TYPE = { approbation: '✓', modifications: '✎', commentaire: '?', reponse: '↩' };
+function depuis(d) {
+  const m = Math.round((Date.now() - new Date(d)) / 60000);
+  if (m < 1) return 'à l\'instant';
+  if (m < 60) return `il y a ${m} min`;
+  const h = Math.round(m / 60);
+  if (h < 24) return `il y a ${h} h`;
+  const j = Math.round(h / 24);
+  return j < 7 ? `il y a ${j} j` : dateFr(d);
+}
+
+function vueConsole() {
+  const moi = etat.membre.nom;
+  const client = etat.commentaires.filter((c) => c.auteur_nom !== moi);
+  const derniere = client.reduce((d, c) => (!d || c.cree_le > d ? c.cree_le : d), null);
+  const t = compte(etat.elements);
+  const pct = (n) => (t.total ? Math.round((n / t.total) * 100) : 0);
+  const titreDe = (id) => etat.elements.find((x) => x.id === id);
+
+  const tuiles = el('div', { class: 'k-tuiles' },
+    [['À valider', t.a_valider, `${pct(t.a_valider)} %`, ''], ['Approuvés', t.approuve, `${pct(t.approuve)} %`, 'ok'], ['À modifier', t.modifications, 'à traiter', 'modif'],
+      ['Dernière activité', derniere ? depuis(derniere) : '—', derniere ? dateFr(derniere) : 'Pas encore de réponse', 'temps']]
+      .map(([k, v, s, cls]) => el('div', { class: 'k-tuile ' + cls }, el('span', {}, k), el('b', {}, v), el('small', {}, s))));
+
+  const progression = el('section', { class: 'k-bloc' }, el('h2', {}, 'Par thème'),
+    etat.sections.map((s) => {
+      const c = compte(etat.elements.filter((x) => x.section_id === s.id));
+      const w = (n) => `${c.total ? (n / c.total) * 100 : 0}%`;
+      return el('div', { class: 'k-ligne' },
+        el('div', { class: 'k-ligne-tete' }, el('button', { type: 'button', class: 'lien', onclick: () => aller(s.id) }, s.titre),
+          el('span', {}, `${c.approuve} ✓ · ${c.modifications} ✎ · ${c.a_valider} en attente`)),
+        el('div', { class: 'k-pile' }, el('i', { class: 'ok', style: `width:${w(c.approuve)}` }), el('i', { class: 'modif', style: `width:${w(c.modifications)}` })));
+    }));
+
+  // À traiter : demandes de modification
+  const aTraiter = etat.elements.filter((x) => x.statut === 'modifications');
+  const copier = async () => {
+    const lignes = aTraiter.map((x) => {
+      const dem = etat.commentaires.filter((c) => c.element_id === x.id && c.auteur_nom !== moi && c.type === 'modifications').map((c) => '   - ' + (c.texte || '').replace(/\n/g, ' '));
+      return `- [${x.cle}] ${x.titre} (${etat.sections.find((s) => s.id === x.section_id)?.titre || ''}, v${x.version || 1})\n${dem.join('\n')}`;
+    });
+    const txt = `Demandes de modification de Gabrielle (portail equipegg) — ${new Date().toLocaleDateString('fr-CA')}\n\n${lignes.join('\n\n')}`;
+    try { await navigator.clipboard.writeText(txt); alerte('Copié ✓ Colle-le dans la conversation avec Jarvis.', 'ok'); } catch { alerte('Copie impossible dans ce navigateur.'); }
+  };
+  const blocTraiter = el('section', { class: 'k-bloc' }, el('h2', {}, 'À traiter', el('span', { class: 'k-compte' }, aTraiter.length),
+    aTraiter.length ? el('button', { type: 'button', class: 'lien k-copier', onclick: copier }, 'Copier pour Jarvis') : null),
+    aTraiter.length ? aTraiter.map((item) => carteTraiter(item)) : el('p', { class: 'k-vide' }, 'Aucune demande de modification en attente.'));
+
+  // Questions sans réponse : dernier message = question de la cliente
+  const questions = etat.elements.filter((x) => {
+    const coms = etat.commentaires.filter((c) => c.element_id === x.id);
+    const der = coms[coms.length - 1];
+    return der && der.type === 'commentaire' && der.auteur_nom !== moi;
+  });
+  const blocQuestions = questions.length ? el('section', { class: 'k-bloc' }, el('h2', {}, 'Questions sans réponse', el('span', { class: 'k-compte' }, questions.length)),
+    questions.map((item) => carteTraiter(item, true))) : null;
+
+  // Activité récente
+  const filtres = [['tous', 'Tout'], ['modifications', 'Modifications'], ['commentaire', 'Questions'], ['approbation', 'Approbations'], ['audio', 'Notes vocales']];
+  const f = etat.filtreActivite || 'tous';
+  let act = [...etat.commentaires].sort((a, b) => (a.cree_le < b.cree_le ? 1 : -1));
+  if (f === 'audio') act = act.filter((c) => c.audio);
+  else if (f !== 'tous') act = act.filter((c) => c.type === f);
+  const blocActivite = el('section', { class: 'k-bloc' }, el('h2', {}, 'Activité récente'),
+    el('div', { class: 'filtres k-filtres' }, filtres.map(([v, txt]) => el('button', { type: 'button', class: 'puce' + (f === v ? ' actif' : ''), onclick: () => { etat.filtreActivite = v; rendre(); } }, txt))),
+    act.length ? el('ol', { class: 'k-fil' }, regrouper(act).slice(0, 40).map((c) => {
+      const item = titreDe(c.element_id);
+      if (c.n > 1) {
+        return el('li', { class: 'k-approbation' }, el('span', { class: 'k-ico' }, '✓'),
+          el('div', {}, el('p', { class: 'k-quoi' }, el('b', {}, c.auteur_nom || ''), ` a approuvé ${c.n} éléments`),
+            el('details', { class: 'k-details' }, el('summary', {}, 'Voir lesquels'),
+              el('ul', {}, c.groupe.map((g) => { const it = titreDe(g.element_id); return el('li', {}, it ? el('button', { type: 'button', class: 'lien', onclick: () => ouvrirElement(it) }, it.titre) : ''); })))),
+          el('time', { title: dateFr(c.cree_le) }, depuis(c.cree_le)));
+      }
+      return el('li', { class: 'k-' + c.type },
+        el('span', { class: 'k-ico' }, ICONES_TYPE[c.type] || '·'),
+        el('div', {},
+          el('p', { class: 'k-quoi' }, el('b', {}, c.auteur_nom || ''), ` ${TYPES[c.type] || ''} · `,
+            item ? el('button', { type: 'button', class: 'lien', onclick: () => ouvrirElement(item) }, item.titre) : ''),
+          c.texte && c.type !== 'approbation' ? el('p', { class: 'k-texte' }, c.texte) : null,
+          c.audio ? el('button', { type: 'button', class: 'lien c-ecouter', onclick: (e) => ecouter(e.currentTarget, c.id) }, '▶ Écouter') : null),
+        el('time', { title: dateFr(c.cree_le) }, depuis(c.cree_le)));
+    })) : el('p', { class: 'k-vide' }, 'Rien pour le moment. Les réponses de Gabrielle apparaîtront ici.'));
+
+  return el('div', { class: 'console' },
+    el('section', { class: 'k-tete' },
+      el('p', { class: 'surtitre' }, 'Console'),
+      el('h1', {}, 'Où en est ', el('i', {}, 'Gabrielle')),
+      el('div', { class: 'k-tete-actions' },
+        el('button', { type: 'button', class: 'bouton secondaire', onclick: () => aller('accueil') }, 'Voir comme Gabrielle'),
+        el('button', { type: 'button', class: 'lien', onclick: () => { charger(); } }, 'Actualiser'))),
+    tuiles, el('div', { class: 'k-grille' }, el('div', {}, blocTraiter, blocQuestions), el('div', {}, progression, blocActivite)));
+}
+
+// Regroupe les approbations qui se suivent (même personne) en une seule ligne
+function regrouper(liste) {
+  const out = [];
+  for (const c of liste) {
+    const der = out[out.length - 1];
+    if (der && c.type === 'approbation' && der.type === 'approbation' && der.auteur_nom === c.auteur_nom) { der.n += 1; der.groupe.push(c); }
+    else out.push({ ...c, n: 1, groupe: [c] });
+  }
+  return out;
+}
+
+function ouvrirElement(item) {
+  aller(item.section_id);
+  setTimeout(() => document.getElementById('e-' + item.cle)?.scrollIntoView({ block: 'center' }), 60);
+}
+
+function carteTraiter(item, question = false) {
+  const coms = etat.commentaires.filter((c) => c.element_id === item.id && c.auteur_nom !== etat.membre.nom && c.type !== 'approbation');
+  const section = etat.sections.find((s) => s.id === item.section_id);
+  const cle = 'k-' + item.id;
+  const ouvert = etat.ouverts.has(cle) ? etat.mode[cle] : null;
+  const art = el('article', { class: 'k-carte' + (question ? ' question' : '') },
+    el('p', { class: 'sous' }, `${section?.titre || ''} · ${item.groupe || ''} · v${item.version || 1}`),
+    el('h3', {}, el('button', { type: 'button', class: 'lien k-titre', onclick: () => ouvrirElement(item) }, item.titre)),
+    el('ol', { class: 'k-demandes' }, coms.slice(-3).map((c) => el('li', {},
+      el('p', { class: 'k-texte' }, c.texte || ''),
+      c.audio ? el('button', { type: 'button', class: 'lien c-ecouter', onclick: (e) => ecouter(e.currentTarget, c.id) }, '▶ Écouter') : null,
+      el('time', {}, depuis(c.cree_le))))));
+  const zone = el('div', { class: 'actions' });
+  if (ouvert === 'reponse') {
+    zone.append(formulaire(item, 'reponse', { apres: () => { etat.ouverts.delete(cle); rendre(); }, annuler: () => { etat.ouverts.delete(cle); rendre(); } }));
+  } else if (ouvert === 'renvoi') {
+    const ta = el('textarea', { rows: '2', maxlength: '4000', placeholder: 'Ce qui a changé (facultatif) — Gabrielle le verra' });
+    zone.append(el('form', { class: 'saisie', onsubmit: async (e) => {
+      e.preventDefault(); e.submitter && (e.submitter.disabled = true);
+      if (await renvoyer(item.id, ta.value.trim())) { etat.ouverts.delete(cle); rendre(); }
+    } }, el('label', {}, 'Renvoyer en validation'), ta,
+    el('div', { class: 'saisie-actions' }, el('button', { type: 'submit', class: 'bouton' }, 'Renvoyer à Gabrielle'),
+      el('button', { type: 'button', class: 'lien', onclick: () => { etat.ouverts.delete(cle); rendre(); } }, 'Annuler'))));
+  } else {
+    if (!question) zone.append(el('button', { type: 'button', class: 'bouton', onclick: () => { etat.ouverts.add(cle); etat.mode[cle] = 'renvoi'; rendre(); } }, '✓ Corrigé, renvoyer'));
+    zone.append(el('button', { type: 'button', class: question ? 'bouton' : 'bouton secondaire', onclick: () => { etat.ouverts.add(cle); etat.mode[cle] = 'reponse'; rendre(); } }, 'Répondre'));
+  }
+  art.append(zone);
+  return art;
 }
 
 // ---------- Ressources ----------

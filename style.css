@@ -362,3 +362,59 @@ body.focus-ouvert{overflow:hidden}
   .fin h2{font-size:32px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===================== Console (William) ===================== */
+.console .k-tete{padding:30px 0 14px;display:flex;flex-direction:column;gap:4px}
+.console .k-tete h1{font-size:38px}
+.console .k-tete h1 i{color:var(--titre)}
+.k-tete-actions{display:flex;gap:16px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.k-tuiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 18px}
+.k-tuile{background:var(--encre);color:var(--creme);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden}
+.k-tuile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--brun)}
+.k-tuile.ok::before{background:var(--sauge)}
+.k-tuile.modif::before{background:var(--rose)}
+.k-tuile.temps::before{background:#C9B7A6}
+.k-tuile span{font:600 11px var(--jo);letter-spacing:.16em;text-transform:uppercase;color:#BEB2A7}
+.k-tuile b{font:500 30px/1.15 var(--pf);font-variant-numeric:tabular-nums}
+.k-tuile.temps b{font-size:21px;line-height:1.5}
+.k-tuile small{font-size:12.5px;color:#BEB2A7}
+.k-grille{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;align-items:start}
+.k-bloc{background:var(--blanc);border:1px solid var(--ligne);border-radius:18px;padding:16px 16px 12px;margin-bottom:16px}
+.k-bloc h2{font-size:21px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.k-compte{font:600 12px var(--jo);background:var(--rose);color:var(--blanc);border-radius:99px;padding:2px 9px}
+.k-vide{color:var(--doux);font-size:14.5px;margin:4px 0 8px}
+.k-ligne{margin:10px 0}
+.k-ligne-tete{display:flex;justify-content:space-between;gap:10px;font-size:14px;flex-wrap:wrap}
+.k-ligne-tete span{color:var(--doux);font-variant-numeric:tabular-nums}
+.k-pile{display:flex;height:8px;border-radius:99px;background:var(--creme2);overflow:hidden;margin-top:6px}
+.k-pile i{display:block;height:100%}
+.k-pile i.ok{background:var(--sauge)}
+.k-pile i.modif{background:var(--rose)}
+.k-carte{border:1px solid var(--ligne);border-left:4px solid var(--rose);border-radius:14px;padding:12px 14px;margin:10px 0;background:var(--creme)}
+.k-carte.question{border-left-color:var(--titre)}
+.k-carte h3{font-size:17px;margin:2px 0 6px}
+.k-titre{color:var(--encre);text-align:left;font:inherit}
+.k-demandes{list-style:none;padding:0;margin:0 0 4px}
+.k-demandes li{background:var(--blanc);border-radius:10px;padding:8px 10px;margin:6px 0;font-size:14.5px}
+.k-demandes time{display:block;font-size:12px;color:var(--doux);margin-top:2px}
+.k-texte{margin:2px 0 0;white-space:pre-wrap;font-size:14.5px}
+.k-carte .actions{margin-top:10px}
+.k-carte .bouton{padding:8px 16px;font-size:14px}
+.k-filtres{position:static;padding:0 0 6px}
+.k-fil{list-style:none;padding:0;margin:4px 0 0}
+.k-fil li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;padding:9px 0;border-bottom:1px dashed var(--ligne);font-size:14px}
+.k-fil li:last-child{border-bottom:0}
+.k-ico{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--creme2);color:var(--brun);font-weight:600;font-size:13px}
+.k-approbation .k-ico{background:var(--saugep);color:#4F6B5A}
+.k-modifications .k-ico{background:var(--rosep);color:var(--rosef)}
+.k-reponse .k-ico{background:var(--encre);color:var(--creme)}
+.k-quoi{margin:0;color:var(--doux)}
+.k-quoi b{color:var(--encre);font-weight:600}
+.k-quoi .lien{color:var(--encre);text-align:left}
+.k-fil time{font-size:12px;color:var(--doux);white-space:nowrap}
+@media (max-width:820px){.k-grille{grid-template-columns:1fr}}
+@media (max-width:640px){.k-tuiles{grid-template-columns:1fr 1fr}.console .k-tete h1{font-size:30px}}
+.k-details summary{cursor:pointer;color:var(--brun);font-size:13px}
+.k-details ul{margin:4px 0 0;padding-left:18px}
+.k-details .lien{text-align:left;color:var(--encre)}
+.k-copier{margin-left:auto;font:400 13.5px var(--jo)}
