@@ -135,3 +135,5 @@ input:focus,textarea:focus{outline:2px solid var(--rose);outline-offset:1px;bord
   .filtres{top:60px}
 }
 [hidden]{display:none!important}
+.connexion form{flex-direction:row}.connexion form input{flex:1}.note-bas{font-size:13.5px;margin-top:18px}
+@media (max-width:640px){.connexion form{flex-direction:column}}

@@ -35,22 +35,38 @@ function el(tag, attrs = {}, ...enfants) {
 const dateFr = (d) => new Date(d).toLocaleString('fr-CA', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
 
 // ---------- Accès par lien personnel (sans mot de passe) ----------
+function extraireJeton(txt) {
+  const t = (txt || '').trim();
+  const m = t.match(/[#?&]k=([A-Za-z0-9_-]{12,})/);
+  if (m) return m[1];
+  return /^[A-Za-z0-9_-]{12,}$/.test(t) ? t : null;
+}
+
 function lireJeton() {
-  const h = new URLSearchParams(location.hash.slice(1));
-  const k = h.get('k');
+  const k = new URLSearchParams(location.hash.slice(1)).get('k') || new URLSearchParams(location.search).get('k');
   if (k) {
     ecrireStockage('jeton', k);
-    history.replaceState(null, '', location.pathname + location.search); // retire le jeton de la barre d'adresse
+    history.replaceState(null, '', location.pathname); // retire le jeton de la barre d'adresse
     return k;
   }
   return lireStockage('jeton');
 }
 
-function lienInvalide() {
+function lienInvalide(msg) {
   document.getElementById('haut-droite').hidden = true;
+  const champ = el('input', { type: 'text', placeholder: 'Collez votre lien ou votre code', autocomplete: 'off', 'aria-label': 'Lien ou code personnel' });
+  const info = el('p', { class: 'message erreur', role: 'status' }, msg || '');
   app.replaceChildren(el('section', { class: 'connexion' },
-    el('h1', {}, 'Lien ', el('i', {}, 'personnel'), ' requis'),
-    el('p', {}, 'Ouvrez cet espace avec le lien personnel que vous avez reçu. Si vous ne l\'avez plus, demandez-le à William.')));
+    el('h1', {}, 'Votre lien ', el('i', {}, 'personnel')),
+    el('p', {}, 'Ouvrez cet espace avec le lien personnel que vous avez reçu, ou collez-le ici.'),
+    el('form', { onsubmit: async (e) => {
+      e.preventDefault();
+      const k = extraireJeton(champ.value);
+      if (!k) { info.textContent = 'Ce lien ne semble pas complet.'; return; }
+      etat.jeton = k; ecrireStockage('jeton', k); await charger();
+    } }, champ, el('button', { type: 'submit', class: 'bouton' }, 'Entrer')),
+    info,
+    el('p', { class: 'note-bas' }, 'Vous ne l\'avez plus? Demandez-le à William.')));
 }
 
 async function demarrer() {
@@ -69,8 +85,9 @@ async function charger() {
   app.replaceChildren(el('div', { class: 'chargement' }, 'Chargement…'));
   const { data, error } = await sb.rpc('portail_charger', { p_jeton: etat.jeton });
   if (error || !data) {
-    try { localStorage.removeItem('gg-jeton'); } catch { /* rien */ }
-    return lienInvalide();
+    const invalide = /invalide/i.test(error?.message || '');
+    if (invalide) { try { localStorage.removeItem('gg-jeton'); } catch { /* rien */ } }
+    return lienInvalide(invalide ? 'Ce lien n\'est plus valide.' : 'Connexion impossible pour le moment. Réessayez dans un instant.');
   }
   etat.membre = data.membre;
   etat.sections = data.sections || [];
