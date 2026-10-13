@@ -1,12 +1,16 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
 import { CONFIG } from './config.js';
+import { RESSOURCES, RESSOURCES_MAJ } from './ressources.js';
 
 const sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, { auth: { persistSession: false, autoRefreshToken: false } });
 
 const app = document.getElementById('app');
 const etat = {
   jeton: null, membre: null, sections: [], elements: [], commentaires: [],
-  onglet: lireStockage('onglet') || 'marque', filtre: 'tous', etape: 'toutes', ouverts: new Set(),
+  vue: lireStockage('vue') || 'accueil', // 'accueil' | 'ressources' | id de section
+  ressource: lireStockage('ressource') || RESSOURCES[0].id,
+  filtre: 'tous', etape: 'toutes', ouverts: new Set(), mode: {},
+  focus: null, // session « un élément à la fois »
 };
 
 const STATUTS = {
@@ -15,6 +19,25 @@ const STATUTS = {
   modifications: { txt: 'Modifications demandées', cls: 's-modif' },
 };
 const TYPES = { approbation: 'a approuvé', modifications: 'demande une modification', commentaire: 'a commenté', reponse: 'a répondu' };
+const ETAPES = { TOFU: 'Se faire connaître', MOFU: 'Obtenir le contact', BOFU: 'Donner confiance' };
+
+// Temps de lecture estimé par élément (secondes) et nom au pluriel, pour l'accueil.
+const SORTES = {
+  'Les Reels': { s: 45, un: 'vidéo', plus: 'vidéos' },
+  'Les carrousels': { s: 35, un: 'carrousel', plus: 'carrousels' },
+  'Les photos': { s: 15, un: 'photo', plus: 'photos' },
+  'Les stories': { s: 20, un: 'story', plus: 'stories' },
+  'Les légendes': { s: 25, un: 'modèle de légende', plus: 'modèles de légende' },
+  'La signature': { s: 20, un: 'élément de signature', plus: 'éléments de signature' },
+};
+function sorte(item) {
+  if (item.section_id === 'marque') return { cle: 'marque', s: 25, un: 'formulation', plus: 'formulations' };
+  if (item.section_id === 'idees') return { cle: 'idees', s: 12, un: 'idée', plus: 'idées' };
+  const x = SORTES[item.groupe];
+  return x ? { cle: item.groupe, ...x } : { cle: item.groupe || item.section_id, s: 25, un: 'élément', plus: 'éléments' };
+}
+const minutes = (liste) => Math.max(1, Math.round(liste.reduce((t, x) => t + sorte(x).s, 0) / 60));
+const pluriel = (n, un, plus) => `${n} ${n > 1 ? plus : un}`;
 
 function lireStockage(k) { try { return localStorage.getItem('gg-' + k); } catch { return null; } }
 function ecrireStockage(k, v) { try { localStorage.setItem('gg-' + k, v); } catch { /* rien */ } }
@@ -31,6 +54,28 @@ function el(tag, attrs = {}, ...enfants) {
   for (const e of enfants.flat()) if (e != null && e !== false) n.append(e.nodeType ? e : document.createTextNode(String(e)));
   return n;
 }
+function svg(chemin, cls = 'ico') {
+  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('class', cls); s.setAttribute('aria-hidden', 'true');
+  s.innerHTML = chemin;
+  return s;
+}
+const ICO = {
+  maison: '<path d="M3.5 11.5 12 4.5l8.5 7M6 10v9.5h12V10"/>',
+  coeur: '<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/>',
+  bulle: '<path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5z"/>',
+  avion: '<path d="M21 3 3 10.5l7 2.5 2.5 7L21 3zM10 13l5-5"/>',
+  signet: '<path d="M6 3.5h12v17l-6-4.5-6 4.5z"/>',
+  son: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/>',
+  muet: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9.5l5 5M21 9.5l-5 5"/>',
+  micro: '<path d="M12 3.5a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0v-5a3 3 0 0 1 3-3zM5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
+  stop: '<rect x="7" y="7" width="10" height="10" rx="1.5"/>',
+  crayon: '<path d="M4 20l1-4.5L15.5 5a2 2 0 0 1 3 0l.5.5a2 2 0 0 1 0 3L8.5 19z"/>',
+  coche: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  fleche: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  question: '<path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17.5v.1"/>',
+};
 
 const dateFr = (d) => new Date(d).toLocaleString('fr-CA', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
 
@@ -77,7 +122,7 @@ async function demarrer() {
 
 document.getElementById('deconnexion').addEventListener('click', () => {
   try { localStorage.removeItem('gg-jeton'); } catch { /* rien */ }
-  etat.jeton = null; lienInvalide();
+  etat.jeton = null; fermerFocus(true); lienInvalide();
 });
 
 // ---------- Données ----------
@@ -91,77 +136,205 @@ async function charger() {
   }
   etat.membre = data.membre;
   etat.sections = data.sections || [];
-  etat.elements = data.elements || [];
+  const rang = new Map(etat.sections.map((s, i) => [s.id, i]));
+  etat.elements = (data.elements || []).sort((a, b) => (rang.get(a.section_id) ?? 99) - (rang.get(b.section_id) ?? 99) || a.ordre - b.ordre);
   etat.commentaires = data.commentaires || [];
   document.getElementById('haut-droite').hidden = false;
   document.getElementById('qui').textContent = etat.membre.nom;
-  if (!etat.sections.find((x) => x.id === etat.onglet)) etat.onglet = etat.sections[0]?.id;
+  if (!['accueil', 'ressources'].includes(etat.vue) && !etat.sections.find((x) => x.id === etat.vue)) etat.vue = 'accueil';
   rendre();
+  if (!lireStockage('intro-v2') && etat.membre.role !== 'admin') ouvrirIntro();
 }
 
-async function decider(id, decision, texte) {
-  const { data, error } = await sb.rpc('portail_decider', { p_jeton: etat.jeton, p_element: id, p_decision: decision, p_texte: texte || null });
-  if (error || !data) { alerte(error?.message || 'Erreur'); return false; }
+function majLocale(id, data) {
   const cible = etat.elements.find((x) => x.id === id);
   if (cible && data.element) Object.assign(cible, data.element);
   etat.commentaires = etat.commentaires.filter((x) => x.element_id !== id).concat(data.commentaires || []);
-  rendre();
+}
+
+async function decider(id, decision, texte, { silencieux = false } = {}) {
+  const { data, error } = await sb.rpc('portail_decider', { p_jeton: etat.jeton, p_element: id, p_decision: decision, p_texte: texte || null });
+  if (error || !data) { alerte(error?.message || 'Erreur'); return false; }
+  majLocale(id, data);
+  if (!silencieux) rendre();
   return true;
 }
 
-function alerte(txt) {
-  const a = el('div', { class: 'toast', role: 'alert' }, txt);
-  document.body.append(a);
-  setTimeout(() => a.remove(), 4000);
+async function envoyerNote(id, decision, blob, duree, texte) {
+  const b64 = await new Promise((ok, ko) => {
+    const r = new FileReader();
+    r.onload = () => ok(String(r.result).split(',')[1] || '');
+    r.onerror = () => ko(r.error);
+    r.readAsDataURL(blob);
+  });
+  const { data, error } = await sb.rpc('portail_note_vocale', {
+    p_jeton: etat.jeton, p_element: id, p_audio: b64, p_mime: blob.type || 'audio/webm', p_duree: duree, p_texte: texte || null, p_decision: decision,
+  });
+  if (error || !data) return { ok: false, message: error?.message };
+  majLocale(id, data);
+  return { ok: true };
 }
 
-// ---------- Rendu ----------
+async function ecouter(btn, commentaireId) {
+  btn.disabled = true; btn.textContent = 'Chargement…';
+  const { data, error } = await sb.rpc('portail_audio', { p_jeton: etat.jeton, p_commentaire: commentaireId });
+  if (error || !data) { btn.disabled = false; btn.textContent = '▶ Écouter'; alerte('Note introuvable.'); return; }
+  const audio = el('audio', { controls: true, src: `data:${data.mime};base64,${data.b64}`, class: 'c-audio' });
+  btn.replaceWith(audio);
+  audio.play().catch(() => {});
+}
+
+function alerte(txt, cls = '') {
+  const a = el('div', { class: 'toast ' + cls, role: 'alert' }, txt);
+  document.body.append(a);
+  setTimeout(() => a.remove(), 3800);
+}
+
+// ---------- Rendu général ----------
 function compte(liste) {
   const r = { total: liste.length, a_valider: 0, approuve: 0, modifications: 0 };
   for (const x of liste) r[x.statut] = (r[x.statut] || 0) + 1;
   return r;
 }
+const aValider = (liste = etat.elements) => liste.filter((x) => x.statut === 'a_valider');
+
+function aller(vue) {
+  etat.vue = vue; etat.filtre = 'tous'; etat.etape = 'toutes';
+  ecrireStockage('vue', vue);
+  rendre();
+  window.scrollTo({ top: 0 });
+}
+
+function navigation() {
+  const n = aValider().length;
+  const pastille = (txt, vue, badge) => el('button', {
+    type: 'button', class: 'nav-p' + (etat.vue === vue ? ' actif' : ''), 'aria-current': etat.vue === vue ? 'page' : null,
+    onclick: () => aller(vue),
+  }, txt, badge ? el('span', { class: 'nav-b' }, badge) : null);
+  return el('nav', { class: 'nav-portail', 'aria-label': 'Sections' },
+    pastille('Accueil', 'accueil', n || null),
+    etat.sections.map((s) => pastille(s.titre, s.id, aValider(etat.elements.filter((x) => x.section_id === s.id)).length || null)),
+    pastille('Ressources', 'ressources'));
+}
 
 function rendre() {
   const scrollY = window.scrollY;
-  const tous = compte(etat.elements);
+  let contenu;
+  if (etat.vue === 'accueil') contenu = vueAccueil();
+  else if (etat.vue === 'ressources') contenu = vueRessources();
+  else contenu = vueSection();
+  app.replaceChildren(navigation(), contenu,
+    el('footer', { class: 'pied' }, 'L\'équipe Gabrielle Germain · espace privé de validation'));
+  window.scrollTo({ top: scrollY });
+}
+
+// ---------- Accueil ----------
+function puces(liste) {
+  const parSorte = new Map();
+  for (const x of liste) {
+    const s = sorte(x);
+    const c = parSorte.get(s.cle) || { ...s, n: 0 };
+    c.n += 1; parSorte.set(s.cle, c);
+  }
+  return el('ul', { class: 'puces-sortes' }, [...parSorte.values()].map((s) => el('li', {}, el('b', {}, s.n), ' ', s.n > 1 ? s.plus : s.un)));
+}
+
+function vueAccueil() {
   const prenom = (etat.membre.nom || '').split(' ')[0];
-  const fait = tous.approuve + tous.modifications;
-  const pct = tous.total ? Math.round((fait / tous.total) * 100) : 0;
+  const reste = aValider();
+  const tous = compte(etat.elements);
+  const modifs = etat.elements.filter((x) => x.statut === 'modifications');
 
   const intro = el('section', { class: 'intro' },
     el('p', { class: 'surtitre' }, 'Espace de validation'),
-    el('h1', {}, 'Bonjour ', el('i', {}, prenom), '.'),
-    el('p', { class: 'chapo' }, 'Voici ce que nous vous proposons. Pour chaque élément : approuvez-le, ou dites-nous quoi changer. Vos commentaires nous arrivent directement.'),
-    el('div', { class: 'progression', 'aria-label': `${fait} sur ${tous.total} éléments traités` },
-      el('div', { class: 'barre' }, el('span', { style: `width:${pct}%` })),
-      el('p', {}, el('b', {}, `${fait} sur ${tous.total}`), ' traités · ',
-        el('span', { class: 'p-ok' }, `${tous.approuve} approuvés`), ' · ',
-        el('span', { class: 'p-modif' }, `${tous.modifications} à modifier`), ' · ',
-        `${tous.a_valider} à valider`)));
+    el('h1', {}, 'Bonjour ', el('i', {}, prenom), '.'));
 
-  const onglets = el('nav', { class: 'onglets', role: 'tablist' },
-    etat.sections.map((s) => {
-      const c = compte(etat.elements.filter((x) => x.section_id === s.id));
-      return el('button', {
-        type: 'button', role: 'tab', 'aria-selected': String(s.id === etat.onglet), class: s.id === etat.onglet ? 'actif' : '',
-        onclick: () => { etat.onglet = s.id; etat.etape = 'toutes'; ecrireStockage('onglet', s.id); rendre(); window.scrollTo({ top: document.querySelector('.onglets').offsetTop - 10 }); },
-      }, el('span', {}, s.titre), el('small', {}, c.a_valider ? `${c.a_valider} à valider` : 'Tout est traité ✓'));
-    }));
+  let lot;
+  if (reste.length) {
+    lot = el('section', { class: 'lot' },
+      el('p', { class: 'lot-sur' }, 'À valider'),
+      el('p', { class: 'lot-titre' }, el('b', {}, pluriel(reste.length, 'élément vous attend', 'éléments vous attendent')), el('span', {}, `environ ${minutes(reste)} minutes`)),
+      puces(reste),
+      el('div', { class: 'lot-actions' },
+        el('button', { type: 'button', class: 'bouton grand', onclick: () => ouvrirFocus(reste, 'Toute la liste') }, 'Commencer', svg(ICO.fleche)),
+        el('button', { type: 'button', class: 'lien', onclick: ouvrirIntro }, 'Comment ça marche?')),
+      el('p', { class: 'lot-note' }, 'Un élément à la fois. Vous pouvez arrêter quand vous voulez : on reprend là où vous étiez.'));
+  } else {
+    lot = el('section', { class: 'lot fini' },
+      el('p', { class: 'lot-sur' }, 'Tout est à jour'),
+      el('p', { class: 'lot-titre' }, el('b', {}, 'Rien à valider pour le moment ✓')),
+      el('p', { class: 'lot-note' }, 'Merci! Nous vous écrivons dès qu\'il y a du nouveau.'));
+  }
 
-  const section = etat.sections.find((s) => s.id === etat.onglet);
-  let liste = etat.elements.filter((x) => x.section_id === etat.onglet);
+  const fait = tous.approuve + tous.modifications;
+  const pct = tous.total ? Math.round((fait / tous.total) * 100) : 0;
+  const progression = el('div', { class: 'progression', 'aria-label': `${fait} sur ${tous.total} éléments traités` },
+    el('div', { class: 'barre' }, el('span', { style: `width:${pct}%` })),
+    el('p', {}, el('b', {}, `${fait} sur ${tous.total}`), ' traités · ',
+      el('span', { class: 'p-ok' }, `${tous.approuve} approuvés`), ' · ',
+      el('span', { class: 'p-modif' }, `${tous.modifications} à modifier`)));
+
+  const lots = el('section', { class: 'lots' }, el('h2', { class: 'groupe' }, 'Par thème', el('small', {}, 'pour faire un petit bout à la fois')),
+    el('div', { class: 'lots-grille' }, etat.sections.map((s) => {
+      const liste = etat.elements.filter((x) => x.section_id === s.id);
+      const r = aValider(liste);
+      const c = compte(liste);
+      const p = c.total ? Math.round(((c.approuve + c.modifications) / c.total) * 100) : 0;
+      return el('article', { class: 'lot-carte' + (r.length ? '' : ' fini') },
+        el('h3', {}, s.titre),
+        el('p', { class: 'lot-chiffres' }, r.length ? `${pluriel(r.length, 'élément', 'éléments')} · ≈ ${minutes(r)} min` : 'Tout est traité ✓'),
+        el('div', { class: 'mini-barre' }, el('span', { style: `width:${p}%` })),
+        el('div', { class: 'lot-carte-actions' },
+          r.length ? el('button', { type: 'button', class: 'bouton', onclick: () => ouvrirFocus(r, s.titre) }, 'Commencer') : null,
+          el('button', { type: 'button', class: 'lien', onclick: () => aller(s.id) }, 'Voir tout')));
+    })));
+
+  const demandes = modifs.length ? el('section', { class: 'demandes' },
+    el('h2', { class: 'groupe' }, 'Vos demandes de modification', el('small', {}, 'nous y travaillons')),
+    el('ul', {}, modifs.slice(0, 8).map((x) => el('li', {}, el('button', { type: 'button', class: 'lien', onclick: () => { aller(x.section_id); setTimeout(() => document.getElementById('e-' + x.cle)?.scrollIntoView({ block: 'center' }), 50); } }, x.titre)))),
+    modifs.length > 8 ? el('p', { class: 'lot-note' }, `et ${modifs.length - 8} autres`) : null) : null;
+
+  return el('div', {}, intro, lot, progression, lots, demandes);
+}
+
+// ---------- Ressources ----------
+function vueRessources() {
+  const r = RESSOURCES.find((x) => x.id === etat.ressource) || RESSOURCES[0];
+  return el('div', { class: 'ressources' },
+    el('section', { class: 'intro' },
+      el('p', { class: 'surtitre' }, 'Ressources'),
+      el('h1', {}, r.titre),
+      el('p', { class: 'chapo' }, r.sous_titre)),
+    el('div', { class: 'sous-onglets', role: 'tablist' }, RESSOURCES.map((x) => el('button', {
+      type: 'button', role: 'tab', 'aria-selected': String(x.id === r.id), class: x.id === r.id ? 'actif' : '',
+      onclick: () => { etat.ressource = x.id; ecrireStockage('ressource', x.id); rendre(); },
+    }, x.titre))),
+    el('article', { class: 'ressource', html: r.html }),
+    el('p', { class: 'lot-note' }, `Dernière mise à jour : ${RESSOURCES_MAJ}`));
+}
+
+// ---------- Vue par section (la liste complète) ----------
+function vueSection() {
+  const section = etat.sections.find((s) => s.id === etat.vue);
+  let liste = etat.elements.filter((x) => x.section_id === etat.vue);
   const groupesSection = [...new Set(liste.map((x) => x.groupe))];
+  const r = aValider(liste);
+
+  const tete = el('section', { class: 'intro' },
+    el('p', { class: 'surtitre' }, 'Tout voir'),
+    el('h1', {}, section?.titre || ''),
+    el('p', { class: 'chapo' }, section?.description || ''),
+    r.length ? el('button', { type: 'button', class: 'bouton', onclick: () => ouvrirFocus(r, section.titre) }, `Valider les ${r.length} restants, un à la fois`) : null);
 
   const filtres = el('div', { class: 'filtres' },
     [['tous', 'Tout'], ['a_valider', 'À valider'], ['modifications', 'À modifier'], ['approuve', 'Approuvés']].map(([v, t]) =>
       el('button', { type: 'button', class: 'puce' + (etat.filtre === v ? ' actif' : ''), onclick: () => { etat.filtre = v; rendre(); } }, t)),
-    etat.onglet === 'idees' ? el('span', { class: 'sep' }) : null,
-    etat.onglet === 'idees' ? [['toutes', 'Toutes les étapes'], ...groupesSection.map((g) => [g, g])].map(([v, t]) =>
+    etat.vue === 'idees' ? el('span', { class: 'sep' }) : null,
+    etat.vue === 'idees' ? [['toutes', 'Toutes les étapes'], ...groupesSection.map((g) => [g, ETAPES[g] || g])].map(([v, t]) =>
       el('button', { type: 'button', class: 'puce' + (etat.etape === v ? ' actif' : ''), onclick: () => { etat.etape = v; rendre(); } }, t)) : null);
 
   if (etat.filtre !== 'tous') liste = liste.filter((x) => x.statut === etat.filtre);
-  if (etat.onglet === 'idees' && etat.etape !== 'toutes') liste = liste.filter((x) => x.groupe === etat.etape);
+  if (etat.vue === 'idees' && etat.etape !== 'toutes') liste = liste.filter((x) => x.groupe === etat.etape);
 
   const corps = el('div', { class: 'liste' });
   if (!liste.length) corps.append(el('p', { class: 'vide' }, 'Rien ici pour le moment.'));
@@ -169,16 +342,19 @@ function rendre() {
   for (const item of liste) {
     if (item.groupe !== groupe) {
       groupe = item.groupe;
-      corps.append(el('h2', { class: 'groupe' }, groupe, etat.onglet === 'idees' ? el('small', {}, { TOFU: 'Se faire connaître', MOFU: 'Obtenir le contact', BOFU: 'Donner confiance' }[groupe] || '') : null));
+      corps.append(el('h2', { class: 'groupe' }, groupe, etat.vue === 'idees' ? el('small', {}, ETAPES[groupe] || '') : null));
     }
     corps.append(carte(item));
   }
+  return el('div', {}, tete, filtres, corps);
+}
 
-  app.replaceChildren(intro, onglets,
-    el('section', { class: 'entete-section' }, el('p', {}, section?.description || '')),
-    filtres, corps,
-    el('footer', { class: 'pied' }, 'L\'équipe Gabrielle Germain · espace privé de validation'));
-  window.scrollTo({ top: scrollY });
+function fil(coms) {
+  if (!coms.length) return null;
+  return el('ol', { class: 'fil' }, coms.map((c) => el('li', { class: 'c-' + c.type },
+    el('p', { class: 'c-tete' }, el('b', {}, c.auteur_nom || 'Équipe'), ' ', TYPES[c.type] || '', el('time', {}, ' · ' + dateFr(c.cree_le))),
+    c.texte ? el('p', { class: 'c-texte' }, c.texte) : null,
+    c.audio ? el('button', { type: 'button', class: 'lien c-ecouter', onclick: (e) => ecouter(e.currentTarget, c.id) }, '▶ Écouter') : null)));
 }
 
 function carte(item) {
@@ -191,28 +367,20 @@ function carte(item) {
     el('div', {},
       item.sous_titre ? el('p', { class: 'sous' }, item.sous_titre) : null,
       el('h3', {}, item.titre),
-      (meta.tags || []).length ? el('div', { class: 'tags' }, meta.tags.map((t) => el('span', { class: 'tag' + (/vérifier|confirmer|valider|OACIQ/i.test(t) ? ' tag-alerte' : '') }, t))) : null),
+      etiquettes(meta)),
     el('span', { class: 'statut' }, st.txt)));
 
-  if (item.medias?.length) art.append(medias(item.medias, meta.galerie));
+  if (item.section_id === 'styles' && (item.medias?.length || item.groupe === 'Les stories')) art.append(apercu(item));
+  else if (item.medias?.length) art.append(medias(item.medias, meta.galerie));
   if (item.corps) art.append(el('div', { class: 'corps', html: item.corps }));
-  if (meta.champs) {
-    art.append(el('dl', { class: 'champs' }, meta.champs.flatMap(([k, v]) => [el('dt', {}, k),
-      el('dd', {}, /^https?:\/\//.test(v) ? el('a', { href: v, target: '_blank', rel: 'noopener' }, new URL(v).hostname.replace('www.', '')) : v)])));
-  }
-  if (meta.exemple || meta.legende) {
+  if (meta.champs) art.append(champs(meta.champs));
+  if (meta.legende && !(item.section_id === 'styles' && item.medias?.length)) {
     art.append(el('details', { class: 'legende' },
       el('summary', {}, meta.exemple ? `Exemple : ${meta.exemple} — voir la légende` : 'Voir la légende'),
-      el('pre', {}, meta.legende || '')));
+      el('pre', {}, meta.legende)));
   }
   if (meta.contexte) art.append(el('p', { class: 'contexte' }, meta.contexte));
-
-  // fil des commentaires
-  if (coms.length) {
-    art.append(el('ol', { class: 'fil' }, coms.map((c) => el('li', { class: 'c-' + c.type },
-      el('p', { class: 'c-tete' }, el('b', {}, c.auteur_nom || c.auteur_email), ' ', TYPES[c.type] || '', el('time', {}, ' · ' + dateFr(c.cree_le))),
-      c.texte ? el('p', { class: 'c-texte' }, c.texte) : null))));
-  }
+  const f = fil(coms); if (f) art.append(f);
 
   // actions
   const zone = el('div', { class: 'actions' });
@@ -220,27 +388,25 @@ function carte(item) {
   const admin = etat.membre.role === 'admin';
   if (!ouvert) {
     if (item.statut !== 'approuve') zone.append(el('button', { type: 'button', class: 'bouton', onclick: async (e) => { e.target.disabled = true; await decider(item.id, 'approbation'); } }, '✓ J\'approuve'));
-    zone.append(el('button', { type: 'button', class: 'bouton secondaire', onclick: () => { etat.ouverts.add(item.id); etat.mode = { [item.id]: 'modifications' }; rendre(); } }, item.statut === 'approuve' ? 'Changer d\'avis' : 'Demander une modification'));
-    zone.append(el('button', { type: 'button', class: 'lien', onclick: () => { etat.ouverts.add(item.id); etat.mode = { [item.id]: admin ? 'reponse' : 'commentaire' }; rendre(); } }, admin ? 'Répondre' : 'Commenter'));
+    zone.append(el('button', { type: 'button', class: 'bouton secondaire', onclick: () => { etat.ouverts.add(item.id); etat.mode[item.id] = 'modifications'; rendre(); } }, item.statut === 'approuve' ? 'Changer d\'avis' : 'Demander une modification'));
+    zone.append(el('button', { type: 'button', class: 'lien', onclick: () => { etat.ouverts.add(item.id); etat.mode[item.id] = admin ? 'reponse' : 'commentaire'; rendre(); } }, admin ? 'Répondre' : 'Commenter'));
   } else {
-    const mode = etat.mode?.[item.id] || 'commentaire';
-    const ta = el('textarea', { rows: '3', maxlength: '4000', placeholder: mode === 'modifications' ? 'Qu\'est-ce qu\'on change? Ex. « Plutôt : … »' : 'Votre commentaire…' });
-    zone.append(el('form', { class: 'saisie', onsubmit: async (e) => {
-      e.preventDefault();
-      const t = ta.value.trim();
-      if (!t) { ta.focus(); return; }
-      e.submitter && (e.submitter.disabled = true);
-      if (await decider(item.id, mode, t)) etat.ouverts.delete(item.id), rendre();
-    } },
-    el('label', {}, mode === 'modifications' ? 'Votre demande de modification' : (mode === 'reponse' ? 'Votre réponse' : 'Votre commentaire')),
-    ta,
-    el('div', { class: 'saisie-actions' },
-      el('button', { type: 'submit', class: 'bouton' }, 'Envoyer'),
-      el('button', { type: 'button', class: 'lien', onclick: () => { etat.ouverts.delete(item.id); rendre(); } }, 'Annuler'))));
-    setTimeout(() => ta.focus({ preventScroll: true }), 0);
+    const mode = etat.mode[item.id] || 'commentaire';
+    zone.append(formulaire(item, mode, {
+      apres: () => { etat.ouverts.delete(item.id); rendre(); },
+      annuler: () => { etat.ouverts.delete(item.id); rendre(); },
+    }));
   }
   art.append(zone);
   return art;
+}
+
+function etiquettes(meta) {
+  return (meta.tags || []).length ? el('div', { class: 'tags' }, meta.tags.map((t) => el('span', { class: 'tag' + (/vérifier|confirmer|valider|OACIQ/i.test(t) ? ' tag-alerte' : '') }, t))) : null;
+}
+function champs(liste) {
+  return el('dl', { class: 'champs' }, liste.flatMap(([k, v]) => [el('dt', {}, k),
+    el('dd', {}, /^https?:\/\//.test(v) ? el('a', { href: v, target: '_blank', rel: 'noopener' }, new URL(v).hostname.replace('www.', '')) : v)]));
 }
 
 function medias(liste, galerie) {
@@ -257,6 +423,384 @@ function medias(liste, galerie) {
     }
   }
   return wrap;
+}
+
+// ---------- Aperçu « comme sur Instagram » ----------
+function apercu(item) {
+  const meta = item.meta || {};
+  const ms = item.medias || [];
+  if (item.groupe === 'Les stories' || ms.some((m) => /story/i.test(m.src))) return cadreStory(item);
+  const cadre = el('div', { class: 'ig', 'data-noswipe': '' });
+  cadre.append(el('div', { class: 'ig-tete' },
+    el('span', { class: 'ig-avatar' }, svg(ICO.maison)),
+    el('span', { class: 'ig-nom' }, el('b', {}, 'enmodeimmobilier'), el('small', {}, 'Québec · Lévis')),
+    el('span', { class: 'ig-points', 'aria-hidden': 'true' }, '•••')));
+
+  const video = ms.find((m) => m.type === 'video');
+  if (video) {
+    const v = el('video', { src: video.src, poster: video.poster || null, muted: true, loop: true, playsinline: true, autoplay: true, preload: 'metadata', class: 'ig-reel' });
+    v.muted = true;
+    const btn = el('button', { type: 'button', class: 'ig-son', 'aria-label': 'Activer le son' }, svg(ICO.muet));
+    btn.addEventListener('click', () => {
+      v.muted = !v.muted;
+      btn.replaceChildren(svg(v.muted ? ICO.muet : ICO.son));
+      btn.setAttribute('aria-label', v.muted ? 'Activer le son' : 'Couper le son');
+      if (v.paused) v.play().catch(() => {});
+    });
+    v.addEventListener('click', () => { if (v.paused) v.play().catch(() => {}); else v.pause(); });
+    cadre.append(el('div', { class: 'ig-media reel' }, v, btn, el('span', { class: 'ig-badge' }, 'Reel')));
+  } else if (ms.length > 1) {
+    const piste = el('div', { class: 'ig-piste' }, ms.map((m, i) => el('img', { src: m.src, alt: m.legende || `Page ${i + 1}`, loading: i ? 'lazy' : 'eager' })));
+    const points = el('div', { class: 'ig-points-car' }, ms.map((_, i) => el('i', { class: i ? '' : 'on' })));
+    const compteur = el('span', { class: 'ig-compteur' }, `1/${ms.length}`);
+    piste.addEventListener('scroll', () => {
+      const i = Math.round(piste.scrollLeft / piste.clientWidth);
+      compteur.textContent = `${i + 1}/${ms.length}`;
+      [...points.children].forEach((p, j) => p.classList.toggle('on', j === i));
+    }, { passive: true });
+    cadre.append(el('div', { class: 'ig-media car' }, piste, compteur), points);
+  } else if (ms.length === 1) {
+    cadre.append(el('div', { class: 'ig-media' }, el('img', { src: ms[0].src, alt: ms[0].legende || '' })));
+  }
+
+  cadre.append(el('div', { class: 'ig-actions' }, svg(ICO.coeur), svg(ICO.bulle), svg(ICO.avion), el('span', { class: 'ig-esp' }), svg(ICO.signet)));
+  if (meta.legende) {
+    const complet = meta.legende;
+    const court = complet.split('\n').filter(Boolean)[0] || complet;
+    const p = el('p', { class: 'ig-legende' }, el('b', {}, 'enmodeimmobilier'), ' ', court);
+    if (complet.length > court.length + 2) {
+      const plus = el('button', { type: 'button', class: 'ig-plus' }, '… plus');
+      plus.addEventListener('click', () => p.replaceChildren(el('b', {}, 'enmodeimmobilier'), ' ', el('span', { class: 'ig-complet' }, complet)));
+      p.append(' ', plus);
+    }
+    cadre.append(p);
+  }
+  return el('div', { class: 'apercu' }, cadre, el('p', { class: 'apercu-note' }, 'Aperçu tel qu\'il paraîtra sur Instagram'));
+}
+
+function cadreStory(item) {
+  const m = (item.medias || [])[0];
+  return el('div', { class: 'apercu' },
+    el('div', { class: 'story', 'data-noswipe': '' },
+      m ? el('img', { src: m.src, alt: '', class: 'story-fond' }) : null,
+      el('div', { class: 'story-barres' }, el('i', { class: 'on' }), el('i'), el('i')),
+      el('div', { class: 'story-tete' }, el('span', { class: 'ig-avatar petit' }, svg(ICO.maison)), el('b', {}, 'enmodeimmobilier'), el('small', {}, '2 h')),
+      el('div', { class: 'story-sticker' }, el('p', {}, item.titre.replace(/^[A-Z] · /, '')))),
+    el('p', { class: 'apercu-note' }, 'Aperçu d\'une story (illustration)'));
+}
+
+// ---------- Saisie : texte ou voix ----------
+const Reco = window.SpeechRecognition || window.webkitSpeechRecognition;
+const peutEnregistrer = !!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder);
+
+function formulaire(item, mode, { apres, annuler }) {
+  const etiquette = mode === 'modifications' ? 'Qu\'est-ce qu\'on change?' : (mode === 'reponse' ? 'Votre réponse' : 'Votre question ou commentaire');
+  const ta = el('textarea', { rows: '3', maxlength: '4000', placeholder: mode === 'modifications' ? 'Écrivez-le, ou dites-le à voix haute avec le micro.' : 'Votre message…' });
+  const etatVoix = { rec: null, flux: null, morceaux: [], blob: null, debut: 0, duree: 0, minuterie: null, reco: null, base: '' };
+  const zoneVoix = el('div', { class: 'voix' });
+  const envoyer = el('button', { type: 'submit', class: 'bouton' }, 'Envoyer');
+  const info = el('p', { class: 'voix-info', role: 'status' });
+
+  function afficherVoix() {
+    zoneVoix.replaceChildren();
+    if (!peutEnregistrer) {
+      zoneVoix.append(el('p', { class: 'voix-info' }, 'Astuce : le micro de votre clavier permet aussi de dicter.'));
+      return;
+    }
+    if (etatVoix.rec) {
+      zoneVoix.append(el('button', { type: 'button', class: 'micro actif', onclick: arreter, 'aria-label': 'Arrêter l\'enregistrement' }, svg(ICO.stop), el('span', { class: 'voix-temps' }, '0:00')),
+        el('span', { class: 'voix-onde', 'aria-hidden': 'true' }, el('i'), el('i'), el('i'), el('i'), el('i')),
+        el('span', { class: 'voix-txt' }, 'Je vous écoute… appuyez pour arrêter'));
+    } else if (etatVoix.blob) {
+      zoneVoix.append(el('audio', { controls: true, src: URL.createObjectURL(etatVoix.blob), class: 'c-audio' }),
+        el('button', { type: 'button', class: 'lien', onclick: () => { etatVoix.blob = null; afficherVoix(); } }, 'Effacer la note'));
+    } else {
+      zoneVoix.append(el('button', { type: 'button', class: 'micro', onclick: commencer }, svg(ICO.micro), el('span', {}, 'Le dire à voix haute')));
+    }
+  }
+
+  async function commencer() {
+    try {
+      etatVoix.flux = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch {
+      info.textContent = 'Le micro n\'est pas accessible. Vérifiez la permission du navigateur, ou écrivez votre message.';
+      return;
+    }
+    const types = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
+    const type = types.find((t) => MediaRecorder.isTypeSupported?.(t));
+    etatVoix.morceaux = [];
+    etatVoix.rec = new MediaRecorder(etatVoix.flux, type ? { mimeType: type } : undefined);
+    etatVoix.rec.ondataavailable = (e) => e.data?.size && etatVoix.morceaux.push(e.data);
+    etatVoix.rec.onstop = () => {
+      etatVoix.blob = new Blob(etatVoix.morceaux, { type: (etatVoix.rec?.mimeType || type || 'audio/webm').split(';')[0] });
+      etatVoix.flux?.getTracks().forEach((t) => t.stop());
+      etatVoix.rec = null;
+      afficherVoix();
+    };
+    etatVoix.rec.start(1000);
+    etatVoix.debut = Date.now();
+    etatVoix.minuterie = setInterval(() => {
+      const s = Math.round((Date.now() - etatVoix.debut) / 1000);
+      const t = zoneVoix.querySelector('.voix-temps');
+      if (t) t.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+      if (s >= 170) arreter();
+    }, 500);
+    // Transcription en direct, quand le navigateur la permet
+    if (Reco) {
+      try {
+        const r = new Reco();
+        r.lang = 'fr-CA'; r.interimResults = true; r.continuous = true;
+        etatVoix.base = ta.value.trim();
+        r.onresult = (e) => {
+          let txt = '';
+          for (let i = 0; i < e.results.length; i += 1) txt += e.results[i][0].transcript;
+          ta.value = [etatVoix.base, txt.trim()].filter(Boolean).join(' ');
+        };
+        r.onerror = () => {};
+        r.start();
+        etatVoix.reco = r;
+      } catch { etatVoix.reco = null; }
+    }
+    info.textContent = '';
+    afficherVoix();
+  }
+
+  function arreter() {
+    clearInterval(etatVoix.minuterie);
+    etatVoix.duree = Math.round((Date.now() - etatVoix.debut) / 1000);
+    try { etatVoix.reco?.stop(); } catch { /* rien */ }
+    etatVoix.reco = null;
+    if (etatVoix.rec?.state !== 'inactive') etatVoix.rec?.stop();
+  }
+
+  const form = el('form', { class: 'saisie', onsubmit: async (e) => {
+    e.preventDefault();
+    if (etatVoix.rec) { arreter(); await new Promise((ok) => setTimeout(ok, 350)); }
+    const t = ta.value.trim();
+    if (!t && !etatVoix.blob) { ta.focus(); info.textContent = 'Écrivez ou enregistrez votre message.'; return; }
+    envoyer.disabled = true; envoyer.textContent = 'Envoi…';
+    let ok;
+    if (etatVoix.blob) {
+      const r = await envoyerNote(item.id, mode, etatVoix.blob, etatVoix.duree, t);
+      ok = r.ok;
+      if (!ok && t) ok = await decider(item.id, mode, t + '\n(La note vocale n\'a pas pu être jointe.)', { silencieux: true });
+      if (!ok) info.textContent = 'La note vocale n\'a pas pu être envoyée. Écrivez votre message, s\'il vous plaît.';
+    } else {
+      ok = await decider(item.id, mode, t, { silencieux: true });
+    }
+    envoyer.disabled = false; envoyer.textContent = 'Envoyer';
+    if (ok) apres();
+  } },
+  el('label', {}, etiquette), ta, zoneVoix, info,
+  el('div', { class: 'saisie-actions' }, envoyer,
+    el('button', { type: 'button', class: 'lien', onclick: () => { arreter(); etatVoix.flux?.getTracks().forEach((t) => t.stop()); annuler(); } }, 'Annuler')));
+  afficherVoix();
+  setTimeout(() => ta.focus({ preventScroll: true }), 30);
+  return form;
+}
+
+// ---------- Mode « un élément à la fois » ----------
+function ouvrirFocus(liste, nom) {
+  etat.focus = { file: liste.map((x) => x.id), i: 0, nom, approuves: 0, modifs: 0, passes: [], fin: false, saisie: null };
+  document.body.classList.add('focus-ouvert');
+  rendreFocus();
+}
+
+function fermerFocus(silence) {
+  const f = etat.focus;
+  document.getElementById('focus')?.remove();
+  document.body.classList.remove('focus-ouvert');
+  etat.focus = null;
+  document.removeEventListener('keydown', toucheFocus);
+  if (!silence && f) rendre();
+}
+
+function toucheFocus(e) {
+  if (!etat.focus || etat.focus.saisie) return;
+  if (e.key === 'Escape') fermerFocus();
+}
+
+function elementCourant() {
+  const f = etat.focus;
+  return f && etat.elements.find((x) => x.id === f.file[f.i]);
+}
+
+function suivant() {
+  const f = etat.focus;
+  f.saisie = null;
+  f.i += 1;
+  while (f.i < f.file.length) {
+    const x = etat.elements.find((y) => y.id === f.file[f.i]);
+    if (x && x.statut === 'a_valider') break;
+    f.i += 1;
+  }
+  if (f.i >= f.file.length) terminerFocus();
+  else rendreFocus('entree');
+}
+
+function terminerFocus() {
+  const f = etat.focus;
+  f.fin = true;
+  sb.rpc('portail_fin_lot', { p_jeton: etat.jeton, p_lot: f.nom, p_approuves: f.approuves, p_modifs: f.modifs, p_passes: f.passes.length }).then(() => {}, () => {});
+  rendreFocus();
+}
+
+async function approuverCourant() {
+  const item = elementCourant();
+  if (!item) return;
+  const carteEl = document.querySelector('.f-carte');
+  carteEl?.classList.add('sortie-droite');
+  const ok = await decider(item.id, 'approbation', null, { silencieux: true });
+  if (!ok) { carteEl?.classList.remove('sortie-droite'); return; }
+  etat.focus.approuves += 1;
+  tampon('✓ Approuvé');
+  setTimeout(suivant, 260);
+}
+
+function passerCourant() {
+  const f = etat.focus;
+  const id = f.file[f.i];
+  if (!f.passes.includes(id)) f.passes.push(id);
+  document.querySelector('.f-carte')?.classList.add('sortie-gauche');
+  setTimeout(suivant, 220);
+}
+
+function tampon(txt) {
+  const t = el('div', { class: 'f-tampon', 'aria-hidden': 'true' }, txt);
+  document.getElementById('focus')?.append(t);
+  setTimeout(() => t.remove(), 700);
+}
+
+function rendreFocus(anim) {
+  const f = etat.focus;
+  let racine = document.getElementById('focus');
+  if (!racine) {
+    racine = el('div', { id: 'focus', class: 'focus', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Validation, un élément à la fois' });
+    document.body.append(racine);
+    document.addEventListener('keydown', toucheFocus);
+  }
+  if (f.fin) return racine.replaceChildren(ecranFin());
+
+  const item = elementCourant();
+  if (!item) return terminerFocus();
+  const total = f.file.length;
+  const section = etat.sections.find((s) => s.id === item.section_id);
+
+  const haut = el('div', { class: 'f-haut' },
+    el('button', { type: 'button', class: 'f-fermer', onclick: () => fermerFocus(), 'aria-label': 'Quitter' }, svg(ICO.x)),
+    el('div', { class: 'f-lieu' }, el('b', {}, section?.titre || ''), el('span', {}, item.section_id === 'idees' ? (ETAPES[item.groupe] || item.groupe) : item.groupe)),
+    el('span', { class: 'f-compte' }, `${f.i + 1} / ${total}`));
+  const barre = el('div', { class: 'f-barre' }, el('span', { style: `width:${Math.round((f.i / total) * 100)}%` }));
+
+  const carteF = el('article', { class: 'f-carte' + (anim === 'entree' ? ' entree' : '') }, contenuFocus(item));
+  activerGlisser(carteF);
+
+  let bas;
+  if (f.saisie) {
+    bas = el('div', { class: 'f-feuille' }, formulaire(item, f.saisie, {
+      apres: () => { if (f.saisie === 'modifications') f.modifs += 1; tampon(f.saisie === 'modifications' ? '✎ Noté' : '💬 Envoyé'); setTimeout(suivant, 300); },
+      annuler: () => { f.saisie = null; rendreFocus(); },
+    }));
+  } else {
+    bas = el('div', { class: 'f-bas' },
+      el('div', { class: 'f-principal' },
+        el('button', { type: 'button', class: 'bouton secondaire f-modif', onclick: () => { f.saisie = 'modifications'; rendreFocus(); } }, svg(ICO.crayon), 'À modifier'),
+        el('button', { type: 'button', class: 'bouton f-ok', onclick: approuverCourant }, svg(ICO.coche), 'J\'approuve')),
+      el('div', { class: 'f-second' },
+        el('button', { type: 'button', class: 'lien', onclick: () => { f.saisie = 'commentaire'; rendreFocus(); } }, 'Une question?'),
+        el('span', { class: 'f-astuce' }, 'Glissez à droite pour approuver'),
+        el('button', { type: 'button', class: 'lien', onclick: passerCourant }, 'Passer →')));
+  }
+  racine.replaceChildren(el('div', { class: 'f-cadre' }, haut, barre, el('div', { class: 'f-scene' }, carteF), bas));
+  racine.querySelector('.f-scene').scrollTop = 0;
+}
+
+function contenuFocus(item) {
+  const meta = item.meta || {};
+  const coms = etat.commentaires.filter((c) => c.element_id === item.id);
+  const blocs = [];
+  if (item.section_id === 'styles' && (item.medias?.length || item.groupe === 'Les stories')) blocs.push(apercu(item));
+  else if (item.medias?.length) blocs.push(medias(item.medias, meta.galerie));
+  blocs.push(el('div', { class: 'f-texte' + (item.section_id === 'marque' ? ' citation' : '') },
+    item.sous_titre ? el('p', { class: 'sous' }, item.sous_titre) : null,
+    el('h2', {}, item.titre),
+    etiquettes(meta),
+    item.corps ? el('div', { class: 'corps', html: item.corps }) : null,
+    meta.champs ? champs(meta.champs) : null,
+    meta.legende && !(item.section_id === 'styles' && item.medias?.length) ? el('details', { class: 'legende' }, el('summary', {}, 'Voir la légende'), el('pre', {}, meta.legende)) : null,
+    meta.contexte ? el('p', { class: 'contexte' }, meta.contexte) : null,
+    fil(coms)));
+  return blocs;
+}
+
+function activerGlisser(carteF) {
+  let x0 = null; let y0 = 0; let dx = 0; let actif = false;
+  carteF.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (e.target.closest('[data-noswipe], button, a, video, audio, details, textarea, input')) return;
+    x0 = e.clientX; y0 = e.clientY; dx = 0; actif = false;
+  });
+  carteF.addEventListener('pointermove', (e) => {
+    if (x0 == null) return;
+    dx = e.clientX - x0;
+    const dy = e.clientY - y0;
+    if (!actif && Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy) * 1.4) { actif = true; carteF.setPointerCapture?.(e.pointerId); }
+    if (!actif) return;
+    carteF.style.transform = `translateX(${dx}px) rotate(${dx / 30}deg)`;
+    carteF.dataset.sens = dx > 40 ? 'droite' : (dx < -40 ? 'gauche' : '');
+  });
+  const fin = () => {
+    if (x0 == null) return;
+    const d = dx; x0 = null;
+    if (!actif) return;
+    carteF.style.transform = ''; carteF.dataset.sens = '';
+    if (d > 110) approuverCourant();
+    else if (d < -110) passerCourant();
+  };
+  carteF.addEventListener('pointerup', fin);
+  carteF.addEventListener('pointercancel', () => { x0 = null; carteF.style.transform = ''; carteF.dataset.sens = ''; });
+}
+
+function ecranFin() {
+  const f = etat.focus;
+  const reste = aValider();
+  const passes = f.passes.map((id) => etat.elements.find((x) => x.id === id)).filter((x) => x && x.statut === 'a_valider');
+  return el('div', { class: 'f-cadre f-fin' },
+    el('div', { class: 'f-haut' }, el('button', { type: 'button', class: 'f-fermer', onclick: () => fermerFocus(), 'aria-label': 'Fermer' }, svg(ICO.x))),
+    el('div', { class: 'fin' },
+      el('div', { class: 'fin-sceau' }, svg(ICO.coche)),
+      el('h2', {}, passes.length ? 'Beau travail.' : 'C\'est fait.'),
+      el('p', { class: 'fin-lot' }, f.nom),
+      el('ul', { class: 'fin-chiffres' },
+        el('li', {}, el('b', {}, f.approuves), 'approuvés'),
+        el('li', {}, el('b', {}, f.modifs), 'à modifier'),
+        el('li', {}, el('b', {}, passes.length), 'passés')),
+      el('p', { class: 'fin-msg' }, f.modifs ? 'Vos demandes nous sont arrivées. Nous faisons les changements et nous vous les remontrons ici.' : 'Vos réponses nous sont arrivées. Merci!'),
+      el('div', { class: 'fin-actions' },
+        passes.length ? el('button', { type: 'button', class: 'bouton', onclick: () => ouvrirFocus(passes, 'Les éléments passés') }, `Revoir les ${passes.length} passés`) : null,
+        !passes.length && reste.length ? el('button', { type: 'button', class: 'bouton', onclick: () => ouvrirFocus(reste, 'Toute la liste') }, `Continuer · ${reste.length} restants`) : null,
+        el('button', { type: 'button', class: passes.length || reste.length ? 'bouton secondaire' : 'bouton', onclick: () => { fermerFocus(); aller('accueil'); } }, 'Retour à l\'accueil'))));
+}
+
+// ---------- Mot d'accueil (première visite) ----------
+function ouvrirIntro() {
+  const reste = aValider();
+  const fermer = () => { ecrireStockage('intro-v2', '1'); fond.remove(); };
+  const fond = el('div', { class: 'modale-fond', onclick: (e) => { if (e.target === fond) fermer(); } },
+    el('div', { class: 'modale', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'modale-titre' },
+      el('p', { class: 'surtitre' }, 'Bienvenue'),
+      el('h2', { id: 'modale-titre' }, 'Votre espace de ', el('i', {}, 'validation')),
+      el('p', {}, 'Ici, vous validez ce que nous préparons pour vous. Un élément à la fois, quelques secondes chacun.'),
+      el('ul', { class: 'gestes' },
+        el('li', {}, el('span', { class: 'g-ico ok' }, svg(ICO.coche)), el('div', {}, el('b', {}, 'J\'approuve'), el('small', {}, 'ou glissez la carte vers la droite'))),
+        el('li', {}, el('span', { class: 'g-ico modif' }, svg(ICO.micro)), el('div', {}, el('b', {}, 'À modifier'), el('small', {}, 'écrivez-le, ou dites-le à voix haute'))),
+        el('li', {}, el('span', { class: 'g-ico' }, svg(ICO.fleche)), el('div', {}, el('b', {}, 'Passer'), el('small', {}, 'on y reviendra plus tard')))),
+      reste.length ? el('div', { class: 'modale-lot' }, el('b', {}, pluriel(reste.length, 'élément', 'éléments') + ` · environ ${minutes(reste)} min`), puces(reste)) : null,
+      el('div', { class: 'modale-actions' },
+        reste.length ? el('button', { type: 'button', class: 'bouton grand', onclick: () => { fermer(); ouvrirFocus(reste, 'Toute la liste'); } }, 'C\'est parti', svg(ICO.fleche)) : null,
+        el('button', { type: 'button', class: reste.length ? 'lien' : 'bouton', onclick: fermer }, reste.length ? 'Plus tard' : 'Compris'))));
+  document.body.append(fond);
+  fond.querySelector('.bouton')?.focus();
 }
 
 demarrer();
