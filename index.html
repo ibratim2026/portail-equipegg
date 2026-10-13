@@ -21,7 +21,7 @@
     </a>
     <div class="haut-droite" id="haut-droite" hidden>
       <span id="qui"></span>
-      <button class="lien" id="deconnexion" type="button">Se déconnecter</button>
+      <button class="lien" id="deconnexion" type="button">Quitter</button>
     </div>
   </div>
 </header>
@@ -30,19 +30,7 @@
   <div class="chargement" id="chargement">Chargement…</div>
 </main>
 
-<template id="tpl-connexion">
-  <section class="connexion">
-    <svg class="maison" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 9.5V20h13V9.5"/></svg>
-    <h1>Votre espace de <i>validation</i></h1>
-    <p>Entrez votre courriel : vous recevrez un lien pour vous connecter, sans mot de passe.</p>
-    <form id="form-connexion">
-      <label for="courriel">Courriel</label>
-      <input id="courriel" type="email" autocomplete="email" required placeholder="vous@exemple.com">
-      <button class="bouton" type="submit">Recevoir mon lien</button>
-    </form>
-    <p class="message" id="message-connexion" role="status"></p>
-  </section>
-</template>
+
 
 <script type="module" src="app.js"></script>
 </body>

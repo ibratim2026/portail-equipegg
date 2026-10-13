@@ -8,9 +8,10 @@ Les données (contenus, statuts, commentaires) sont dans Supabase, projet `equip
 - `medias/` : images et vidéos d'exemple affichées dans le portail
 
 ## Sécurité
-- Connexion par lien envoyé par courriel (Supabase Auth).
-- Seuls les courriels inscrits dans la table `membres` voient le contenu (règles RLS).
-- La cliente ne peut écrire qu'à travers la fonction `decider` : approuver, demander une modification, commenter.
+- Aucun mot de passe : chaque personne reçoit un **lien personnel** (`/#k=JETON`). Seule l'empreinte du jeton est stockée (table `acces`).
+- Sans lien valide, rien n'est lisible : les tables sont fermées et tout passe par les fonctions `portail_charger` et `portail_decider`.
+- La cliente peut seulement approuver, demander une modification ou commenter.
+- Site non indexé : balise `noindex`, en-tête `X-Robots-Tag` et `robots.txt`.
 - Les contenus sont ajoutés et modifiés par l'équipe (Claude, via le connecteur Supabase).
 
 ## Cloudflare Pages

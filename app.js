@@ -1,13 +1,11 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
 import { CONFIG } from './config.js';
 
-const sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' },
-});
+const sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, { auth: { persistSession: false, autoRefreshToken: false } });
 
 const app = document.getElementById('app');
 const etat = {
-  session: null, membre: null, sections: [], elements: [], commentaires: [],
+  jeton: null, membre: null, sections: [], elements: [], commentaires: [],
   onglet: lireStockage('onglet') || 'marque', filtre: 'tous', etape: 'toutes', ouverts: new Set(),
 };
 
@@ -36,79 +34,60 @@ function el(tag, attrs = {}, ...enfants) {
 
 const dateFr = (d) => new Date(d).toLocaleString('fr-CA', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
 
-// ---------- Authentification ----------
-async function demarrer() {
-  const { data } = await sb.auth.getSession();
-  etat.session = data.session;
-  sb.auth.onAuthStateChange((_evt, session) => {
-    const avant = etat.session?.user?.id;
-    etat.session = session;
-    if ((session?.user?.id) !== avant) route();
-  });
-  route();
+// ---------- Accès par lien personnel (sans mot de passe) ----------
+function lireJeton() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  const k = h.get('k');
+  if (k) {
+    ecrireStockage('jeton', k);
+    history.replaceState(null, '', location.pathname + location.search); // retire le jeton de la barre d'adresse
+    return k;
+  }
+  return lireStockage('jeton');
 }
 
-async function route() {
-  document.getElementById('haut-droite').hidden = !etat.session;
-  if (!etat.session) return afficherConnexion();
-  document.getElementById('qui').textContent = etat.session.user.email;
+function lienInvalide() {
+  document.getElementById('haut-droite').hidden = true;
+  app.replaceChildren(el('section', { class: 'connexion' },
+    el('h1', {}, 'Lien ', el('i', {}, 'personnel'), ' requis'),
+    el('p', {}, 'Ouvrez cet espace avec le lien personnel que vous avez reçu. Si vous ne l\'avez plus, demandez-le à William.')));
+}
+
+async function demarrer() {
+  etat.jeton = lireJeton();
+  if (!etat.jeton) return lienInvalide();
   await charger();
 }
 
-function afficherConnexion() {
-  app.replaceChildren(document.getElementById('tpl-connexion').content.cloneNode(true));
-  const form = document.getElementById('form-connexion');
-  const msg = document.getElementById('message-connexion');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const courriel = document.getElementById('courriel').value.trim().toLowerCase();
-    const btn = form.querySelector('button');
-    btn.disabled = true; msg.textContent = 'Envoi en cours…'; msg.className = 'message';
-    const { error } = await sb.auth.signInWithOtp({ email: courriel, options: { emailRedirectTo: location.origin + location.pathname } });
-    btn.disabled = false;
-    if (error) { msg.textContent = 'Le lien n\'a pas pu être envoyé. Réessayez dans une minute.'; msg.className = 'message erreur'; return; }
-    msg.textContent = 'C\'est envoyé! Ouvrez le courriel et cliquez sur le lien (pensez à vérifier les courriels indésirables).';
-    msg.className = 'message ok';
-  });
-}
-
-document.getElementById('deconnexion').addEventListener('click', async () => { await sb.auth.signOut(); });
+document.getElementById('deconnexion').addEventListener('click', () => {
+  try { localStorage.removeItem('gg-jeton'); } catch { /* rien */ }
+  etat.jeton = null; lienInvalide();
+});
 
 // ---------- Données ----------
 async function charger() {
   app.replaceChildren(el('div', { class: 'chargement' }, 'Chargement…'));
-  const email = etat.session.user.email.toLowerCase();
-  const [m, s, e, c] = await Promise.all([
-    sb.from('membres').select('email,nom,role').eq('email', email).maybeSingle(),
-    sb.from('sections').select('*').order('ordre'),
-    sb.from('elements').select('id,cle,section_id,groupe,titre,sous_titre,corps,medias,meta,ordre,statut,version,maj_le').order('ordre'),
-    sb.from('commentaires').select('id,element_id,auteur_nom,auteur_email,type,texte,version,cree_le').order('cree_le'),
-  ]);
-  if (!m.data) {
-    app.replaceChildren(el('section', { class: 'connexion' },
-      el('h1', {}, 'Accès en attente'),
-      el('p', {}, `Le courriel ${email} n'a pas encore accès à cet espace. Écrivez à William pour l'activer.`)));
-    return;
+  const { data, error } = await sb.rpc('portail_charger', { p_jeton: etat.jeton });
+  if (error || !data) {
+    try { localStorage.removeItem('gg-jeton'); } catch { /* rien */ }
+    return lienInvalide();
   }
-  etat.membre = m.data;
-  document.getElementById('qui').textContent = m.data.nom;
-  etat.sections = s.data || [];
-  etat.elements = e.data || [];
-  etat.commentaires = c.data || [];
+  etat.membre = data.membre;
+  etat.sections = data.sections || [];
+  etat.elements = data.elements || [];
+  etat.commentaires = data.commentaires || [];
+  document.getElementById('haut-droite').hidden = false;
+  document.getElementById('qui').textContent = etat.membre.nom;
   if (!etat.sections.find((x) => x.id === etat.onglet)) etat.onglet = etat.sections[0]?.id;
   rendre();
 }
 
 async function decider(id, decision, texte) {
-  const { error } = await sb.rpc('decider', { p_element: id, p_decision: decision, p_texte: texte || null });
-  if (error) { alerte(error.message || 'Erreur'); return false; }
-  const [e, c] = await Promise.all([
-    sb.from('elements').select('id,statut,version').eq('id', id).single(),
-    sb.from('commentaires').select('id,element_id,auteur_nom,auteur_email,type,texte,version,cree_le').eq('element_id', id).order('cree_le'),
-  ]);
+  const { data, error } = await sb.rpc('portail_decider', { p_jeton: etat.jeton, p_element: id, p_decision: decision, p_texte: texte || null });
+  if (error || !data) { alerte(error?.message || 'Erreur'); return false; }
   const cible = etat.elements.find((x) => x.id === id);
-  if (cible && e.data) Object.assign(cible, e.data);
-  etat.commentaires = etat.commentaires.filter((x) => x.element_id !== id).concat(c.data || []);
+  if (cible && data.element) Object.assign(cible, data.element);
+  etat.commentaires = etat.commentaires.filter((x) => x.element_id !== id).concat(data.commentaires || []);
   rendre();
   return true;
 }
