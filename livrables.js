@@ -4,7 +4,7 @@
 
 export const LIVRABLES = [
   { cle: 'doc-culture', n: 1, court: 'Culture', titre: 'Votre culture', sous: 'Vision, mission, promesse, valeurs, standards de service, principes.', doc: 'docs/culture.html', detail: 'marque', usage: 'À montrer à votre équipe et à vos clients.' },
-  { cle: 'doc-ods', n: 2, court: 'Offres', titre: 'Vos offres de services', sous: 'Vendeurs et acheteurs, prêtes à envoyer à un client.', doc: null, usage: 'À envoyer avant ou après une rencontre.' },
+  { cle: 'doc-ods', n: 2, court: 'Offres', titre: 'Vos offres de services', sous: 'Vendeurs : votre offre en magazine, à feuilleter ou à envoyer en PDF.', doc: 'docs/ods/vendeurs.html', usage: 'À envoyer avant ou après une rencontre.' },
   { cle: 'doc-site', n: 3, court: 'Site web', titre: 'Votre site web', sous: 'La maquette complète : accueil, je vends, j\'achète, l\'équipe, l\'Alerte.', doc: 'docs/site/index.html', usage: 'La base de votre nouveau site.' },
   { cle: 'doc-publications', n: 4, court: 'Routine', titre: 'La routine de publications', sous: 'Ce qu\'on publie, quand, et les 4 premières semaines.', doc: 'docs/publications.html', usage: 'Le calendrier de votre présence en ligne.' },
   { cle: 'doc-styles', n: 5, court: 'Styles', titre: 'Les styles de publication', sous: 'Reels, carrousels, photos, stories, légendes, avec un exemple pour chacun.', doc: 'docs/styles.html', detail: 'styles', usage: 'Le guide pour toute personne qui produit votre contenu.' },

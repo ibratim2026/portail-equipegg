@@ -335,7 +335,8 @@ function vueDoc(cle) {
   cadre.addEventListener('load', () => {
     try {
       const d = cadre.contentDocument;
-      d.querySelectorAll('section h2, main h2').forEach((h) => { const t = h.textContent.trim(); if (t && !parties.includes(t)) parties.push(t); });
+      const rub = d.querySelectorAll('.rubrique');
+      (rub.length ? rub : d.querySelectorAll('section h2, main h2')).forEach((h) => { const t = h.textContent.trim().replace(/\s+/g, ' '); if (t && !parties.includes(t)) parties.push(t); });
       d.querySelectorAll('a[href^="http"]').forEach((a) => a.setAttribute('target', '_blank'));
     } catch { /* rien */ }
   });
