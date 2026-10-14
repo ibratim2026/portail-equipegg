@@ -1,0 +1,75 @@
+/* Gabarit des documents de l'équipe Gabrielle Germain — présentables, imprimables */
+:root{
+  --creme:#F5F1EA; --creme2:#EFE7DD; --encre:#1D1D1B; --titre:#8F7060; --brun:#70574A;
+  --rose:#DCA39A; --rosep:#F6E1DC; --rosef:#A8665C; --sauge:#9FACA4; --saugep:#E3EAE5;
+  --ligne:#E3D9CE; --doux:#6B5E55; --blanc:#FFFDF9;
+  --pf:'Playfair Display',Georgia,serif; --jo:Jost,system-ui,sans-serif; --al:Allura,cursive;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--creme);color:var(--encre);font:400 16.5px/1.65 var(--jo)}
+.doc{max-width:860px;margin:0 auto;padding:0 22px 60px}
+h1,h2,h3{font-family:var(--pf);font-weight:500;letter-spacing:-.01em;margin:0}
+p{margin:8px 0}
+.couv{background:var(--encre);color:var(--creme);padding:46px 22px 40px;position:relative;overflow:hidden}
+.couv::after{content:'';position:absolute;right:-90px;top:-90px;width:320px;height:320px;border-radius:50%;border:1px solid rgba(220,163,154,.35)}
+.couv-in{max-width:860px;margin:0 auto}
+.logo{display:inline-flex;flex-direction:column;align-items:center;line-height:1;margin-bottom:34px}
+.logo-s{font:400 30px var(--al);color:var(--creme)}
+.logo-n{font:600 14px var(--jo);letter-spacing:.42em;padding-left:.42em;color:var(--rose);margin-top:2px}
+.logo-g{font:400 10px var(--jo);letter-spacing:.55em;padding-left:.55em;margin-top:3px;color:var(--creme)}
+.couv .sur{font:600 12px var(--jo);letter-spacing:.22em;text-transform:uppercase;color:var(--rose);margin:0}
+.couv h1{font-size:48px;line-height:1.1;margin:8px 0 12px}
+.couv h1 i{color:var(--rose)}
+.couv .chapo{max-width:600px;color:#D9CFC5;font-size:17px}
+.couv .meta{font-size:13px;color:#BEB2A7;margin-top:22px}
+section{padding-top:38px}
+.num{font:600 12px var(--jo);letter-spacing:.2em;text-transform:uppercase;color:var(--titre)}
+section>h2{font-size:32px;margin:4px 0 14px}
+.grand{background:var(--blanc);border:1px solid var(--ligne);border-radius:20px;padding:26px 24px;margin:6px 0}
+.grand .citation{font:500 28px/1.3 var(--pf);margin:0}
+.grand .expl{color:var(--doux);margin-top:12px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0}
+.carte{background:var(--blanc);border:1px solid var(--ligne);border-radius:16px;padding:18px}
+.carte h3{font-size:20px;margin-bottom:6px}
+.carte p{color:var(--doux);font-size:15px;margin:4px 0}
+.carte .lbl{font:600 11px var(--jo);letter-spacing:.14em;text-transform:uppercase;color:var(--titre);margin:10px 0 2px}
+.grille2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.grille3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.valeur{background:var(--blanc);border:1px solid var(--ligne);border-top:4px solid var(--rose);border-radius:16px;padding:18px}
+.valeur h3{font-size:21px}
+.valeur .def{font-size:15.5px;margin:6px 0}
+.valeur .voit{font-size:14.5px;color:var(--doux);border-top:1px dashed var(--ligne);padding-top:8px;margin-top:10px}
+.mots{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+.mots span{font:500 22px var(--pf);background:var(--blanc);border:1px solid var(--ligne);border-radius:99px;padding:8px 20px}
+.mots span i{color:var(--rosef);font-style:normal}
+.liste{list-style:none;padding:0;margin:8px 0;display:grid;gap:10px}
+.liste li{background:var(--blanc);border:1px solid var(--ligne);border-radius:14px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start}
+.liste .n{flex:none;width:30px;height:30px;border-radius:50%;background:var(--encre);color:var(--creme);display:grid;place-items:center;font:600 13px var(--jo)}
+.liste b{display:block;font-weight:600}
+.liste p{margin:2px 0 0;color:var(--doux);font-size:15px}
+.aconf{display:inline-block;font:600 10.5px var(--jo);letter-spacing:.08em;text-transform:uppercase;background:var(--rosep);color:var(--rosef);border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.emboite{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 0}
+.emboite div{background:var(--creme2);border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--doux)}
+.emboite b{display:block;color:var(--encre);font:500 16px var(--pf)}
+.tab{overflow-x:auto;background:var(--blanc);border:1px solid var(--ligne);border-radius:14px}
+.tab table{width:100%;border-collapse:collapse;font-size:15px}
+.tab th{text-align:left;font:600 11px var(--jo);letter-spacing:.12em;text-transform:uppercase;color:var(--titre);padding:12px 14px;border-bottom:1px solid var(--ligne);white-space:nowrap}
+.tab td{padding:11px 14px;border-bottom:1px solid var(--ligne);vertical-align:top}
+.tab tr:last-child td{border-bottom:0}
+.note{font-size:13.5px;color:var(--doux);font-style:italic}
+.pied{margin-top:50px;padding-top:18px;border-top:1px solid var(--ligne);font-size:13px;color:var(--doux);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.stage{display:inline-block;font:600 10.5px var(--jo);letter-spacing:.1em;border-radius:6px;padding:2px 7px;vertical-align:1px}
+.stage.tofu{background:#E8EEF0;color:#4A6470}.stage.mofu{background:var(--rosep);color:var(--rosef)}.stage.bofu{background:var(--saugep);color:#4F6B5A}
+@media (max-width:700px){
+  .couv h1{font-size:36px}
+  .trio,.grille2,.grille3,.emboite{grid-template-columns:1fr}
+  section>h2{font-size:27px}
+  .grand .citation{font-size:23px}
+}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .couv{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  section{break-inside:avoid-page}
+  .valeur,.carte,.liste li{break-inside:avoid}
+}

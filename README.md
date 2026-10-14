@@ -29,3 +29,9 @@ Les données (contenus, statuts, commentaires) sont dans Supabase, projet `equip
 ## Console (William) — 13 octobre 2026
 - Le lien admin ouvre la **Console** : tuiles (à valider, approuvés, à modifier, dernière activité), « À traiter » (demandes de modification avec ▶ Écouter, « ✓ Corrigé, renvoyer », « Répondre », « Copier pour Jarvis »), questions sans réponse, avancement par thème, activité récente filtrable (les approbations qui se suivent sont regroupées).
 - « Corrigé, renvoyer » appelle `portail_admin_statut` (admin seulement) : remet l'élément « À valider », version +1, avec une note visible par Gabrielle.
+
+## Livrables — 7 documents finis (13 octobre 2026)
+- `livrables.js` : la liste des 7 documents (culture, offres, site, routine de publications, styles, idées, qui fait quoi), reliés aux éléments `doc-*` de la section `livrables` dans Supabase.
+- `docs/` : les documents eux-mêmes, présentables tels quels (web + impression PDF) : `culture.html`, `site/`, `publications.html`, `styles.html`, `idees.html`, `qui-fait-quoi.html`. Gabarit commun `doc.css` (styles et qui-fait-quoi utilisent aussi `hub.css`).
+- Dans le portail : chaque document s'ouvre à gauche (bascule ordinateur / cellulaire), la zone de validation à droite (approuver, demander un changement sur une partie précise, question, note vocale, échanges). Les éléments détaillés (marque, styles, idées) restent validables un par un.
+- Les offres de services (doc-ods) sont « en préparation » tant que `doc` est vide dans `livrables.js`.
