@@ -1,0 +1,16 @@
+.couv{--toffee:#CAB6A0;--brun:#70574A;--blanc:#FFFFFF;--encre:#000;--pf:'Playfair Display',Georgia,serif;--jo:Jost,system-ui,sans-serif;--al:'Ms Madi',cursive}
+/* Couverture commune des documents — Guide des normes 2021 :
+   aplat toffee, logo officiel (version fond moyen), titre en capitales + accroche manuscrite noire, motif maisons. */
+.couv{background:var(--toffee);color:var(--blanc);padding:44px 22px 0;position:relative;overflow:hidden;text-align:center}
+.couv-in{max-width:860px;margin:0 auto;position:relative;z-index:1}
+.couv .logo{display:block;margin:0 auto 30px;width:230px;height:auto}
+.couv .sur{font:500 12px var(--jo);letter-spacing:.3em;text-transform:uppercase;color:var(--blanc);margin:0}
+.couv h1{font:700 64px/1 var(--pf);text-transform:uppercase;letter-spacing:.01em;color:var(--blanc);margin:10px 0 0}
+.couv .script{display:block;font:400 54px/1 var(--al);color:var(--encre);margin:-4px 0 18px;text-transform:none;letter-spacing:0}
+.couv .chapo{max-width:600px;margin:0 auto;color:var(--encre);font-size:17px}
+.couv .meta{font:500 11.5px var(--jo);letter-spacing:.18em;text-transform:uppercase;color:var(--encre);margin-top:22px}
+.couv .motif{height:92px;margin:34px -22px 0;background:url(../marque/motif-maison-twist-horizontal-toffee.png) center/560px auto repeat-x}
+
+.couv b{color:var(--encre)}
+@media (max-width:700px){.couv h1{font-size:42px}.couv .script{font-size:40px}}
+@media print{.couv{-webkit-print-color-adjust:exact;print-color-adjust:exact}}

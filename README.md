@@ -35,3 +35,11 @@ Les données (contenus, statuts, commentaires) sont dans Supabase, projet `equip
 - `docs/` : les documents eux-mêmes, présentables tels quels (web + impression PDF) : `culture.html`, `site/`, `publications.html`, `styles.html`, `idees.html`, `qui-fait-quoi.html`. Gabarit commun `doc.css` (styles et qui-fait-quoi utilisent aussi `hub.css`).
 - Dans le portail : chaque document s'ouvre à gauche (bascule ordinateur / cellulaire), la zone de validation à droite (approuver, demander un changement sur une partie précise, question, note vocale, échanges). Les éléments détaillés (marque, styles, idées) restent validables un par un.
 - Les offres de services (doc-ods) sont « en préparation » tant que `doc` est vide dans `livrables.js`.
+
+## Image de marque officielle (13 octobre 2026)
+Source : le dossier « Marketing » partagé par Gabrielle (Guide des normes de l'image de marque 2021, Agence M, + gabarits 2025). Copie locale : `Gabrielle Germain/06-marketing-gabrielle/`.
+- `marque/` : logos officiels (versions fond clair, moyen, foncé), énoncé « En mode IMMOBILIER », « Par Gabrielle Germain », « Vendu », traits gestuels, pictogrammes (maison, flèche, sapin, trio de maisons) et motifs de maisons, redimensionnés pour le web.
+- Couleurs officielles partout : toffee #CAB6A0, sauge #9FACA4, pastel rosé #DCA39A, lait frappé #F5F1EA, noisette #8F7060, terre d'ombre #70574A, nuances foncées #B59981 / #81968C / #CE817B. Texte en terre d'ombre, aucun aplat noir.
+- Polices : Jost (pour Objektiv Mk1), Playfair Display (pour Ambroise / The Seasons), Ms Madi (pour Saturday Rock, toujours en noir). La police Saturday Rock n'est pas intégrée au web (licence de bureau).
+- `docs/couv.css` : couverture commune des documents (aplat toffee, logo officiel, titre en capitales + accroche manuscrite, motif de maisons).
+- Magazine ODS : aplats toffee / sauge / rosé, photos en encart avec le filtre chaud de la marque (#C9B59F), comme ses gabarits 2025.

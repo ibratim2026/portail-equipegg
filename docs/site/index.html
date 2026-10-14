@@ -6,7 +6,7 @@
 <title>L'équipe Gabrielle Germain · Immobilier Québec et Lévis · Royal LePage</title>
 <meta name="description" content="Vendre au meilleur prix ou trouver la bonne maison à Québec et Lévis, avec l'équipe Gabrielle Germain, Royal LePage.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400&family=Playfair+Display:wght@600;700&family=Herr+Von+Muellerhoff&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Ms+Madi&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <!--
   Photos d'ambiance : Unsplash (licence Unsplash, usage commercial gratuit), copiées dans images/
   maison-blanche : Tyrone Sanders · salon, salle-a-manger : Clay Banks · cuisine : Zac Gudakov
@@ -15,15 +15,15 @@
 -->
 <style>
 :root{
-  /* Palette tirée du site actuel de Gabrielle (gabriellegermain.ca) et de son logo */
-  --fond:#F5F1EA; --clair:#FBF8F3; --encre:#1D1D1B; --texte:#1D1D1B; --gris:#5E5650;
-  --rose:#DCA39A; --rose-t:#8C5A51; --brun:#70574A; --titre:#8F7060; --sauge:#9FACA4; --sable:#CAB6A0; --nuit:#241F1C;
+  /* Guide des normes de l'image de marque 2021 (p. 18) : couleurs officielles */
+  --fond:#F5F1EA; --clair:#FBF8F3; --encre:#000; --texte:#70574A; --gris:#8F7060;
+  --rose:#DCA39A; --rose-t:#70574A; --brun:#70574A; --titre:#8F7060; --sauge:#9FACA4; --sable:#CAB6A0; --nuit:#70574A;
   --ligne:#E1D7CC;
-  /* Ambroise (titres) et Objektiv (texte) sur son site : équivalents Google Fonts */
+  /* Ambroise (titres), Objektiv Mk1 (texte), Saturday Rock (accroches, toujours en noir) : équivalents Google Fonts */
   --serif:"Playfair Display","Ambroise",Georgia,serif;
-  --f:Jost,"Objektiv","Avenir Next","Futura",system-ui,sans-serif;
-  --logo:Lato,"Helvetica Neue",Arial,sans-serif;
-  --script:"Herr Von Muellerhoff",cursive;
+  --f:Jost,"Objektiv Mk1","Avenir Next","Futura",system-ui,sans-serif;
+  --logo:Jost,"Objektiv Mk1",system-ui,sans-serif;
+  --script:"Ms Madi","Saturday Rock",cursive;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -58,9 +58,9 @@ p{margin:0 0 16px}
 .tete.cache{transform:translateY(-100%)}
 .logo{text-decoration:none;line-height:1}
 .logo{text-align:center}
-.logo .l0{display:block;font-family:var(--script);font-size:30px;line-height:.7;color:currentColor;letter-spacing:0;margin-bottom:6px}
-.logo .l1{display:block;font-family:var(--logo);font-weight:400;font-size:18px;letter-spacing:.42em;color:var(--rose)}
-.logo .l2{display:block;font-family:var(--logo);font-weight:400;font-size:11.5px;letter-spacing:.66em;color:currentColor;margin-top:6px}
+.logo img{display:block;width:150px;height:auto}
+.logo .lg-fonce,.tete.sombre .logo .lg-clair,footer .logo .lg-clair{display:none}
+.tete.sombre .logo .lg-fonce,footer .logo .lg-fonce{display:block}
 .tete{color:var(--encre)}
 .tete.sombre{color:#fff}
 nav.menu{display:flex;align-items:center;gap:38px}
@@ -426,7 +426,7 @@ footer .logo .l2{color:#fff}
 
 <header class="tete" id="tete">
   <div class="wrap">
-    <a href="#accueil" class="logo" aria-label="L'équipe Gabrielle Germain, accueil"><span class="l0">l'équipe</span><span class="l1">GABRIELLE</span><span class="l2">GERMAIN</span></a>
+    <a href="#accueil" class="logo" aria-label="L'équipe Gabrielle Germain, accueil"><img class="lg-clair" src="../../marque/logo-equipe_fond-clair.png" alt="L'équipe Gabrielle Germain" width="900" height="463"><img class="lg-fonce" src="../../marque/logo-equipe_fond-fonce.png" alt="" width="900" height="463"></a>
     <nav class="menu" id="menu" aria-label="Navigation principale">
       <a href="#vendre" data-lien="vendre">Je vends</a>
       <a href="#acheter" data-lien="acheter">J'achète</a>
@@ -881,7 +881,7 @@ footer .logo .l2{color:#fff}
     <p class="grand">On commence quand vous êtes prêts. <a href="tel:4185638341">418 563-8341</a></p>
     <div class="cols">
       <div>
-        <a href="#accueil" class="logo" style="margin:0 0 18px"><span class="l0">l'équipe</span><span class="l1">GABRIELLE</span><span class="l2">GERMAIN</span></a>
+        <a href="#accueil" class="logo" style="margin:0 0 18px"><img class="lg-clair" src="../../marque/logo-equipe_fond-clair.png" alt="L'équipe Gabrielle Germain" width="900" height="463"><img class="lg-fonce" src="../../marque/logo-equipe_fond-fonce.png" alt="" width="900" height="463"></a>
         <p style="max-width:320px;color:#9C8F84">Faire équipe, à chaque étape. Immobilier résidentiel et commercial à Québec et Lévis. Royal LePage.</p>
       </div>
       <div>

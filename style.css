@@ -1,30 +1,32 @@
 :root{
-  --creme:#F5F1EA; --creme2:#EFE7DD; --encre:#1D1D1B; --titre:#8F7060; --brun:#70574A;
-  --rose:#DCA39A; --rosep:#F6E1DC; --rosef:#A8665C; --sauge:#9FACA4; --saugep:#E3EAE5;
-  --ligne:#E3D9CE; --doux:#6B5E55; --blanc:#FFFDF9;
-  --pf:'Playfair Display',Georgia,serif; --jo:Jost,system-ui,sans-serif; --al:Allura,cursive;
+  /* Guide des normes de l'image de marque 2021 (p. 18) : couleurs officielles */
+  --toffee:#CAB6A0; --toffee-f:#B59981; --sauge:#9FACA4; --sauge-f:#81968C; --rose:#DCA39A; --rose-f:#CE817B;
+  --creme:#F5F1EA; --titre:#8F7060; --brun:#70574A; --noir:#000; --blanc:#FFFFFF;
+  /* texte et aplats foncés en terre d'ombre (le guide n'emploie pas de noir en aplat) */
+  --encre:#70574A; --doux:#8F7060;
+  /* teintes dérivées et couleur d'alerte (interface seulement) */
+  --creme2:#EAE1D6; --rosep:#F4E0DC; --saugep:#E2E7E3; --ligne:#E3D9CE; --rosef:#A8665C;
+  --pf:'Playfair Display',Georgia,serif; --jo:Jost,system-ui,sans-serif; --al:'Ms Madi',cursive;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--creme);color:var(--encre);font:400 16px/1.6 var(--jo)}
 .enveloppe{max-width:880px;margin:0 auto;padding:0 16px}
-h1,h2,h3{font-family:var(--pf);font-weight:500;letter-spacing:-.01em;margin:0}
+h1,h2,h3{font-family:var(--pf);font-weight:600;margin:0}
 i{font-style:italic}
 button{font:inherit;cursor:pointer}
 
 /* En-tête */
 .haut{background:var(--creme);border-bottom:1px solid var(--ligne);position:sticky;top:0;z-index:10}
 .haut-in{display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:10px}
-.logo{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--encre);line-height:1}
-.logo-script{font:400 26px var(--al)}
-.logo-nom{font:600 13px var(--jo);letter-spacing:.42em;padding-left:.42em;color:var(--rose);margin-top:1px}
-.logo-sous{font:400 9px var(--jo);letter-spacing:.55em;padding-left:.55em;margin-top:2px}
+.logo{display:block;text-decoration:none;line-height:0}
+.logo img{display:block;width:118px;height:auto}
 .haut-droite{display:flex;gap:14px;align-items:center;font-size:14px;color:var(--doux)}
 .lien{background:none;border:0;padding:0;color:var(--brun);text-decoration:underline;text-underline-offset:3px}
 
 /* Connexion */
 .connexion{max-width:440px;margin:12vh auto 40px;text-align:center}
-.connexion .maison{width:54px;height:54px;fill:none;stroke:var(--rose);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.connexion .maison{width:54px;height:54px;fill:none;stroke:var(--toffee-f);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .connexion h1{font-size:34px;margin:10px 0 8px}
 .connexion p{color:var(--doux)}
 .connexion form{display:flex;flex-direction:column;gap:10px;text-align:left;margin-top:22px}
