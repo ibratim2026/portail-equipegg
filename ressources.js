@@ -59,7 +59,7 @@ export const RESSOURCES = [
 
 <h3>Le chemin d'une personne</h3>
 <ol class="r-chemin">
-  <li><span>1</span><div><b>Elle vous voit</b><p>Une publicité, une vidéo de l'agence Momentum ou une de vos stories passe dans son fil. Elle se reconnaît dans l'inquiétude nommée.</p></div></li>
+  <li><span>1</span><div><b>Elle vous voit</b><p>Une publicité, une de vos vidéos ou une de vos stories passe dans son fil. Elle se reconnaît dans l'inquiétude nommée.</p></div></li>
   <li><span>2</span><div><b>Elle laisse ses coordonnées</b><p>Elle active l'<b>Alerte immobilière</b> pour recevoir seulement les propriétés qui lui ressemblent, ou elle vous écrit. Elle devient un <b>contact</b>.</p></div></li>
   <li><span>3</span><div><b>Vous la rappelez vite</b><p>Dans les 5 minutes. La première équipe qui répond a presque toujours l'avantage.</p></div></li>
   <li><span>4</span><div><b>On garde le lien</b><p>Courriels, textos, infolettre : elle n'est peut-être pas prête aujourd'hui. On reste la première équipe à qui elle pense, pendant 3 à 12 mois s'il le faut.</p></div></li>
@@ -79,8 +79,7 @@ export const RESSOURCES = [
 <h3>Qui fait quoi</h3>
 <div class="r-qui">
   <div><b>Vous et votre équipe</b><p>Filmer environ 10 minutes par jour ouvrable · rappeler les nouveaux contacts · valider ici, environ une fois par semaine.</p></div>
-  <div><b>Notre équipe</b><p>Préparer et publier le contenu · gérer les publicités · mesurer chaque semaine · préparer le rendez-vous mensuel.</p></div>
-  <div><b>L'agence Momentum</b><p>Tourner et monter vos capsules vidéo, une demi-journée par mois.</p></div>
+  <div><b>William</b><p>Préparer et publier le contenu · gérer les publicités · mesurer chaque semaine · préparer le rendez-vous mensuel.</p></div>
 </div>
 
 <h3>Les mots à connaître</h3>
