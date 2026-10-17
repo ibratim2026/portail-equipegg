@@ -5,7 +5,7 @@
   /* texte et aplats foncés en terre d'ombre (le guide n'emploie pas de noir en aplat) */
   --encre:#70574A; --doux:#70574A;
   /* teintes dérivées et couleur d'alerte (interface seulement) */
-  --creme2:rgba(202,182,160,.26); --rosep:rgba(220,163,154,.24); --saugep:rgba(159,172,164,.26); --ligne:#CAB6A0; --rosef:#70574A;
+  --creme2:#EAE2D7; --rosep:#EFDED7; --saugep:#DFDFD8; --ligne:#CAB6A0; --rosef:#70574A;
   --pf:'Playfair Display',Georgia,serif; --jo:Jost,system-ui,sans-serif; --al:'Ms Madi',cursive;
 }
 *{box-sizing:border-box}
@@ -81,7 +81,7 @@ input:focus,textarea:focus{outline:2px solid var(--rose);outline-offset:1px;bord
 .s-modif .statut{background:var(--rosep);color:var(--rosef)}
 .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
 .tag{font-size:11.5px;padding:2px 9px;border-radius:99px;background:var(--creme2);color:var(--brun)}
-.tag-alerte{background:rgba(220,163,154,.24);color:#70574A}
+.tag-alerte{background:#EFDED7;color:#70574A}
 .corps{margin-top:10px}
 .corps p{margin:8px 0}
 .corps ul{margin:6px 0;padding-left:20px}
@@ -577,3 +577,16 @@ body.client #deconnexion{display:none}
 
 .lot .lot-explication{color:var(--creme)}
 .lot.fini .lot-sur{color:var(--encre)}
+
+/* Console : demandes du site */
+.k-prospect{background:var(--blanc);border:1px solid var(--ligne);border-left:4px solid var(--rose);border-radius:12px;padding:12px 14px;margin:10px 0}
+.k-prospect.traite{border-left-color:var(--sauge);opacity:.75}
+.k-p-tete{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.k-p-tete b{font-size:16px}
+.k-p-tete .statut{background:var(--rosep);color:var(--encre)}
+.k-p-tete time{margin-left:auto;font-size:13px}
+.k-p-contact{margin:6px 0;font-size:14.5px}
+.k-p-donnees{list-style:none;padding:0;margin:0 0 8px;display:flex;flex-wrap:wrap;gap:6px}
+.k-p-donnees li{background:var(--creme);border-radius:8px;padding:4px 9px;font-size:13px}
+.k-p-donnees li span{font-weight:600;margin-right:5px}
+.k-p-contact a{color:var(--encre);font-weight:500}

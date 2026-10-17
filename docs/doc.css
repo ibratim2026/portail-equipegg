@@ -8,7 +8,7 @@
   --rose:#DCA39A; --rose-f:#CE817B; --creme:#F5F1EA; --titre:#70574A; --brun:#70574A;
   --encre:#000; --blanc:#FFFFFF;
   /* teintes dérivées (fonds, filets) */
-  --creme2:rgba(202,182,160,.26); --rosep:rgba(220,163,154,.24); --saugep:rgba(159,172,164,.26); --ligne:#CAB6A0;
+  --creme2:#EAE2D7; --rosep:#EFDED7; --saugep:#DFDFD8; --ligne:#CAB6A0;
   --rosef:var(--brun); --doux:var(--brun);
   --pf:'Playfair Display',Georgia,serif; --jo:Jost,system-ui,sans-serif; --al:'Ms Madi',cursive;
 }

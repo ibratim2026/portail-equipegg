@@ -152,6 +152,7 @@ async function charger() {
   if (!lireStockage('vue') && admin) etat.vue = 'console';
   if (etat.vue === 'console' && !admin) etat.vue = 'accueil';
   if (!['accueil', 'ressources', 'outils', 'console', 'fin'].includes(etat.vue) && !etat.vue.startsWith('doc:') && !etat.sections.find((x) => x.id === etat.vue)) etat.vue = admin ? 'console' : 'accueil';
+  if (admin) { const r = await sb.rpc('portail_prospects', { p_jeton: etat.jeton }); etat.prospects = Array.isArray(r.data) ? r.data : []; }
   if (etat.vue === 'fin') etat.vue = 'accueil';
   if (!admin && !etat.vue.startsWith('doc:') && etat.vue !== 'outils' && etat.vue !== 'ressources') etat.vue = 'accueil';
   if (!admin && lienDirect && docsAValider().length) { lienDirect = false; ecrireStockage('intro-v2', '1'); demarrerParcours(); return; }
@@ -546,7 +547,7 @@ function vueConsole() {
   const docsReste = docsAValider().length;
   const etatLigne = el('p', { class: 'k-etat' },
     el('span', {}, el('b', {}, docsReste), ` ${docsReste > 1 ? 'documents' : 'document'} à valider par Gabrielle`),
-    el('span', {}, el('b', {}, aTraiter.length + questions.length), ' à traiter par toi'),
+    el('span', {}, el('b', {}, aTraiter.length + questions.length + (etat.prospects || []).filter((p) => !p.traite).length), ' à traiter par toi'),
     el('span', {}, derniere ? `Dernière activité ${depuis(derniere)}` : 'Pas encore d\'activité'));
   // Activité récente
   const filtres = [['tous', 'Tout'], ['modifications', 'Modifications'], ['commentaire', 'Questions'], ['approbation', 'Approbations'], ['audio', 'Notes vocales']];
@@ -581,9 +582,30 @@ function vueConsole() {
       el('h1', {}, 'Où en est ', el('i', {}, 'Gabrielle')),
       el('div', { class: 'k-tete-actions' },
         el('button', { type: 'button', class: 'lien', onclick: () => { charger(); } }, 'Actualiser'))),
-    etatLigne, aTraiter.length || !questions.length ? blocTraiter : null, blocQuestions,
+    etatLigne, aTraiter.length || !questions.length ? blocTraiter : null, blocQuestions, blocProspects(),
     el('details', { class: 'k-plie' }, el('summary', {}, 'Avancement par thème'), progression),
     el('details', { class: 'k-plie' }, el('summary', {}, 'Activité récente'), blocActivite));
+}
+
+// Demandes reçues par les formulaires du site (table prospects)
+const FORMULAIRES = { evaluation: 'Évaluation', alerte: 'Alerte immobilière', projet: 'Projet' };
+const CHAMPS_P = { adresse: 'Adresse', quand: 'Vendre', projet: 'Projet', echeancier: 'Échéancier', type: 'Propriété', secteur: 'Secteur', contrat: 'Contrat courtier', budget: 'Budget', preapprobation: 'Préapprobation', premier: 'Premier achat', vendre_avant: 'Vendre avant', moment: 'Rappeler' };
+function blocProspects() {
+  const liste = etat.prospects || [];
+  const nouveaux = liste.filter((p) => !p.traite);
+  const carte = (p) => el('div', { class: 'k-prospect' + (p.traite ? ' traite' : '') },
+    el('div', { class: 'k-p-tete' }, el('b', {}, p.nom || '—'), el('span', { class: 'statut' }, FORMULAIRES[p.formulaire] || p.formulaire), el('time', { title: dateFr(p.cree_le) }, depuis(p.cree_le))),
+    el('p', { class: 'k-p-contact' },
+      p.telephone ? el('a', { href: 'tel:' + p.telephone.replace(/[^0-9+]/g, '') }, p.telephone) : null, p.telephone ? ' · ' : null,
+      el('a', { href: 'mailto:' + p.courriel }, p.courriel)),
+    el('ul', { class: 'k-p-donnees' }, Object.entries(p.donnees || {}).filter(([, v]) => v).map(([k, v]) => el('li', {}, el('span', {}, CHAMPS_P[k] || k), String(v)))),
+    el('button', { type: 'button', class: 'lien', onclick: async () => {
+      const { error } = await sb.rpc('portail_prospect_traite', { p_jeton: etat.jeton, p_id: p.id, p_traite: !p.traite });
+      if (error) { alerte(error.message); return; }
+      p.traite = !p.traite; rendre();
+    } }, p.traite ? 'Remettre à traiter' : '✓ Marquer comme traité'));
+  return el('section', { class: 'k-bloc' }, el('h2', {}, 'Demandes du site', el('span', { class: 'k-compte' }, nouveaux.length)),
+    liste.length ? [...nouveaux, ...liste.filter((p) => p.traite).slice(0, 10)].map(carte) : el('p', { class: 'k-vide' }, 'Aucune demande pour le moment. Elles arrivent ici dès qu\'un formulaire du site est envoyé.'));
 }
 
 // Regroupe les approbations qui se suivent (même personne) en une seule ligne

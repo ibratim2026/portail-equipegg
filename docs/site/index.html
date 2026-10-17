@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>L'équipe Gabrielle Germain · Immobilier Québec et Lévis · Royal LePage</title>
 <meta name="description" content="Vendre au meilleur prix ou trouver la bonne maison à Québec et Lévis, avec l'équipe Gabrielle Germain, Royal LePage.">
+<link rel="icon" type="image/png" href="../../marque/sigle-gg.png">
+<meta property="og:title" content="L'équipe Gabrielle Germain · Immobilier Québec et Lévis">
+<meta property="og:description" content="Vendre au meilleur prix ou trouver la bonne maison à Québec et Lévis. Faire équipe, à chaque étape.">
+<meta property="og:image" content="images/maison-blanche.jpg">
+<meta property="og:locale" content="fr_CA">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Ms+Madi&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600;700&family=Ms+Madi&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
 <!--
   Photos d'ambiance : Unsplash (licence Unsplash, usage commercial gratuit), copiées dans images/
   maison-blanche : Tyrone Sanders · salon, salle-a-manger : Clay Banks · cuisine : Zac Gudakov
@@ -16,7 +21,7 @@
 <style>
 :root{
   /* Guide des normes de l'image de marque 2021 (p. 18) : couleurs officielles */
-  --fond:#F5F1EA; --clair:rgba(202,182,160,.26); --encre:#000; --texte:#70574A; --gris:#70574A;
+  --fond:#F5F1EA; --clair:#EAE2D7; --encre:#000; --texte:#70574A; --gris:#70574A;
   --rose:#DCA39A; --rose-t:#70574A; --brun:#70574A; --titre:#70574A; --sauge:#9FACA4; --sable:#CAB6A0; --nuit:#70574A;
   --ligne:#CAB6A0;
   /* Ambroise (titres), Objektiv Mk1 (texte), Saturday Rock (accroches, toujours en noir) : équivalents Google Fonts */
@@ -175,7 +180,7 @@ nav.menu .tel::after{display:none}
 .gg-nom .fond-nom{position:absolute;left:0;right:0;bottom:24px;opacity:.55;transform:translateX(calc(var(--p,0) * -30vw + 8vw));font-size:clamp(110px,19vw,300px);font-weight:200;letter-spacing:.24em;color:transparent;-webkit-text-stroke:1px var(--rose);white-space:nowrap;pointer-events:none;line-height:1;font-family:var(--logo);font-weight:300}
 .gg-nom .wrap{position:relative;display:grid;grid-template-columns:5fr 6fr;gap:90px;align-items:center}
 .cadre-maison{position:relative;aspect-ratio:4/5}
-.cadre-maison .ph{position:absolute;inset:0;clip-path:polygon(50% 0,100% 28%,100% 100%,0 100%,0 28%);overflow:hidden;background:rgba(202,182,160,.26)}
+.cadre-maison .ph{position:absolute;inset:0;clip-path:polygon(50% 0,100% 28%,100% 100%,0 100%,0 28%);overflow:hidden;background:#EAE2D7}
 .cadre-maison .ph img{width:100%;height:118%;object-fit:cover;transform:translateY(calc(var(--py,0) * -1px))}
 .cadre-maison svg{position:absolute;left:20px;top:-20px;width:100%;height:100%;overflow:visible;pointer-events:none}
 .cadre-maison svg polygon{fill:none;stroke:var(--rose);stroke-width:1;vector-effect:non-scaling-stroke}
@@ -252,7 +257,7 @@ nav.menu .tel::after{display:none}
 .sous-form{margin-top:16px;font-size:14px;color:var(--gris)}
 
 /* Loupe */
-.loupe{background:var(--nuit);color:rgba(202,182,160,.26);padding:130px 0}
+.loupe{background:var(--nuit);color:#EAE2D7;padding:130px 0}
 .loupe .tete-l{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:50px}
 .loupe h2{color:#fff;font-size:clamp(30px,3.4vw,56px)}
 .loupe p{color:#F5F1EA;max-width:480px;margin:0}
@@ -334,11 +339,11 @@ nav.menu .tel::after{display:none}
 .equipe-s{padding:120px 0}
 .equipe-s h2{font-size:clamp(30px,3.4vw,56px)}
 .equipe{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:60px}
-.membre .ph-r{aspect-ratio:4/5;overflow:hidden;background:rgba(202,182,160,.26)}
+.membre .ph-r{aspect-ratio:4/5;overflow:hidden;background:#EAE2D7}
 .membre .ph-r img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;transition:transform 1s cubic-bezier(.2,.8,.2,1)}
 .membre:hover .ph-r img{transform:scale(1.04)}
 .membre .ph{aspect-ratio:4/5;background:var(--clair);border:1px solid var(--ligne);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;transition:background .4s}
-.membre:hover .ph{background:rgba(202,182,160,.26)}
+.membre:hover .ph{background:#EAE2D7}
 .membre .ph svg{width:62px;height:68px;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .membre:hover .ph svg{transform:translateY(-6px) scale(1.06)}
 .membre .ph span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gris)}
@@ -350,7 +355,7 @@ nav.menu .tel::after{display:none}
 @media (max-width:560px){.equipe{grid-template-columns:1fr}}
 .valeurs-s{padding:120px 0;background:var(--nuit);color:#fff}
 .valeurs-s .grand-mot{font-family:var(--serif);text-transform:uppercase;font-size:clamp(36px,5.6vw,96px);font-weight:700;line-height:1.12;letter-spacing:.01em}
-.valeurs-s .grand-mot span{display:inline-block;color:rgba(255,255,255,.22);transition:color .5s;margin-right:.25em;cursor:default}
+.valeurs-s .grand-mot span{display:inline-block;color:rgba(245,241,234,.6);transition:color .5s;margin-right:.25em;cursor:default}
 .valeurs-s .grand-mot span.on,.valeurs-s .grand-mot span:hover{color:#fff}
 .valeurs-s .def{margin-top:40px;min-height:56px;font-size:20px;color:var(--rose)}
 .prix-s{padding:110px 0}
@@ -416,6 +421,14 @@ footer .logo .l2{color:#fff}
 }
 :focus-visible{outline:2px solid var(--brun);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.monte{opacity:1;transform:none}.ligne-titre>span{transform:none}}
+.pot{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.f-erreur{background:#EFDED7;color:#70574A;border-radius:6px;padding:10px 12px;font-size:14px;margin:0 0 14px}
+.f-erreur a{font-weight:600}
+.consent a{color:inherit;text-decoration:underline}
+.legal a{display:inline;margin:0;text-decoration:underline}
+.loupe .indice,.valeurs-s .etiquette{color:#F5F1EA!important}
+.valeurs-s .def{color:#F5F1EA!important}
+.btn[disabled]{opacity:.6;cursor:wait}
 </style>
 <link rel="stylesheet" href="../../marque/marque.css">
 </head>
@@ -423,7 +436,7 @@ footer .logo .l2{color:#fff}
 
 <div class="curseur" id="curseur" aria-hidden="true"><svg viewBox="0 0 34 38"><polygon points="17,1 33,11 33,37 1,37 1,11"/></svg><span id="curseur-txt">Voir</span></div>
 <div class="rideau" id="rideau" aria-hidden="true"><i></i></div>
-<div class="apercu" id="apercu" aria-hidden="true"><img alt="" id="apercu-img"></div>
+<div class="apercu" id="apercu" aria-hidden="true"><img alt="" id="apercu-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="></div>
 
 <header class="tete" id="tete">
   <div class="wrap">
@@ -546,7 +559,7 @@ footer .logo .l2{color:#fff}
       <h1><span class="ligne-titre"><span>Vendez au</span></span><span class="ligne-titre"><span>meilleur prix,</span></span><span class="ligne-titre"><span>dans vos délais.</span></span></h1>
       <p class="lead monte">On s'occupe de tout, de l'évaluation à la remise des clés. Vous gardez les décisions.</p>
       <div class="form monte">
-        <form id="f-eval" novalidate>
+        <form id="f-eval" novalidate><input class="pot" name="site_web" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="etape on" data-e="1">
             <h3>Évaluation gratuite</h3>
             <p class="petit">Combien vaut votre maison aux yeux d'un acheteur?</p>
@@ -558,7 +571,7 @@ footer .logo .l2{color:#fff}
             <div class="champ"><input id="e-cour" type="email" placeholder=" " autocomplete="email" required><label for="e-cour">Courriel</label></div>
             <div class="champ"><input id="e-tel" type="tel" placeholder=" " autocomplete="tel"><label for="e-tel">Téléphone (facultatif)</label></div>
             <div class="champ"><select id="e-quand" required><option value="" selected disabled hidden></option><option>D'ici 3 mois</option><option>D'ici 6 mois</option><option>Dans un an ou plus</option><option>Je veux juste savoir</option></select><label for="e-quand">Quand pensez-vous vendre?</label></div>
-            <label class="consent"><input type="checkbox" required> J'accepte que l'équipe Gabrielle Germain me contacte au sujet de mon projet. Mes renseignements restent confidentiels.</label>
+            <label class="consent"><input type="checkbox" required> J'accepte que l'équipe Gabrielle Germain me contacte au sujet de mon projet. Mes renseignements restent confidentiels. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>.</label>
             <button class="btn plein" type="submit">Recevoir mon évaluation</button>
           </div>
         </form>
@@ -646,7 +659,7 @@ footer .logo .l2{color:#fff}
       <h1><span class="ligne-titre"><span>La bonne maison,</span></span><span class="ligne-titre"><span>dans votre budget.</span></span></h1>
       <p class="lead monte">Sans y passer vos soirées. Et sans frais pour vous.</p>
       <div class="form monte">
-        <form id="f-alerte" novalidate>
+        <form id="f-alerte" novalidate><input class="pot" name="site_web" tabindex="-1" autocomplete="off" aria-hidden="true">
           <h3>Alerte immobilière gratuite</h3>
           <p class="petit">Recevez seulement les propriétés qui vous ressemblent.</p>
           <div class="progres"><i class="on"></i><i></i><i></i></div>
@@ -665,7 +678,7 @@ footer .logo .l2{color:#fff}
           <div class="etape" data-e="3">
             <div class="champ"><input id="a-nom" placeholder=" " autocomplete="name" required><label for="a-nom">Votre nom</label></div>
             <div class="champ"><input id="a-cour" type="email" placeholder=" " autocomplete="email" required><label for="a-cour">Courriel</label></div>
-            <label class="consent"><input type="checkbox" required> J'accepte de recevoir des propriétés et des communications de l'équipe Gabrielle Germain. Je peux me désabonner en tout temps.</label>
+            <label class="consent"><input type="checkbox" required> J'accepte de recevoir des propriétés et des communications de l'équipe Gabrielle Germain. Je peux me désabonner en tout temps. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>.</label>
             <button class="btn plein" type="submit">Activer mon alerte</button>
             <div class="nav-f"><button type="button" class="retour">← Retour</button><span></span></div>
           </div>
@@ -812,7 +825,7 @@ footer .logo .l2{color:#fff}
     </div>
     <div id="q-place">
       <div class="qf" id="qf">
-        <form id="f-qualif" novalidate>
+        <form id="f-qualif" novalidate><input class="pot" name="site_web" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="progres"><i class="on"></i><i></i><i></i><i></i></div>
           <div class="q-etape on" data-q="1">
             <p class="q-num">1 de 4</p><p class="q-titre">Votre projet</p>
@@ -851,7 +864,7 @@ footer .logo .l2{color:#fff}
             <div class="champ"><input id="q-cour" type="email" placeholder=" " autocomplete="email" required><label for="q-cour">Courriel</label></div>
             <div class="champ"><input id="q-tel" type="tel" placeholder=" " autocomplete="tel" required><label for="q-tel">Téléphone</label></div>
             <div class="bloc"><p class="q">Meilleur moment pour vous appeler</p><div class="choix" data-champ="moment"><button type="button">Matin</button><button type="button">Après-midi</button><button type="button">Soir</button></div></div>
-            <label class="consent"><input type="checkbox" id="q-consent" required> J'accepte que l'équipe Gabrielle Germain me contacte au sujet de mon projet. Mes renseignements restent confidentiels.</label>
+            <label class="consent"><input type="checkbox" id="q-consent" required> J'accepte que l'équipe Gabrielle Germain me contacte au sujet de mon projet. Mes renseignements restent confidentiels. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>.</label>
             <button class="btn plein" type="submit">Envoyer</button>
             <div class="nav-f"><button type="button" class="retour" data-va="3">← Retour</button><span></span></div>
           </div>
@@ -898,8 +911,8 @@ footer .logo .l2{color:#fff}
       </div>
     </div>
     <div class="legal">
-      <span>Gabrielle Germain, courtière immobilière résidentielle et commerciale · Royal LePage [agence à confirmer]</span>
-      <span>Politique de confidentialité · Photos d'ambiance : Unsplash · © 2026</span>
+      <span>Gabrielle Germain, courtière immobilière résidentielle et commerciale · Royal LePage Altitude, agence immobilière</span>
+      <span><a href="confidentialite.html">Politique de confidentialité</a> · Photos d'ambiance : Unsplash · © 2026</span>
     </div>
   </div>
 </footer>
@@ -1050,6 +1063,27 @@ footer .logo .l2{color:#fff}
   vals.forEach((v,i)=>v.addEventListener('pointerenter',()=>montre(i)));
   montre(0);setInterval(()=>{if(page&&page.id==='p-a-propos')montre((vi+1)%vals.length);},3200);
 
+  /* ----- Envoi des demandes (Supabase : fonction site_prospect, avis ntfy à l'équipe) ----- */
+  const API='https://jijazaorrrtcomqewvhw.supabase.co/rest/v1/rpc/site_prospect';
+  const CLE='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppamF6YW9ycnJ0Y29tcWV3dmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE4MjY3MDksImV4cCI6MjEwNzQwMjcwOX0.lL4PFWAH56xhF2zXXNr7k_3pG9rUkD5kMQRzJ7SZV5Y';
+  async function envoyer(form,formulaire,nom,courriel,tel,donnees){
+    const pot=form.querySelector('.pot');if(pot&&pot.value)return true; // robot : on fait semblant
+    const btn=form.querySelector('button[type=submit]'),avant=btn.textContent;
+    form.querySelectorAll('.f-erreur').forEach(e=>e.remove());
+    btn.disabled=true;btn.textContent='Envoi…';
+    try{
+      const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json',apikey:CLE,Authorization:'Bearer '+CLE},
+        body:JSON.stringify({p_formulaire:formulaire,p_nom:nom,p_courriel:courriel,p_telephone:tel||null,p_donnees:donnees,p_consentement:true})});
+      if(!r.ok)throw new Error(await r.text());
+      return true;
+    }catch(err){
+      const p=document.createElement('p');p.className='f-erreur';p.setAttribute('role','alert');
+      p.innerHTML='Oups, l\'envoi n\'a pas fonctionné. Réessayez dans un instant, ou appelez-nous au <a href="tel:4185638341">418 563-8341</a>.';
+      btn.before(p);return false;
+    }finally{btn.disabled=false;btn.textContent=avant;}
+  }
+  const choisi=g=>{const b=g&&g.querySelector('button.on');return b?b.textContent:null;};
+
   /* ----- Formulaires ----- */
   $$('.champ select').forEach(s=>s.addEventListener('change',()=>s.classList.add('rempli')));
   const fe=$('#f-eval'),adr=$('#e-adr'),e1=fe.querySelector('[data-e="1"]'),e2=fe.querySelector('[data-e="2"]');
@@ -1057,13 +1091,18 @@ footer .logo .l2{color:#fff}
   $('#e-suite').addEventListener('click',etape2);
   adr.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();etape2();}});
   $('#e-modif').addEventListener('click',()=>{e2.classList.remove('on');e1.classList.add('on');adr.focus();});
-  fe.addEventListener('submit',e=>{e.preventDefault();if(!fe.checkValidity()){fe.reportValidity();return;}fe.style.display='none';$('#m-eval').classList.add('on');});
+  fe.addEventListener('submit',async e=>{e.preventDefault();if(!fe.checkValidity()){fe.reportValidity();return;}
+    const ok=await envoyer(fe,'evaluation',$('#e-nom').value,$('#e-cour').value,$('#e-tel').value,{adresse:adr.value.trim(),quand:$('#e-quand').value});
+    if(ok){fe.style.display='none';$('#m-eval').classList.add('on');}});
   const fa=$('#f-alerte'),et=$$('.etape',fa),pr=$$('.progres i',fa);
   const va=i=>{et.forEach((x,k)=>x.classList.toggle('on',k===i));pr.forEach((x,k)=>x.classList.toggle('on',k<=i));};
   $$('.choix',fa).forEach(g=>$$('button',g).forEach(b=>b.addEventListener('click',()=>{$$('button',g).forEach(x=>x.classList.remove('on'));b.classList.add('on');if(g.hasAttribute('data-auto'))setTimeout(()=>va(2),260);})));
   fa.querySelector('[data-suivant]').addEventListener('click',()=>va(1));
   et.forEach((x,k)=>$$('.retour',x).forEach(r=>r.addEventListener('click',()=>va(k-1))));
-  fa.addEventListener('submit',e=>{e.preventDefault();if(!fa.checkValidity()){fa.reportValidity();return;}fa.style.display='none';$('#m-alerte').classList.add('on');});
+  fa.addEventListener('submit',async e=>{e.preventDefault();if(!fa.checkValidity()){fa.reportValidity();return;}
+    const g=$$('.choix',fa);
+    const ok=await envoyer(fa,'alerte',$('#a-nom').value,$('#a-cour').value,null,{type:choisi(g[0]),secteur:choisi(g[1]),budget:choisi(g[2])});
+    if(ok){fa.style.display='none';$('#m-alerte').classList.add('on');}});
 
 
   /* ----- Qualification : bas de page + fenêtre ----- */
@@ -1077,13 +1116,17 @@ footer .logo .l2{color:#fff}
   })));
   $$('[data-va]',fq).forEach(b=>b.addEventListener('click',()=>qVa(+b.dataset.va)));
   function choisirProjet(v){const b=fq.querySelector('[data-champ="projet"] [data-val="'+v+'"]');if(b){$$('[data-champ="projet"] button',fq).forEach(x=>x.classList.remove('on'));b.classList.add('on');rep.projet=b.textContent;qProjet=v;qVa(2);}}
-  fq.addEventListener('submit',e=>{e.preventDefault();if(!fq.checkValidity()){fq.reportValidity();return;}
+  fq.addEventListener('submit',async e=>{e.preventDefault();if(!fq.checkValidity()){fq.reportValidity();return;}
+    const svq=$('#q-secteur-v').value.trim();
+    const champsProjet={vendre:['echeancier','type','contrat','moment'],acheter:['echeancier','budget','preapprobation','premier','moment'],deux:['echeancier','vendre_avant','budget','contrat','moment']}[qProjet]||[];
+    const d={projet:rep.projet||null};champsProjet.forEach(k=>{if(rep[k])d[k]=rep[k];});if(svq&&qProjet==='vendre')d.secteur=svq;
+    if(!await envoyer(fq,'projet',$('#q-nom').value,$('#q-cour').value,$('#q-tel').value,d))return;
     const prenom=$('#q-nom').value.trim().split(' ')[0];
     $('#mq-titre').textContent='Merci '+prenom+'!';
     $('#mq-texte').textContent='Votre demande est entre bonnes mains. Un membre de l\'équipe vous rappelle'+(rep.moment?' en '+rep.moment.toLowerCase().replace('matin','matinée').replace('soir','soirée'):'')+'.';
     const sv=$('#q-secteur-v').value.trim();if(sv)rep.secteur=sv;
     const noms={projet:'Projet',echeancier:'Échéancier',type:'Propriété',secteur:'Secteur',contrat:'Contrat avec un courtier',budget:'Budget',preapprobation:'Préapprobation',premier:'Premier achat',vendre_avant:'Vendre avant d\'acheter'};
-    $('#mq-resume').innerHTML=Object.keys(noms).filter(k=>rep[k]).map(k=>'<li>'+noms[k]+'<span>'+rep[k]+'</span></li>').join('');
+    const ul=$('#mq-resume');ul.innerHTML='';Object.keys(noms).filter(k=>d[k]).forEach(k=>{const li=document.createElement('li'),sp=document.createElement('span');li.textContent=noms[k];sp.textContent=d[k];li.appendChild(sp);ul.appendChild(li);});
     $('#mq-note').hidden=rep.contrat!=='Oui';
     fq.style.display='none';$('#m-qualif').classList.add('on');
   });

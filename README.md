@@ -67,3 +67,12 @@ Source : le dossier « Marketing » partagé par Gabrielle (Guide des normes de 
 - Source du guide : dossier « Image de marque » partagé par Gabrielle dans Google Drive (`_gabrielle-germain_guide-normes_2021.pdf`).
 - **Contraste (règle)** : texte au moins 4,5:1 (3:1 pour les grands titres). Sur toffee, sauge ou pastel rosé : texte **noir** (le guide permet « noir sur fond couleur »). Sur terre d'ombre : texte **lait frappé**. Noisette et les foncés (sauge, rosé) ne servent plus de couleur de texte, sauf les grands chiffres décoratifs en noisette. Les magazines sont sur fond lait frappé (plus de brun sur brun dans le portail). Vérifié par un audit automatique de contraste sur tous les écrans et documents.
 - **Mise en page des magazines** : sous le titre, le contenu est groupé dans `.corps` et centré dans l'espace restant (jamais un texte en haut, un bloc en bas et le centre vide). Textures : `texture-papier` (grain léger) et `texture-motif` + `toffee-m` / `rose-m` / `sauge-m` (motif de maisons gestuelles de la marque sur la couleur du même nom; `doux` pour un filigrane sur fond lait frappé).
+
+## Site web : fini et branché (17 octobre 2026)
+- **Formulaires branchés** : évaluation, Alerte et « Parlons de votre projet » appellent la fonction Supabase `site_prospect` (table `prospects`, fermée au public; anti-répétition 5 envois/h par courriel; pot de miel anti-robots `.pot`). En cas d'échec, message avec le téléphone, rien n'est perdu côté visiteur.
+- **Avis** : ntfy « Nouvelle demande sur le site », **sans aucun renseignement personnel** (le topic ntfy est public). Les coordonnées sont dans la **console** du portail, bloc « Demandes du site » (`portail_prospects`, `portail_prospect_traite`, admin seulement), avec « Marquer comme traité ».
+- **Loi 25** : `docs/site/confidentialite.html` (politique de confidentialité, liée depuis chaque case de consentement et le pied de page). Données hébergées au Canada (Supabase ca-central-1). À faire relire avant la mise en ligne publique.
+- Mention légale : « Royal LePage Altitude, agence immobilière » (source : fiche Centris).
+- Polices Jost 600/700 chargées (titres de marque), favicon, balises de partage (og:).
+- Correctif : les teintes pâles sont maintenant opaques partout (#EAE2D7, #EFDED7, #DFDFD8) : les cartes empilées de « Je vends » laissaient voir le texte des cartes dessous.
+- Tests : 36 vérifications automatiques (formulaires, échec d'envoi, pot de miel, navigation, menu mobile, fenêtre, FAQ, politique) passent sur ordi et cellulaire; aucun texte sous le seuil de contraste.
