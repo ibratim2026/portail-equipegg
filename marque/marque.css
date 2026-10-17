@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Image de marque de Gabrielle Germain — à charger EN DERNIER sur chaque page.
+   Source : Guide des normes de l'image de marque 2021 (Agence M), p. 18-21.
+
+   Couleurs officielles (rien d'autre) :
+     toffee #CAB6A0 (+ foncé #B59981) · sauge #9FACA4 (+ foncé #81968C)
+     pastel rosé #DCA39A (+ foncé #CE817B) · lait frappé #F5F1EA
+     noisette #8F7060 · terre d'ombre #70574A · blanc · noir (accroches seulement)
+   Typographie :
+     Titres  : Objektiv Mk1 Bold, HAUT DE CASSE, approche 100 → Jost 700, .1em
+     Secondaire : Ambroise Bold → Playfair Display
+     Accroches : Saturday Rock, toujours en noir → Ms Madi
+     Paragraphes : terre d'ombre sur fond blanc, casse de la phrase, Regular
+   ========================================================================== */
+:root{
+  --gg-toffee:#CAB6A0; --gg-toffee-f:#B59981; --gg-sauge:#9FACA4; --gg-sauge-f:#81968C;
+  --gg-rose:#DCA39A; --gg-rose-f:#CE817B; --gg-lait:#F5F1EA; --gg-noisette:#8F7060; --gg-terre:#70574A;
+  --gg-titre:Jost,'Objektiv Mk1',system-ui,sans-serif;
+  --gg-second:'Playfair Display','Ambroise',Georgia,serif;
+  --gg-accroche:'Ms Madi','Saturday Rock',cursive;
+}
+
+/* Titres principaux : Objektiv Bold en capitales, approche 100 */
+h1,h2,
+.titre,.mega,.couv h1,.y-type-titre,.offre-tete h2{
+  font-family:var(--gg-titre)!important;
+  font-weight:700!important;
+  text-transform:uppercase;
+  letter-spacing:.1em!important;
+}
+/* L'accroche dans un titre (<i>) : Saturday Rock, toujours en noir, casse normale */
+h1 i,h2 i,.titre i,.mega i{
+  font-family:var(--gg-accroche)!important;
+  font-weight:400!important;
+  font-style:normal!important;
+  text-transform:none!important;
+  letter-spacing:0!important;
+  color:#000!important;
+}
+/* Sous-titres : police secondaire (Ambroise) */
+h3{font-family:var(--gg-second)}

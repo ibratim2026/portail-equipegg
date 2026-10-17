@@ -4,13 +4,13 @@
   --toffee:#CAB6A0; --toffee-f:#B59981; --sauge:#9FACA4; --sauge-f:#81968C;
   --rose:#DCA39A; --rose-f:#CE817B; --creme:#F5F1EA; --titre:#8F7060; --brun:#70574A;
   --encre:#000; --blanc:#FFFFFF;
-  --creme2:#EAE1D6; --rosep:#F4E0DC; --saugep:#E2E7E3; --ligne:#E3D9CE;
+  --creme2:rgba(202,182,160,.26); --rosep:rgba(220,163,154,.24); --saugep:rgba(159,172,164,.26); --ligne:#CAB6A0;
   --rosef:var(--titre); --doux:var(--brun);
   --pf:'Playfair Display',Georgia,serif; --jo:Jost,system-ui,sans-serif; --al:'Ms Madi',cursive;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:radial-gradient(ellipse at top,#6d5a4e 0%,#352c26 75%);min-height:100vh;color:var(--brun);font-family:var(--jo);display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
+body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-height:100vh;color:var(--brun);font-family:var(--jo);display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
 .scene{width:min(1520px,96vw,calc((100vh - 130px) * 1.5));margin:28px auto 8px;flex:none}
 .livre{margin:0 auto}
 
@@ -26,8 +26,8 @@ body{background:radial-gradient(ellipse at top,#6d5a4e 0%,#352c26 75%);min-heigh
 .page:nth-child(even) .folio{right:auto;left:5cqw}
 .folio.clair{color:rgba(0,0,0,.55)}
 .fond{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.voile{position:absolute;inset:0;background:linear-gradient(180deg,rgba(29,29,27,.55) 0%,rgba(29,29,27,.15) 40%,rgba(29,29,27,.75) 100%)}
-.voile.bas{background:linear-gradient(180deg,rgba(29,29,27,.05) 30%,rgba(29,29,27,.88) 100%)}
+.voile{position:absolute;inset:0;background:linear-gradient(180deg,rgba(112,87,74,.55) 0%,rgba(112,87,74,.15) 40%,rgba(112,87,74,.75) 100%)}
+.voile.bas{background:linear-gradient(180deg,rgba(112,87,74,.05) 30%,rgba(112,87,74,.88) 100%)}
 .clair{color:var(--blanc)!important}
 .clair-doux{color:var(--encre);margin-top:auto}
 
@@ -180,7 +180,7 @@ body{background:radial-gradient(ellipse at top,#6d5a4e 0%,#352c26 75%);min-heigh
 body.impression{background:#fff;display:block}
 body.impression .commandes,body.impression .astuce{display:none}
 body.impression .scene{width:auto;margin:0}
-body.impression .page{width:560px;height:747px;margin:0 auto 24px;box-shadow:0 0 0 1px #eee}
+body.impression .page{width:560px;height:747px;margin:0 auto 24px;box-shadow:0 0 0 1px #CAB6A0}
 @media print{
   @page{size:5.6in 7.47in;margin:0}
   body.impression .page{width:5.6in;height:7.47in;margin:0;box-shadow:none;break-after:page;-webkit-print-color-adjust:exact;print-color-adjust:exact}

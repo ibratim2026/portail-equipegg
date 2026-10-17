@@ -60,3 +60,8 @@ Source : le dossier « Marketing » partagé par Gabrielle (Guide des normes de 
 
 ## Culture en magazine (17 octobre 2026)
 - `docs/culture/` : la culture en magazine à feuilleter de 14 pages, même format que l'offre vendeurs (`../ods/magazine.css` + `culture.css`, page-flip, `?impression` pour le PDF). Le texte est identique à l'ancienne page `culture.html`, qui est retirée.
+
+## Image de marque partout (17 octobre 2026)
+- `marque/marque.css` : la feuille de marque, chargée **en dernier** sur chaque page (portail, 7 documents, site, magazines). Titres en Objektiv Bold → Jost 700, capitales, approche 100; accroches (`<i>` dans un titre) en Saturday Rock → Ms Madi, toujours en noir; sous-titres en Ambroise → Playfair Display.
+- Toutes les couleurs ramenées aux couleurs officielles du guide 2021 (toffee, sauge, pastel rosé et leurs foncés, lait frappé, noisette, terre d'ombre, blanc, noir). Les teintes pâles sont les couleurs officielles en transparence. Seule exception : l'aperçu Instagram du portail garde les couleurs d'Instagram.
+- Source du guide : dossier « Image de marque » partagé par Gabrielle dans Google Drive (`_gabrielle-germain_guide-normes_2021.pdf`).
