@@ -43,3 +43,8 @@ Source : le dossier « Marketing » partagé par Gabrielle (Guide des normes de 
 - Polices : Jost (pour Objektiv Mk1), Playfair Display (pour Ambroise / The Seasons), Ms Madi (pour Saturday Rock, toujours en noir). La police Saturday Rock n'est pas intégrée au web (licence de bureau).
 - `docs/couv.css` : couverture commune des documents (aplat toffee, logo officiel, titre en capitales + accroche manuscrite, motif de maisons).
 - Magazine ODS : aplats toffee / sauge / rosé, photos en encart avec le filtre chaud de la marque (#C9B59F), comme ses gabarits 2025.
+
+## Outils (17 octobre 2026)
+- Nouvel onglet **Outils** (pour Gabrielle) : `outils.js` contient la liste des outils et leurs calculs. Pour en ajouter un, ajouter un objet à `OUTILS` (`id`, `titre`, `sous`, `picto`, `monter(el)`).
+- Premiers outils : paiement hypothécaire (intérêt composé semestriel, prime SCHL), mise de fonds minimale et SCHL, taxe de bienvenue (Québec, Lévis, barème de base), net au vendeur (rétribution + TPS/TVQ).
+- **À revoir chaque 1er janvier** : tranches des droits de mutation (`BAREMES_MUTATION`) et `OUTILS_MAJ`.

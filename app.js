@@ -2,6 +2,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { CONFIG } from './config.js';
 import { RESSOURCES, RESSOURCES_MAJ } from './ressources.js';
 import { LIVRABLES } from './livrables.js';
+import { OUTILS, OUTILS_MAJ } from './outils.js';
 
 const sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, { auth: { persistSession: false, autoRefreshToken: false } });
 
@@ -10,6 +11,7 @@ const etat = {
   jeton: null, membre: null, sections: [], elements: [], commentaires: [],
   vue: lireStockage('vue') || 'accueil', // 'accueil' | 'ressources' | id de section
   ressource: lireStockage('ressource') || RESSOURCES[0].id,
+  outil: lireStockage('outil') || null,
   filtre: 'tous', etape: 'toutes', ouverts: new Set(), mode: {},
   focus: null, // session « un élément à la fois »
 };
@@ -145,7 +147,7 @@ async function charger() {
   const admin = etat.membre.role === 'admin';
   if (!lireStockage('vue') && admin) etat.vue = 'console';
   if (etat.vue === 'console' && !admin) etat.vue = 'accueil';
-  if (!['accueil', 'ressources', 'console'].includes(etat.vue) && !etat.vue.startsWith('doc:') && !etat.sections.find((x) => x.id === etat.vue)) etat.vue = admin ? 'console' : 'accueil';
+  if (!['accueil', 'ressources', 'outils', 'console'].includes(etat.vue) && !etat.vue.startsWith('doc:') && !etat.sections.find((x) => x.id === etat.vue)) etat.vue = admin ? 'console' : 'accueil';
   rendre();
   if (!lireStockage('intro-v2') && etat.membre.role !== 'admin') ouvrirIntro();
 }
@@ -236,6 +238,7 @@ function navigation() {
     pastille(admin ? 'Vue cliente' : 'Accueil', 'accueil', docsAValider().length || null),
     docs,
     admin ? etat.sections.filter((s) => s.id !== 'livrables').map((s) => pastille(s.titre, s.id, aValider(etat.elements.filter((x) => x.section_id === s.id)).length || null)) : null,
+    pastille('Outils', 'outils'),
     pastille('Ressources', 'ressources'));
 }
 
@@ -246,6 +249,7 @@ function rendre() {
   else if (etat.vue === 'console') contenu = vueConsole();
   else if (etat.vue === 'accueil') contenu = vueAccueil();
   else if (etat.vue === 'ressources') contenu = vueRessources();
+  else if (etat.vue === 'outils') contenu = vueOutils();
   else contenu = vueSection();
   app.replaceChildren(navigation(), contenu,
     el('footer', { class: 'pied' }, 'L\'équipe Gabrielle Germain · espace privé de validation'));
@@ -551,6 +555,32 @@ function vueRessources() {
     }, x.titre))),
     el('article', { class: 'ressource', html: r.html }),
     el('p', { class: 'lot-note' }, `Dernière mise à jour : ${RESSOURCES_MAJ}`));
+}
+
+// ---------- Outils ----------
+const outilsMontes = new Map(); // garde les valeurs saisies d'un rendu à l'autre
+function vueOutils() {
+  const o = OUTILS.find((x) => x.id === etat.outil);
+  const choisir = (id) => { etat.outil = id; ecrireStockage('outil', id || ''); rendre(); window.scrollTo({ top: 0 }); };
+  if (!o) {
+    return el('div', { class: 'outils' },
+      el('section', { class: 'intro' },
+        el('p', { class: 'surtitre' }, 'Outils'),
+        el('h1', {}, 'Vos outils de ', el('i', {}, 'tous les jours')),
+        el('p', { class: 'chapo' }, 'Des calculs rapides à faire avec un client, au bureau ou en visite. D\'autres outils s\'ajouteront au fil du temps.')),
+      el('div', { class: 'o-grille' }, OUTILS.map((x) => el('button', { type: 'button', class: 'o-carte', onclick: () => choisir(x.id) },
+        el('img', { src: x.picto, alt: '', width: 44, height: 44 }),
+        el('b', {}, x.titre), el('span', {}, x.sous)))),
+      el('p', { class: 'lot-note' }, `Barèmes à jour au ${OUTILS_MAJ}`));
+  }
+  if (!outilsMontes.has(o.id)) outilsMontes.set(o.id, o.monter(el));
+  return el('div', { class: 'outils' },
+    el('button', { type: 'button', class: 'lien o-retour', onclick: () => choisir(null) }, '← Tous les outils'),
+    el('section', { class: 'intro' },
+      el('p', { class: 'surtitre' }, 'Outils'),
+      el('h1', {}, o.titre),
+      el('p', { class: 'chapo' }, o.sous)),
+    outilsMontes.get(o.id));
 }
 
 // ---------- Vue par section (la liste complète) ----------

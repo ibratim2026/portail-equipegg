@@ -484,3 +484,41 @@ body.focus-ouvert{overflow:hidden}
 .d-gauche.tel .d-cadre{width:390px;max-width:100%;margin:0 auto;border-radius:22px;box-shadow:0 10px 30px rgba(29,29,27,.15)}
 @media (max-width:900px){.d-appareil{display:none}.vue-doc{left:auto;width:auto;margin-left:0}}
 @media (max-width:900px){body:has(.d-barre) .toast{bottom:84px}}
+
+/* Outils (17 octobre 2026) */
+.o-grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:6px 0 8px}
+.o-carte{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;background:var(--blanc);border:1px solid var(--ligne);border-radius:18px;padding:18px;color:var(--encre);transition:transform .15s,box-shadow .15s}
+.o-carte:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(112,87,74,.10)}
+.o-carte img{width:44px;height:44px;object-fit:contain;margin-bottom:4px}
+.o-carte b{font:600 19px var(--pf)}
+.o-carte span{font-size:14.5px;color:var(--doux);line-height:1.45}
+.o-retour{margin-top:22px;font-size:14.5px}
+.outils .intro{padding-top:14px}
+.o-outil{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start}
+.o-form,.o-res{background:var(--blanc);border:1px solid var(--ligne);border-radius:18px;padding:18px}
+.o-res{background:var(--creme2);border-color:transparent;position:sticky;top:84px}
+.o-champ{display:block;margin:0 0 14px}
+.o-champ:last-child{margin-bottom:0}
+.o-lib{display:block;font-weight:500;font-size:14px;margin-bottom:5px}
+.o-saisie{display:flex;align-items:center;border:1px solid #D6CABD;border-radius:10px;background:var(--blanc)}
+.o-saisie:focus-within{outline:2px solid var(--rose);outline-offset:1px;border-color:transparent}
+.o-saisie input,.o-saisie select{border:0;outline:0;background:transparent;font:inherit;color:var(--encre);padding:11px 12px;width:100%;min-width:0}
+.o-saisie select{appearance:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5' fill='none' stroke='%238F7060' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center/18px;padding-right:34px}
+.o-suf{padding:0 12px 0 0;color:var(--doux);font-size:14px}
+.o-champ small{display:block;color:var(--doux);font-size:12.5px;margin-top:4px;line-height:1.4}
+.o-gros{margin:0 0 12px}
+.o-gros span{display:block;font:600 38px/1.1 var(--pf);color:var(--brun)}
+.o-gros small{font-size:14px;color:var(--doux)}
+.o-gros.neg span{color:var(--rosef)}
+.o-ligne{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--ligne);font-size:14.5px}
+.o-ligne b{font-weight:500;white-space:nowrap}
+.o-ligne.fort b{font-weight:600}
+.o-res .r-table{margin-top:4px}
+.o-table{width:100%;border-collapse:collapse;font-size:14px}
+.o-table th,.o-table td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--ligne)}
+.o-table th{font-weight:600;font-size:12.5px;color:var(--titre);text-transform:uppercase;letter-spacing:.06em}
+.o-table tr:last-child td{border-bottom:0}
+.o-alerte{background:var(--rosep);color:var(--rosef);border-radius:10px;padding:10px 12px;margin:0}
+.o-vide{color:var(--doux);margin:0}
+.o-note{grid-column:1/-1;font-size:13px;color:var(--doux);margin:0;max-width:720px}
+@media (max-width:720px){.o-outil{grid-template-columns:minmax(0,1fr)}.o-res{position:static;padding:16px 14px}.o-table{font-size:13px}.o-table th,.o-table td{padding:8px 6px}.o-table th{font-size:11px;letter-spacing:.03em}.o-gros span{font-size:32px}}
