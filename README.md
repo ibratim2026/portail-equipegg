@@ -48,3 +48,12 @@ Source : le dossier « Marketing » partagé par Gabrielle (Guide des normes de 
 - Nouvel onglet **Outils** (pour Gabrielle) : `outils.js` contient la liste des outils et leurs calculs. Pour en ajouter un, ajouter un objet à `OUTILS` (`id`, `titre`, `sous`, `picto`, `monter(el)`).
 - Premiers outils : paiement hypothécaire (intérêt composé semestriel, prime SCHL), mise de fonds minimale et SCHL, taxe de bienvenue (Québec, Lévis, barème de base), net au vendeur (rétribution + TPS/TVQ).
 - **À revoir chaque 1er janvier** : tranches des droits de mutation (`BAREMES_MUTATION`) et `OUTILS_MAJ`.
+
+## Parcours guidé (17 octobre 2026) : Gabrielle ouvre, valide, ferme
+- **Côté Gabrielle, aucun menu.** Accueil = « N documents à valider · environ X min » + un seul bouton **Commencer**. « Voir tous mes documents » est plié; Outils et « Où on en est » sont de petits liens en bas de page.
+- **Séance** (`etat.parcours`) : barre « Document 2 sur 6 » + « Plus tard ». Deux gros boutons : **J'approuve** / **Je veux un changement** (micro). Le reste (question, point par point, plein écran) est plié sous « Autre chose? ». Après une approbation *ou* une demande de changement, le document suivant s'ouvre tout seul; à la fin, écran « C'est tout pour aujourd'hui ».
+- Sur cellulaire, les deux boutons restent fixés en bas de l'écran.
+- **Lien direct** : `https://equipegg.pelion.ca/?go` ouvre directement le premier document à valider (lien à mettre dans les courriels de rappel).
+- Unité unique : **documents**. Temps estimé = champ `min` de chaque livrable (`livrables.js`), utilisé à l'accueil et dans le courriel de rappel.
+- Le bouton « Quitter » (déconnexion) est caché pour Gabrielle, pour qu'elle ne perde pas son accès.
+- **Console** : une ligne d'état (documents à valider, à traiter par toi, dernière activité), puis demandes de changement et questions; « Avancement par thème » et « Activité récente » sont pliés. Menu admin : Console, Vue cliente, Contenus (menu déroulant), Outils, Ressources.

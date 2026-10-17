@@ -12,6 +12,7 @@ const etat = {
   vue: lireStockage('vue') || 'accueil', // 'accueil' | 'ressources' | id de section
   ressource: lireStockage('ressource') || RESSOURCES[0].id,
   outil: lireStockage('outil') || null,
+  parcours: null, // { file: [cles], approuves: 0, changements: 0 } : la séance de validation en cours
   filtre: 'tous', etape: 'toutes', ouverts: new Set(), mode: {},
   focus: null, // session « un élément à la fois »
 };
@@ -90,6 +91,9 @@ function extraireJeton(txt) {
   return /^[A-Za-z0-9_-]{12,}$/.test(t) ? t : null;
 }
 
+// Lien du courriel de rappel : https://equipegg.pelion.ca/?go → ouvre directement le premier document à valider.
+let lienDirect = new URLSearchParams(location.search).has('go') || new URLSearchParams(location.hash.slice(1)).has('go');
+
 function lireJeton() {
   const k = new URLSearchParams(location.hash.slice(1)).get('k') || new URLSearchParams(location.search).get('k');
   if (k) {
@@ -147,9 +151,12 @@ async function charger() {
   const admin = etat.membre.role === 'admin';
   if (!lireStockage('vue') && admin) etat.vue = 'console';
   if (etat.vue === 'console' && !admin) etat.vue = 'accueil';
-  if (!['accueil', 'ressources', 'outils', 'console'].includes(etat.vue) && !etat.vue.startsWith('doc:') && !etat.sections.find((x) => x.id === etat.vue)) etat.vue = admin ? 'console' : 'accueil';
+  if (!['accueil', 'ressources', 'outils', 'console', 'fin'].includes(etat.vue) && !etat.vue.startsWith('doc:') && !etat.sections.find((x) => x.id === etat.vue)) etat.vue = admin ? 'console' : 'accueil';
+  if (etat.vue === 'fin') etat.vue = 'accueil';
+  if (!admin && !etat.vue.startsWith('doc:') && etat.vue !== 'outils' && etat.vue !== 'ressources') etat.vue = 'accueil';
+  if (!admin && lienDirect && docsAValider().length) { lienDirect = false; ecrireStockage('intro-v2', '1'); demarrerParcours(); return; }
   rendre();
-  if (!lireStockage('intro-v2') && etat.membre.role !== 'admin') ouvrirIntro();
+  if (!lireStockage('intro-v2') && !admin && docsAValider().length) ouvrirIntro();
 }
 
 function majLocale(id, data) {
@@ -221,25 +228,81 @@ function aller(vue) {
 }
 
 function navigation() {
-  const n = aValider().length;
+  const admin = etat.membre.role === 'admin';
+  if (!admin) return navigationCliente();
   const pastille = (txt, vue, badge) => el('button', {
     type: 'button', class: 'nav-p' + (etat.vue === vue ? ' actif' : ''), 'aria-current': etat.vue === vue ? 'page' : null,
     onclick: () => aller(vue),
   }, txt, badge ? el('span', { class: 'nav-b' }, badge) : null);
-  const admin = etat.membre.role === 'admin';
-  const docs = LIVRABLES.map((L) => {
-    const it = elementDoc(L);
-    const marque = !L.doc ? '…' : (it?.statut === 'approuve' ? '✓' : (it?.statut === 'modifications' ? '✎' : null));
-    return el('button', { type: 'button', class: 'nav-p doc' + (etat.vue === 'doc:' + L.cle ? ' actif' : ''), onclick: () => aller('doc:' + L.cle) },
-      el('span', { class: 'nav-n' }, L.n), L.court, marque ? el('span', { class: 'nav-m' }, marque) : null);
-  });
+  // Contenus : tous les documents et toutes les sections dans un seul menu
+  const contenus = el('select', { class: 'nav-select', 'aria-label': 'Contenus', onchange: (e) => { if (e.target.value) aller(e.target.value); } },
+    el('option', { value: '' }, 'Contenus…'),
+    el('optgroup', { label: 'Documents' }, LIVRABLES.map((L) => {
+      const it = elementDoc(L);
+      const m = it?.statut === 'approuve' ? ' ✓' : (it?.statut === 'modifications' ? ' ✎' : '');
+      return el('option', { value: 'doc:' + L.cle, selected: etat.vue === 'doc:' + L.cle }, `${L.n}. ${L.court}${m}`);
+    })),
+    el('optgroup', { label: 'Éléments' }, etat.sections.filter((s) => s.id !== 'livrables').map((s) => {
+      const n = aValider(etat.elements.filter((x) => x.section_id === s.id)).length;
+      return el('option', { value: s.id, selected: etat.vue === s.id }, `${s.titre}${n ? ` (${n})` : ''}`);
+    })));
   return el('nav', { class: 'nav-portail', 'aria-label': 'Sections' },
-    admin ? pastille('Console', 'console', etat.elements.filter((x) => x.statut === 'modifications').length || null) : null,
-    pastille(admin ? 'Vue cliente' : 'Accueil', 'accueil', docsAValider().length || null),
-    docs,
-    admin ? etat.sections.filter((s) => s.id !== 'livrables').map((s) => pastille(s.titre, s.id, aValider(etat.elements.filter((x) => x.section_id === s.id)).length || null)) : null,
+    pastille('Console', 'console', etat.elements.filter((x) => x.statut === 'modifications').length || null),
+    pastille('Vue cliente', 'accueil'),
+    contenus,
     pastille('Outils', 'outils'),
     pastille('Ressources', 'ressources'));
+}
+
+// Gabrielle ne voit pas de menu : pendant la validation, seulement où elle en est et « Quitter ».
+function navigationCliente() {
+  const P = etat.parcours;
+  if (P && etat.vue.startsWith('doc:')) {
+    const i = P.file.indexOf(etat.vue.slice(4));
+    if (i >= 0) {
+      return el('nav', { class: 'parcours', 'aria-label': 'Progression' },
+        el('span', { class: 'parcours-txt' }, `Document ${i + 1} sur ${P.file.length}`),
+        el('span', { class: 'parcours-points', 'aria-hidden': 'true' }, P.file.map((c, j) => el('i', { class: j < i ? 'fait' : (j === i ? 'actuel' : '') }))),
+        el('button', { type: 'button', class: 'lien', onclick: () => { etat.parcours = null; aller('accueil'); } }, 'Plus tard'));
+    }
+  }
+  if (etat.vue === 'accueil' || etat.vue === 'fin') return null;
+  return el('nav', { class: 'parcours' }, el('button', { type: 'button', class: 'lien', onclick: () => aller('accueil') }, '← Accueil'));
+}
+
+// ---------- Séance de validation (Gabrielle) ----------
+function demarrerParcours() {
+  const file = docsAValider().map((L) => L.cle);
+  if (!file.length) { aller('accueil'); return; }
+  etat.parcours = { file, approuves: 0, changements: 0 };
+  aller('doc:' + file[0]);
+}
+// Après « J'approuve » ou une demande de changement : document suivant, ou l'écran de fin.
+function avancer(cleActuelle, quoi) {
+  const P = etat.parcours;
+  if (P) {
+    if (quoi === 'approbation') P.approuves += 1; else if (quoi === 'modifications') P.changements += 1;
+    const i = P.file.indexOf(cleActuelle);
+    const prochain = P.file.slice(i + 1).find((c) => { const st = elementDoc(LIVRABLES.find((L) => L.cle === c))?.statut; return st !== 'approuve' && st !== 'modifications'; });
+    aller(prochain ? 'doc:' + prochain : 'fin');
+    return;
+  }
+  const reste = docsAValider();
+  aller(reste.length ? 'doc:' + reste[0].cle : 'fin');
+}
+
+function vueFin() {
+  const P = etat.parcours || { approuves: 0, changements: 0 };
+  const morceaux = [];
+  if (P.approuves) morceaux.push(pluriel(P.approuves, 'document approuvé', 'documents approuvés'));
+  if (P.changements) morceaux.push(pluriel(P.changements, 'changement demandé', 'changements demandés'));
+  const reste = docsAValider();
+  return el('section', { class: 'fin-page' },
+    el('div', { class: 'fin-sceau' }, svg(ICO.coche)),
+    el('h1', {}, reste.length ? 'Merci, ' : 'C\'est tout ', el('i', {}, reste.length ? 'c\'est noté' : 'pour aujourd\'hui'), '.'),
+    morceaux.length ? el('p', { class: 'fin-resume' }, morceaux.join(' · ')) : null,
+    el('p', { class: 'chapo' }, P.changements ? 'Nous faisons les changements et nous vous les renvoyons ici. Vous pouvez fermer cette page.' : 'Nous vous écrivons dès qu\'il y a du nouveau. Vous pouvez fermer cette page.'),
+    reste.length ? el('button', { type: 'button', class: 'lien', onclick: demarrerParcours }, `Il reste ${pluriel(reste.length, 'document', 'documents')} : continuer`) : null);
 }
 
 function rendre() {
@@ -250,9 +313,19 @@ function rendre() {
   else if (etat.vue === 'accueil') contenu = vueAccueil();
   else if (etat.vue === 'ressources') contenu = vueRessources();
   else if (etat.vue === 'outils') contenu = vueOutils();
+  else if (etat.vue === 'fin') contenu = vueFin();
   else contenu = vueSection();
-  app.replaceChildren(navigation(), contenu,
-    el('footer', { class: 'pied' }, 'L\'équipe Gabrielle Germain · espace privé de validation'));
+  const client = etat.membre.role !== 'admin';
+  const enParcours = client && etat.parcours && etat.vue.startsWith('doc:');
+  document.body.classList.toggle('mode-parcours', !!enParcours);
+  document.body.classList.toggle('client', client);
+  const pied = client && !enParcours && etat.vue !== 'fin'
+    ? el('footer', { class: 'pied' },
+      el('button', { type: 'button', class: 'lien', onclick: () => aller('outils') }, 'Outils'), ' · ',
+      el('button', { type: 'button', class: 'lien', onclick: () => aller('ressources') }, 'Où on en est'),
+      el('br'), 'L\'équipe Gabrielle Germain · espace privé')
+    : el('footer', { class: 'pied' }, 'L\'équipe Gabrielle Germain · espace privé de validation');
+  app.replaceChildren(...[navigation(), contenu, pied].filter(Boolean));
   window.scrollTo({ top: scrollY });
 }
 
@@ -277,32 +350,31 @@ function etatDoc(L) {
   return ETAT_DOC[elementDoc(L)?.statut] || ETAT_DOC.a_valider;
 }
 
+const minutesDocs = (liste) => Math.max(1, liste.reduce((t, L) => t + (L.min || 4), 0));
+
 function vueAccueil() {
   const prenom = (etat.membre.nom || '').split(' ')[0];
-  const prets = LIVRABLES.filter((L) => L.doc);
   const reste = docsAValider();
-  const ok = prets.filter((L) => elementDoc(L)?.statut === 'approuve').length;
-  const prochain = reste[0];
+  const enCours = LIVRABLES.filter((L) => elementDoc(L)?.statut === 'modifications');
 
   const intro = el('section', { class: 'intro' },
     el('p', { class: 'surtitre' }, 'Espace de validation'),
-    el('h1', {}, 'Bonjour ', el('i', {}, prenom), '.'),
-    el('p', { class: 'chapo' }, 'Voici vos documents, présentés comme ils seront remis. Lisez-les, puis approuvez ou dites-nous quoi changer. Une fois approuvés, ils sont à vous : à montrer à votre équipe et à vos clients.'));
+    el('h1', {}, 'Bonjour ', el('i', {}, prenom), '.'));
 
-  const lot = reste.length ? el('section', { class: 'lot' },
-    el('p', { class: 'lot-sur' }, 'À valider'),
-    el('p', { class: 'lot-titre' }, el('b', {}, pluriel(reste.length, 'document vous attend', 'documents vous attendent')), el('span', {}, `${ok} sur ${prets.length} approuvés`)),
-    el('div', { class: 'lot-actions' },
-      el('button', { type: 'button', class: 'bouton grand', onclick: () => aller('doc:' + prochain.cle) }, `Commencer par « ${prochain.court} »`, svg(ICO.fleche)),
-      el('button', { type: 'button', class: 'lien', onclick: ouvrirIntro }, 'Comment ça marche?')))
+  const lot = reste.length ? el('section', { class: 'lot depart' },
+    el('p', { class: 'lot-titre' }, el('b', {}, pluriel(reste.length, 'document à valider', 'documents à valider')), el('span', {}, `environ ${minutesDocs(reste)} min`)),
+    el('p', { class: 'lot-explication' }, 'Lisez chaque document, puis approuvez-le ou dites-nous quoi changer. Le micro est là si vous préférez parler.'),
+    el('button', { type: 'button', class: 'bouton grand', onclick: demarrerParcours }, 'Commencer', svg(ICO.fleche)))
     : el('section', { class: 'lot fini' }, el('p', { class: 'lot-sur' }, 'Tout est à jour'),
       el('p', { class: 'lot-titre' }, el('b', {}, 'Rien à valider pour le moment ✓')),
-      el('p', { class: 'lot-note' }, 'Merci! Nous vous écrivons dès qu\'il y a du nouveau.'));
+      el('p', { class: 'lot-note' }, enCours.length
+        ? `Nous travaillons sur ${pluriel(enCours.length, 'votre demande de changement', 'vos demandes de changement')}. Nous vous écrivons dès que c'est prêt.`
+        : 'Merci! Nous vous écrivons dès qu\'il y a du nouveau. Vous pouvez fermer cette page.'));
 
-  const liste = el('section', { class: 'docs' }, el('h2', { class: 'groupe' }, 'Vos 7 documents'),
+  const liste = el('details', { class: 'docs tous-docs' }, el('summary', {}, 'Voir tous mes documents'),
     el('div', { class: 'docs-grille' }, LIVRABLES.map((L) => {
       const [txt, cls] = etatDoc(L);
-      return el('article', { class: 'doc-carte ' + cls, onclick: () => aller('doc:' + L.cle) },
+      return el('article', { class: 'doc-carte ' + cls, onclick: () => { etat.parcours = null; aller('doc:' + L.cle); } },
         el('span', { class: 'doc-n' }, String(L.n).padStart(2, '0')),
         el('div', { class: 'doc-txt' }, el('h3', {}, L.titre), el('p', {}, L.sous)),
         el('span', { class: 'statut' }, txt));
@@ -318,9 +390,11 @@ function vueDoc(cle) {
   const suivant = LIVRABLES.slice(i + 1).concat(LIVRABLES.slice(0, i)).find((x) => x.doc && elementDoc(x)?.statut !== 'approuve');
   const [txt, cls] = etatDoc(L);
 
+  const client = etat.membre.role !== 'admin';
+  const enParcours = client && etat.parcours?.file.includes(L.cle);
   const tete = el('div', { class: 'd-tete' },
-    el('div', {}, el('p', { class: 'surtitre' }, `Document ${L.n} sur ${LIVRABLES.length}`), el('h1', {}, L.titre), el('p', { class: 'd-usage' }, L.usage)),
-    L.doc ? el('div', { class: 'd-outils' },
+    el('div', {}, enParcours ? null : el('p', { class: 'surtitre' }, `Document ${L.n} sur ${LIVRABLES.length}`), el('h1', {}, L.titre), el('p', { class: 'd-usage' }, L.usage)),
+    L.doc && !client ? el('div', { class: 'd-outils' },
       el('a', { class: 'bouton secondaire', href: L.doc, target: '_blank', rel: 'noopener' }, 'Ouvrir en plein écran'),
       el('button', { type: 'button', class: 'lien', onclick: () => { try { document.getElementById('d-cadre').contentWindow.print(); } catch { window.open(L.doc, '_blank'); } } }, 'Imprimer / PDF')) : null);
 
@@ -346,6 +420,18 @@ function vueDoc(cle) {
   });
 
   const panneau = el('aside', { class: 'd-panneau', id: 'd-panneau' });
+  const approuver = async (btn) => {
+    const it = elementDoc(L);
+    if (!it || it.statut !== 'a_valider') return;
+    if (btn) btn.disabled = true;
+    if (await decider(it.id, 'approbation', null, { silencieux: true })) { alerte('Approuvé ✓', 'ok'); avancer(L.cle, 'approbation'); }
+    else if (btn) btn.disabled = false;
+  };
+  const ouvrir = (mode) => {
+    const it = elementDoc(L); if (!it) return;
+    etat.ouverts.add('d-' + it.id); etat.mode['d-' + it.id] = mode; remplir();
+    panneau.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   const remplir = () => {
     const item = elementDoc(L);
     const [txt, cls] = etatDoc(L);
@@ -361,42 +447,49 @@ function vueDoc(cle) {
     if (mode) {
       panneau.append(formulaire(item, mode, {
         parties,
-        apres: () => { etat.ouverts.delete(cleOuv); alerte(mode === 'modifications' ? 'Merci! Votre demande nous est arrivée.' : 'Merci! Votre question nous est arrivée.', 'ok'); remplir(); },
+        apres: () => {
+          etat.ouverts.delete(cleOuv);
+          alerte(mode === 'modifications' ? 'Merci! Votre demande nous est arrivée.' : 'Merci! Votre question nous est arrivée.', 'ok');
+          if (client && mode === 'modifications') avancer(L.cle, 'modifications'); else remplir();
+        },
         annuler: () => { etat.ouverts.delete(cleOuv); remplir(); },
       }));
     } else {
-      panneau.append(el('h2', {}, item.statut === 'approuve' ? 'Vous avez approuvé ce document.' : 'Ce document vous convient?'));
+      panneau.append(el('h2', {}, item.statut === 'approuve' ? 'Vous avez approuvé ce document.' : (item.statut === 'modifications' ? 'Nous travaillons sur vos changements.' : 'Ce document vous convient?')));
       const actions = el('div', { class: 'd-actions' });
-      if (item.statut !== 'approuve') {
-        actions.append(el('button', { type: 'button', class: 'bouton f-ok', onclick: async (e) => {
-          e.currentTarget.disabled = true;
-          if (await decider(item.id, 'approbation', null, { silencieux: true })) {
-            alerte('Approuvé ✓', 'ok');
-            if (suivant) aller('doc:' + suivant.cle); else aller('accueil');
-          }
-        } }, svg(ICO.coche), 'J\'approuve tel quel'));
+      if (item.statut === 'a_valider') {
+        actions.append(el('button', { type: 'button', class: 'bouton f-ok', onclick: (e) => approuver(e.currentTarget) }, svg(ICO.coche), 'J\'approuve'));
+        actions.append(el('button', { type: 'button', class: 'bouton secondaire', onclick: () => ouvrir('modifications') }, svg(ICO.micro), 'Je veux un changement'));
+      } else {
+        actions.append(el('button', { type: 'button', class: 'bouton secondaire', onclick: () => ouvrir('modifications') }, svg(ICO.crayon), item.statut === 'approuve' ? 'Changer d\'avis' : 'Ajouter un changement'));
       }
-      actions.append(el('button', { type: 'button', class: 'bouton secondaire', onclick: () => { etat.ouverts.add(cleOuv); etat.mode[cleOuv] = 'modifications'; remplir(); } }, svg(ICO.crayon), item.statut === 'approuve' ? 'Changer d\'avis' : 'Demander un changement'));
-      actions.append(el('button', { type: 'button', class: 'lien', onclick: () => { etat.ouverts.add(cleOuv); etat.mode[cleOuv] = etat.membre.role === 'admin' ? 'reponse' : 'commentaire'; remplir(); } }, etat.membre.role === 'admin' ? 'Répondre' : 'Poser une question'));
       panneau.append(actions);
-      panneau.append(el('p', { class: 'd-info' }, 'Vous pouvez viser une partie précise et parler au lieu d\'écrire, avec le micro.'));
-    }
-    if (L.detail) {
-      const det = aValider(etat.elements.filter((x) => x.section_id === L.detail));
-      if (det.length) panneau.append(el('div', { class: 'd-detail' }, el('p', {}, 'Vous préférez y aller point par point?'),
-        el('button', { type: 'button', class: 'lien', onclick: () => ouvrirFocus(det, L.titre) }, `Valider les ${det.length} éléments un à la fois`)));
+      // Tout le reste, plié : question, point par point, plein écran
+      const det = L.detail ? aValider(etat.elements.filter((x) => x.section_id === L.detail)) : [];
+      const autres = [
+        el('button', { type: 'button', class: 'lien', onclick: () => ouvrir(client ? 'commentaire' : 'reponse') }, client ? 'Poser une question' : 'Répondre'),
+        det.length ? el('button', { type: 'button', class: 'lien', onclick: () => ouvrirFocus(det, L.titre) }, `Valider les ${det.length} éléments un à la fois`) : null,
+        el('a', { class: 'lien', href: L.doc, target: '_blank', rel: 'noopener' }, 'Ouvrir en plein écran'),
+      ].filter(Boolean);
+      panneau.append(el('details', { class: 'd-autre' }, el('summary', {}, 'Autre chose?'), el('div', {}, autres)));
     }
     const coms = etat.commentaires.filter((c) => c.element_id === item.id);
     if (coms.length) panneau.append(el('h3', { class: 'd-fil-titre' }, 'Vos échanges'), fil(coms));
-    if (suivant && item.statut !== 'a_valider') panneau.append(el('button', { type: 'button', class: 'bouton d-suivant', onclick: () => aller('doc:' + suivant.cle) }, `Document suivant : ${suivant.court}`, svg(ICO.fleche)));
+    if (!enParcours && suivant && item.statut !== 'a_valider') panneau.append(el('button', { type: 'button', class: 'bouton d-suivant', onclick: () => aller('doc:' + suivant.cle) }, `Document suivant : ${suivant.court}`, svg(ICO.fleche)));
   };
   remplir();
 
-  const barre = el('div', { class: 'd-barre' },
-    el('button', { type: 'button', class: 'bouton', onclick: () => panneau.scrollIntoView({ behavior: 'smooth', block: 'start' }) }, 'Donner mon avis'),
-    el('span', { class: 'statut', id: 'd-barre-statut' }, txt));
+  const it0 = elementDoc(L);
+  const barre = it0?.statut === 'a_valider'
+    ? el('div', { class: 'd-barre' },
+      el('button', { type: 'button', class: 'bouton f-ok', onclick: (e) => approuver(e.currentTarget) }, svg(ICO.coche), 'J\'approuve'),
+      el('button', { type: 'button', class: 'bouton secondaire', onclick: () => ouvrir('modifications') }, svg(ICO.micro), 'Changement'),
+      el('span', { class: 'statut', id: 'd-barre-statut', hidden: true }, txt))
+    : el('div', { class: 'd-barre' },
+      el('button', { type: 'button', class: 'bouton secondaire', onclick: () => panneau.scrollIntoView({ behavior: 'smooth', block: 'start' }) }, 'Voir les échanges'),
+      el('span', { class: 'statut', id: 'd-barre-statut' }, txt));
 
-  return el('div', { class: 'vue-doc' }, tete, el('div', { class: 'd-grille' }, el('div', {}, bascule, gauche), panneau), barre);
+  return el('div', { class: 'vue-doc' }, tete, el('div', { class: 'd-grille' }, el('div', {}, client ? null : bascule, gauche), panneau), barre);
 }
 
 // ---------- Console (William) ----------
@@ -415,16 +508,9 @@ function vueConsole() {
   const moi = etat.membre.nom;
   const client = etat.commentaires.filter((c) => c.auteur_nom !== moi);
   const derniere = client.reduce((d, c) => (!d || c.cree_le > d ? c.cree_le : d), null);
-  const t = compte(etat.elements);
-  const pct = (n) => (t.total ? Math.round((n / t.total) * 100) : 0);
   const titreDe = (id) => etat.elements.find((x) => x.id === id);
 
-  const tuiles = el('div', { class: 'k-tuiles' },
-    [['À valider', t.a_valider, `${pct(t.a_valider)} %`, ''], ['Approuvés', t.approuve, `${pct(t.approuve)} %`, 'ok'], ['À modifier', t.modifications, 'à traiter', 'modif'],
-      ['Dernière activité', derniere ? depuis(derniere) : '—', derniere ? dateFr(derniere) : 'Pas encore de réponse', 'temps']]
-      .map(([k, v, s, cls]) => el('div', { class: 'k-tuile ' + cls }, el('span', {}, k), el('b', {}, v), el('small', {}, s))));
-
-  const progression = el('section', { class: 'k-bloc' }, el('h2', {}, 'Par thème'),
+  const progression = el('section', { class: 'k-bloc' },
     etat.sections.map((s) => {
       const c = compte(etat.elements.filter((x) => x.section_id === s.id));
       const w = (n) => `${c.total ? (n / c.total) * 100 : 0}%`;
@@ -444,9 +530,9 @@ function vueConsole() {
     const txt = `Demandes de modification de Gabrielle (portail equipegg) — ${new Date().toLocaleDateString('fr-CA')}\n\n${lignes.join('\n\n')}`;
     try { await navigator.clipboard.writeText(txt); alerte('Copié ✓ Colle-le dans la conversation avec Jarvis.', 'ok'); } catch { alerte('Copie impossible dans ce navigateur.'); }
   };
-  const blocTraiter = el('section', { class: 'k-bloc' }, el('h2', {}, 'À traiter', el('span', { class: 'k-compte' }, aTraiter.length),
+  const blocTraiter = el('section', { class: 'k-bloc' }, el('h2', {}, 'Demandes de changement', el('span', { class: 'k-compte' }, aTraiter.length),
     aTraiter.length ? el('button', { type: 'button', class: 'lien k-copier', onclick: copier }, 'Copier pour Jarvis') : null),
-    aTraiter.length ? aTraiter.map((item) => carteTraiter(item)) : el('p', { class: 'k-vide' }, 'Aucune demande de modification en attente.'));
+    aTraiter.length ? aTraiter.map((item) => carteTraiter(item)) : el('p', { class: 'k-vide' }, 'Rien à traiter ✓'));
 
   // Questions sans réponse : dernier message = question de la cliente
   const questions = etat.elements.filter((x) => {
@@ -457,13 +543,18 @@ function vueConsole() {
   const blocQuestions = questions.length ? el('section', { class: 'k-bloc' }, el('h2', {}, 'Questions sans réponse', el('span', { class: 'k-compte' }, questions.length)),
     questions.map((item) => carteTraiter(item, true))) : null;
 
+  const docsReste = docsAValider().length;
+  const etatLigne = el('p', { class: 'k-etat' },
+    el('span', {}, el('b', {}, docsReste), ` ${docsReste > 1 ? 'documents' : 'document'} à valider par Gabrielle`),
+    el('span', {}, el('b', {}, aTraiter.length + questions.length), ' à traiter par toi'),
+    el('span', {}, derniere ? `Dernière activité ${depuis(derniere)}` : 'Pas encore d\'activité'));
   // Activité récente
   const filtres = [['tous', 'Tout'], ['modifications', 'Modifications'], ['commentaire', 'Questions'], ['approbation', 'Approbations'], ['audio', 'Notes vocales']];
   const f = etat.filtreActivite || 'tous';
   let act = [...etat.commentaires].sort((a, b) => (a.cree_le < b.cree_le ? 1 : -1));
   if (f === 'audio') act = act.filter((c) => c.audio);
   else if (f !== 'tous') act = act.filter((c) => c.type === f);
-  const blocActivite = el('section', { class: 'k-bloc' }, el('h2', {}, 'Activité récente'),
+  const blocActivite = el('section', { class: 'k-bloc' },
     el('div', { class: 'filtres k-filtres' }, filtres.map(([v, txt]) => el('button', { type: 'button', class: 'puce' + (f === v ? ' actif' : ''), onclick: () => { etat.filtreActivite = v; rendre(); } }, txt))),
     act.length ? el('ol', { class: 'k-fil' }, regrouper(act).slice(0, 40).map((c) => {
       const item = titreDe(c.element_id);
@@ -489,9 +580,10 @@ function vueConsole() {
       el('p', { class: 'surtitre' }, 'Console'),
       el('h1', {}, 'Où en est ', el('i', {}, 'Gabrielle')),
       el('div', { class: 'k-tete-actions' },
-        el('button', { type: 'button', class: 'bouton secondaire', onclick: () => aller('accueil') }, 'Voir comme Gabrielle'),
         el('button', { type: 'button', class: 'lien', onclick: () => { charger(); } }, 'Actualiser'))),
-    tuiles, el('div', { class: 'k-grille' }, el('div', {}, blocTraiter, blocQuestions), el('div', {}, progression, blocActivite)));
+    etatLigne, aTraiter.length || !questions.length ? blocTraiter : null, blocQuestions,
+    el('details', { class: 'k-plie' }, el('summary', {}, 'Avancement par thème'), progression),
+    el('details', { class: 'k-plie' }, el('summary', {}, 'Activité récente'), blocActivite));
 }
 
 // Regroupe les approbations qui se suivent (même personne) en une seule ligne
@@ -1063,13 +1155,13 @@ function ouvrirIntro() {
     el('div', { class: 'modale', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'modale-titre' },
       el('p', { class: 'surtitre' }, 'Bienvenue'),
       el('h2', { id: 'modale-titre' }, 'Votre espace de ', el('i', {}, 'validation')),
-      el('p', {}, 'Ici, vous validez vos 7 documents, présentés comme ils seront remis. Une fois approuvés, ils sont à vous.'),
+      el('p', {}, 'Ici, vous validez vos documents, un à la fois. Une fois approuvés, ils sont à vous.'),
       el('ul', { class: 'gestes' },
-        el('li', {}, el('span', { class: 'g-ico' }, svg(ICO.fleche)), el('div', {}, el('b', {}, 'Lisez le document'), el('small', {}, 'à gauche, ou en plein écran'))),
-        el('li', {}, el('span', { class: 'g-ico ok' }, svg(ICO.coche)), el('div', {}, el('b', {}, 'J\'approuve tel quel'), el('small', {}, 'et on passe au suivant'))),
-        el('li', {}, el('span', { class: 'g-ico modif' }, svg(ICO.micro)), el('div', {}, el('b', {}, 'Demander un changement'), el('small', {}, 'sur une partie précise, par écrit ou à voix haute')))),
+        el('li', {}, el('span', { class: 'g-ico' }, svg(ICO.fleche)), el('div', {}, el('b', {}, 'Lisez le document'), el('small', {}, 'présenté comme il sera remis'))),
+        el('li', {}, el('span', { class: 'g-ico ok' }, svg(ICO.coche)), el('div', {}, el('b', {}, 'J\'approuve'), el('small', {}, 'et le suivant s\'ouvre tout seul'))),
+        el('li', {}, el('span', { class: 'g-ico modif' }, svg(ICO.micro)), el('div', {}, el('b', {}, 'Je veux un changement'), el('small', {}, 'dites-le par écrit ou à voix haute')))),
       el('div', { class: 'modale-actions' },
-        reste.length ? el('button', { type: 'button', class: 'bouton grand', onclick: () => { fermer(); aller('doc:' + reste[0].cle); } }, 'C\'est parti', svg(ICO.fleche)) : null,
+        reste.length ? el('button', { type: 'button', class: 'bouton grand', onclick: () => { fermer(); demarrerParcours(); } }, 'C\'est parti', svg(ICO.fleche)) : null,
         el('button', { type: 'button', class: reste.length ? 'lien' : 'bouton', onclick: fermer }, reste.length ? 'Plus tard' : 'Compris'))));
   document.body.append(fond);
   fond.querySelector('.bouton')?.focus();

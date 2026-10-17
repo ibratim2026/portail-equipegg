@@ -522,3 +522,41 @@ body.focus-ouvert{overflow:hidden}
 .o-vide{color:var(--doux);margin:0}
 .o-note{grid-column:1/-1;font-size:13px;color:var(--doux);margin:0;max-width:720px}
 @media (max-width:720px){.o-outil{grid-template-columns:minmax(0,1fr)}.o-res{position:static;padding:16px 14px}.o-table{font-size:13px}.o-table th,.o-table td{padding:8px 6px}.o-table th{font-size:11px;letter-spacing:.03em}.o-gros span{font-size:32px}}
+
+/* Parcours guidé (17 octobre 2026) : Gabrielle ouvre, valide, ferme */
+.parcours{display:flex;align-items:center;gap:14px;padding:14px 0 4px;font-size:14px;color:var(--doux)}
+.parcours-txt{font-weight:500;color:var(--encre)}
+.parcours-points{display:flex;gap:6px;flex:1}
+.parcours-points i{width:22px;height:4px;border-radius:2px;background:var(--ligne)}
+.parcours-points i.fait{background:var(--sauge)}
+.parcours-points i.actuel{background:var(--rose)}
+.parcours .lien{margin-left:auto}
+.lot.depart{text-align:left}
+.lot.depart .lot-titre{margin-top:0}
+.lot-explication{color:var(--doux);margin:6px 0 16px;max-width:520px}
+.tous-docs{margin:26px 0 0}
+.tous-docs>summary{cursor:pointer;color:var(--doux);font-size:14.5px;list-style:none;text-decoration:underline;text-underline-offset:3px}
+.tous-docs>summary::-webkit-details-marker{display:none}
+.tous-docs[open]>summary{margin-bottom:12px}
+.d-autre{margin-top:14px;text-align:center}
+.d-autre>summary{cursor:pointer;color:var(--doux);font-size:14px;list-style:none;text-decoration:underline;text-underline-offset:3px}
+.d-autre>summary::-webkit-details-marker{display:none}
+.d-autre>div{display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:10px;font-size:14.5px}
+.fin-page{max-width:520px;margin:10vh auto 0;text-align:center}
+.fin-page .fin-sceau{margin:0 auto 18px}
+.fin-page h1{font-size:36px}
+.fin-page h1 i{color:var(--titre)}
+.fin-resume{font-weight:500;margin:10px 0 0}
+.fin-page .chapo{margin:10px auto 18px}
+.nav-select{flex:none;font:inherit;font-size:14px;color:var(--doux);background:transparent;border:1px solid #D6CABD;border-radius:999px;padding:7px 12px}
+.k-etat{display:flex;flex-wrap:wrap;gap:8px 22px;background:var(--blanc);border:1px solid var(--ligne);border-radius:14px;padding:12px 16px;margin:0 0 18px;font-size:14.5px;color:var(--doux)}
+.k-etat b{color:var(--encre);font-size:17px}
+.k-plie{margin:14px 0}
+.k-plie>summary{cursor:pointer;font:600 19px var(--pf);color:var(--encre);padding:6px 0}
+@media (max-width:900px){
+  .d-barre .bouton{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 10px}
+  body.mode-parcours .pied{padding-bottom:110px}
+}
+/* la barre de progression prend la même largeur que le document */
+@media (min-width:901px){body.mode-parcours .parcours{position:relative;left:50%;width:min(1320px,calc(100vw - 32px));margin-left:calc(-1 * min(660px, 50vw - 16px))}}
+body.client #deconnexion{display:none}
