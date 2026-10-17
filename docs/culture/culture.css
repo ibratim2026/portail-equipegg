@@ -244,3 +244,35 @@
 .std .n{font-size:7cqw}
 .std b{font-size:3.1cqw}
 .std p{font-size:2.3cqw}
+
+/* ===== Espace : le contenu sous le titre est groupé et centré dans l'espace restant (jamais « haut + bas + vide ») ===== */
+.corps{flex:1;display:flex;flex-direction:column;justify-content:center;gap:2.4cqw;min-height:0}
+.corps>*{margin-top:0!important;margin-bottom:0!important}
+.page.rose .duo{margin-top:3cqw}
+.page.rose .p-in{justify-content:center}
+.equipe-mot{margin-top:0}
+.equipe-mot .trait{margin:0 auto 2cqw}
+.experience .perso{margin-top:3cqw}
+.experience .bas{justify-content:center}
+
+/* ===== Textures ===== */
+.page[class*="texture-"] > *{position:relative;z-index:1}
+.page[class*="texture-"] > .p-in,.page[class*="texture-"] > .photo{position:absolute}
+.page[class*="texture-"]::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none}
+/* Grain de papier (bruit SVG, très léger) */
+.texture-papier::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .44  0 0 0 0 .34  0 0 0 0 .29  0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* Motif de maisons gestuelles de la marque, posé sur la couleur du même nom */
+.texture-motif::before{background-repeat:repeat;background-size:64cqw auto;opacity:.55}
+.texture-motif.toffee-m::before{background-image:url(../../marque/motif-maison-twist-horizontal-toffee.png)}
+.texture-motif.rose-m::before{background-image:url(../../marque/motif-maison-twist-horizontal-pastel-rose.png)}
+.texture-motif.sauge-m::before{background-image:url(../../marque/motif-maison-twist-horizontal-sauge.png)}
+/* Sur fond lait frappé : le motif toffee en filigrane */
+.texture-motif.doux::before{opacity:.16}
+.corps .val6,.corps .std-grille,.corps .memo{flex:none}
+.experience .texte{font-size:2.5cqw}
+.experience .parole{font-size:3.1cqw}
+.mots-l span{font-size:2.2cqw;padding:1.4cqw 2.4cqw}
+.experience .perso .texte{font-size:2.3cqw}
+.dos-c::before{content:'';position:absolute;inset:0;background:url(../../marque/motif-maison-twist-horizontal-toffee.png) repeat center/64cqw auto;opacity:.55}
+.dos-c>*{position:relative;z-index:1}
+.couv-c::before{content:'';position:absolute;inset:0;background:url(../../marque/motif-maison-twist-horizontal-toffee.png) repeat center/64cqw auto;opacity:.35}
