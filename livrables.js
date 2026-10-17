@@ -4,7 +4,7 @@
 // detail = la section dont les éléments peuvent être validés un par un (facultatif).
 
 export const LIVRABLES = [
-  { cle: 'doc-culture', min: 4, n: 1, court: 'Culture', titre: 'Votre culture', sous: 'Vision, mission, promesse, valeurs, standards de service, principes.', doc: 'docs/culture.html', detail: 'marque', usage: 'À montrer à votre équipe et à vos clients.' },
+  { cle: 'doc-culture', min: 4, n: 1, court: 'Culture', titre: 'Votre culture', sous: 'Vision, mission, promesse, valeurs, standards, principes : en magazine à feuilleter.', doc: 'docs/culture/', detail: 'marque', usage: 'À montrer à votre équipe et à vos clients.' },
   { cle: 'doc-ods', min: 5, n: 2, court: 'Offres', titre: 'Vos offres de services', sous: 'Vendeurs : votre offre en magazine, à feuilleter ou à envoyer en PDF.', doc: 'docs/ods/vendeurs.html', usage: 'À envoyer avant ou après une rencontre.' },
   { cle: 'doc-site', min: 6, n: 3, court: 'Site web', titre: 'Votre site web', sous: 'La maquette complète : accueil, je vends, j\'achète, l\'équipe, l\'Alerte.', doc: 'docs/site/index.html', usage: 'La base de votre nouveau site.' },
   { cle: 'doc-publications', min: 4, n: 4, court: 'Routine', titre: 'La routine de publications', sous: 'Ce qu\'on publie, quand, et les 4 premières semaines.', doc: 'docs/publications.html', usage: 'Le calendrier de votre présence en ligne.' },

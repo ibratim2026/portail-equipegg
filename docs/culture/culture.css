@@ -1,0 +1,78 @@
+/* Culture en magazine : s'appuie sur ../ods/magazine.css, ajoute seulement ce qui est propre à ce document. */
+.sous-encart{position:absolute;left:8cqw;right:8cqw;top:69cqw;bottom:9cqw;display:flex;flex-direction:column}
+.sous-encart .titre{color:var(--encre)}
+.sous-encart .citation{color:var(--encre);border-left-color:var(--blanc);font-size:3.9cqw}
+.expl{font-size:2.45cqw;color:var(--encre);margin:0}
+
+/* Sommaire */
+.sommaire{list-style:none;padding:0;margin:1cqw 0 0;display:grid;gap:0}
+.sommaire li{display:grid;grid-template-columns:9cqw 1fr;gap:2cqw;align-items:baseline;border-top:1px solid var(--ligne);padding:1.9cqw 0}
+.sommaire li:last-child{border-bottom:1px solid var(--ligne)}
+.sommaire span{font:700 4.6cqw/1 var(--pf);color:var(--rose)}
+.sommaire b{display:block;font:600 3cqw/1.2 var(--pf);color:var(--brun)}
+.sommaire small{display:block;font-size:2.05cqw;color:var(--doux);margin-top:.4cqw}
+
+/* Mission : une seule grande phrase */
+.grande-phrase{font:600 5.2cqw/1.25 var(--pf);color:var(--brun);margin:auto 0;padding-left:4cqw;border-left:.8cqw solid var(--rose)}
+.grande-phrase::before{content:'“';display:block;font:500 16cqw/.6 var(--pf);color:var(--rose);margin:0 0 1cqw -1cqw}
+
+/* Cartes */
+.cartes{display:grid;gap:2cqw}
+.cartes.deux{grid-template-columns:1fr 1fr}
+.carte{background:var(--blanc);border-top:.6cqw solid var(--rose);padding:2.6cqw 3cqw}
+.carte.sauge{border-top-color:var(--sauge)}
+.carte.toffee{border-top-color:var(--toffee)}
+.carte .lbl{margin-top:0}
+.carte h3{font:600 3.2cqw/1.3 var(--pf);color:var(--brun);margin:0 0 1.2cqw}
+.carte p{margin:0 0 1cqw;font-size:2.25cqw;color:var(--doux)}
+.carte p:last-child{margin-bottom:0}
+
+/* L'emboîtement vision → positionnement */
+.emboite{display:grid;gap:2cqw;margin-top:auto}
+.emboite div{display:flex;justify-content:space-between;align-items:baseline;gap:3cqw;background:var(--blanc);padding:2.6cqw 3.4cqw}
+.emboite div:nth-child(2){margin-left:5cqw}.emboite div:nth-child(3){margin-left:10cqw}.emboite div:nth-child(4){margin-left:15cqw}
+.emboite b{font:700 3.6cqw var(--pf);text-transform:uppercase;color:var(--brun)}
+.emboite span{font-size:2.3cqw;color:var(--encre);text-align:right}
+
+/* Valeurs */
+.valeurs6{display:grid;grid-template-columns:1fr 1fr;gap:1.8cqw}
+.valeurs6 div{background:var(--blanc);border-top:.6cqw solid var(--rose);padding:2.2cqw 2.6cqw}
+.valeurs6 div:nth-child(4n+2),.valeurs6 div:nth-child(4n+3){border-top-color:var(--sauge)}
+.valeurs6 b{display:block;font:600 2.9cqw/1.2 var(--pf);color:var(--brun);margin-bottom:.8cqw}
+.valeurs6 .def{display:block;font-size:2.15cqw;color:var(--brun);margin-bottom:.8cqw}
+.valeurs6 .voit{display:block;font-size:1.95cqw;color:var(--doux);font-style:italic}
+
+/* Forces */
+.forces{display:flex;flex-direction:column;gap:3cqw;margin:auto 0 5cqw}
+.forces span:nth-child(2){padding-left:8cqw}.forces span:nth-child(3){padding-left:16cqw}
+.texte.fin{margin-bottom:auto}
+.forces span{font:700 7.4cqw/1 var(--pf);text-transform:uppercase;color:var(--blanc)}
+
+/* Mots (expérience, personnalité) */
+.mots{display:flex;flex-wrap:wrap;gap:1.6cqw;margin:2cqw 0 3.4cqw}
+.mots span{font:600 3.2cqw var(--pf);text-transform:uppercase;letter-spacing:.04em;color:var(--brun);background:var(--creme);padding:1.2cqw 2.8cqw}
+.mots.grands span{font-size:4.6cqw;background:var(--blanc)}
+.texte{font-size:2.55cqw;color:var(--brun);margin:0 0 2cqw}
+.texte.encre{color:var(--encre)}
+.parole{font:400 3.3cqw/1.45 var(--pf);font-style:italic;color:var(--encre);margin:0}
+
+/* Personnalité : jamais… */
+.jamais{display:flex;gap:2cqw;margin-top:auto}
+.jamais div{flex:1;background:var(--creme2);padding:2.4cqw 2.8cqw}
+.jamais b{display:block;font:500 1.8cqw var(--jo);letter-spacing:.2em;text-transform:uppercase;color:var(--titre);margin-bottom:.6cqw}
+.jamais span{font:600 3cqw var(--pf);color:var(--brun)}
+
+/* Standards (variante de .plan) */
+.standards{list-style:none;padding:0;margin:0;display:grid;gap:1.7cqw}
+.standards li{display:grid;grid-template-columns:8cqw 1fr;gap:2.6cqw;align-items:start;border-top:1px solid var(--ligne);padding-top:1.7cqw}
+.standards li>span{font:700 6cqw/1 var(--pf);color:var(--rose)}
+.standards b{font:600 3cqw/1.25 var(--pf);color:var(--brun)}
+.standards p{margin:.5cqw 0 0;font-size:2.2cqw;color:var(--doux)}
+
+/* Principes */
+.principe{margin-bottom:3cqw}
+.principe.seul{margin-top:4cqw}
+.principe.seul p{font-size:2.8cqw;border-top:1px solid var(--ligne);padding-top:1.6cqw}
+.principe h3{font:700 3.8cqw/1.2 var(--pf);color:var(--brun);margin:0 0 1.4cqw}
+.principe p{font-size:2.35cqw;color:var(--doux);margin:0 0 1.2cqw}
+.principe .n{display:block;font:500 1.85cqw var(--jo);letter-spacing:.24em;text-transform:uppercase;color:var(--titre);margin-bottom:.8cqw}

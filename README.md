@@ -32,7 +32,7 @@ Les données (contenus, statuts, commentaires) sont dans Supabase, projet `equip
 
 ## Livrables — 7 documents finis (13 octobre 2026)
 - `livrables.js` : la liste des 7 documents (culture, offres, site, routine de publications, styles, idées, qui fait quoi), reliés aux éléments `doc-*` de la section `livrables` dans Supabase.
-- `docs/` : les documents eux-mêmes, présentables tels quels (web + impression PDF) : `culture.html`, `site/`, `publications.html`, `styles.html`, `idees.html`, `qui-fait-quoi.html`. Gabarit commun `doc.css` (styles et qui-fait-quoi utilisent aussi `hub.css`).
+- `docs/` : les documents eux-mêmes, présentables tels quels (web + impression PDF) : `culture/` (magazine), `site/`, `publications.html`, `styles.html`, `idees.html`, `qui-fait-quoi.html`. Gabarit commun `doc.css` (styles et qui-fait-quoi utilisent aussi `hub.css`).
 - Dans le portail : chaque document s'ouvre à gauche (bascule ordinateur / cellulaire), la zone de validation à droite (approuver, demander un changement sur une partie précise, question, note vocale, échanges). Les éléments détaillés (marque, styles, idées) restent validables un par un.
 - Les offres de services (doc-ods) sont « en préparation » tant que `doc` est vide dans `livrables.js`.
 
@@ -57,3 +57,6 @@ Source : le dossier « Marketing » partagé par Gabrielle (Guide des normes de 
 - Unité unique : **documents**. Temps estimé = champ `min` de chaque livrable (`livrables.js`), utilisé à l'accueil et dans le courriel de rappel.
 - Le bouton « Quitter » (déconnexion) est caché pour Gabrielle, pour qu'elle ne perde pas son accès.
 - **Console** : une ligne d'état (documents à valider, à traiter par toi, dernière activité), puis demandes de changement et questions; « Avancement par thème » et « Activité récente » sont pliés. Menu admin : Console, Vue cliente, Contenus (menu déroulant), Outils, Ressources.
+
+## Culture en magazine (17 octobre 2026)
+- `docs/culture/` : la culture en magazine à feuilleter de 14 pages, même format que l'offre vendeurs (`../ods/magazine.css` + `culture.css`, page-flip, `?impression` pour le PDF). Le texte est identique à l'ancienne page `culture.html`, qui est retirée.
