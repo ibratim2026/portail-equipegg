@@ -59,7 +59,7 @@ Source : le dossier « Marketing » partagé par Gabrielle (Guide des normes de 
 - **Console** : une ligne d'état (documents à valider, à traiter par toi, dernière activité), puis demandes de changement et questions; « Avancement par thème » et « Activité récente » sont pliés. Menu admin : Console, Vue cliente, Contenus (menu déroulant), Outils, Ressources.
 
 ## Culture en magazine (17 octobre 2026)
-- `docs/culture/` : la culture en magazine à feuilleter de 18 pages (couverture avec Gabrielle détourée, « En mode immobilier », pictogrammes et traits gestuels, page équipe), même format que l'offre vendeurs (`../ods/magazine.css` + `culture.css`, page-flip, `?impression` pour le PDF). Le texte est identique à l'ancienne page `culture.html`, qui est retirée.
+- `docs/culture/` : le **guide culture court**, magazine de 10 pages (couverture, vision + mission, promesse + positionnement, 6 valeurs + forces, standards, expérience + personnalité, principes de communication, **aide-mémoire d'une page à imprimer**, équipe, dos). Même format que l'offre vendeurs (`../ods/magazine.css` + `culture.css`, page-flip, `?impression` pour le PDF).
 
 ## Image de marque partout (17 octobre 2026)
 - `marque/marque.css` : la feuille de marque, chargée **en dernier** sur chaque page (portail, 7 documents, site, magazines). Titres en Objektiv Bold → Jost 700, capitales, approche 100; accroches (`<i>` dans un titre) en Saturday Rock → Ms Madi, toujours en noir; sous-titres en Ambroise → Playfair Display.

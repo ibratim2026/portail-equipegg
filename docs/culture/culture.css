@@ -180,3 +180,67 @@
 .dos-c .logo-img{width:40cqw;margin:0}
 .dos-c .script{font-size:8cqw}
 .dos-c .site{font:600 1.9cqw var(--jo);letter-spacing:.26em;text-transform:uppercase;color:#000;margin:0;position:relative;z-index:2}
+
+/* ===== Guide court (10 pages) ===== */
+.vision .bande{padding:5cqw 8cqw 7cqw}
+.vision .grande{font-size:4cqw}
+.mission-b{margin-top:3.4cqw;padding-top:3cqw;border-top:.4cqw solid rgba(0,0,0,.25)}
+.mission-b .rubrique{margin-bottom:1.4cqw}
+.mission-c{font:500 3cqw/1.4 var(--pf);color:#000;margin:0}
+.geant-g{font:700 9.6cqw/1 var(--jo);text-transform:uppercase;letter-spacing:.06em;color:#000;margin:2cqw 0 0}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:2.4cqw;margin-top:auto}
+.duo div{background:var(--creme);padding:2.8cqw}
+.duo .lbl{margin:0 0 1cqw;color:#000!important}
+.duo h3{font:600 2.9cqw/1.3 var(--pf);color:var(--brun)!important;margin:0 0 1.2cqw}
+.duo p{font-size:2cqw;line-height:1.45;margin:0;color:var(--brun)!important}
+.val6{display:grid;grid-template-columns:1fr 1fr;gap:1.8cqw;flex:1;align-content:start}
+.val6 div{background:var(--blanc);padding:2.2cqw 2.4cqw;border-top:.7cqw solid var(--rose)}
+.val6 div:nth-child(4n+2),.val6 div:nth-child(4n+3){border-top-color:var(--sauge)}
+.val6 .nb{font:700 4cqw/1 var(--jo);color:#8F7060}
+.val6 h3{font:700 2.3cqw/1.25 var(--jo);text-transform:uppercase;letter-spacing:.08em;color:var(--brun);margin:1cqw 0 .8cqw}
+.val6 .def{font:500 2.1cqw/1.4 var(--pf);color:var(--brun);margin:0 0 .8cqw}
+.val6 .voit{font-size:1.85cqw;line-height:1.4;color:var(--brun);margin:0}
+.forces-l{display:flex;align-items:center;justify-content:center;gap:1.8cqw;margin-top:2.6cqw;background:var(--toffee);padding:2.4cqw}
+.forces-l .lbl{margin:0 1.6cqw 0 0;color:#000}
+.forces-l b{font:700 2.6cqw var(--jo);text-transform:uppercase;letter-spacing:.1em;color:#000}
+.forces-l img{width:5cqw}
+.std-grille{align-content:start;margin-top:1cqw}
+.experience .ronds{margin-top:-13cqw}
+.experience .ronds span{width:17cqw;height:17cqw;font-size:2.3cqw}
+.perso{margin-top:auto;border-top:1px solid var(--toffee);padding-top:2.4cqw}
+.mots-l{display:flex;justify-content:center;gap:1.4cqw;margin:0 0 1.8cqw}
+.mots-l span{padding:1.2cqw 2.2cqw;font:700 2cqw var(--jo);text-transform:uppercase;letter-spacing:.12em;color:#000;background:var(--toffee)}
+.mots-l span:nth-child(2){background:var(--rose)}.mots-l span:nth-child(3){background:var(--sauge)}.mots-l span:nth-child(4){background:var(--creme);color:var(--brun);outline:1px solid var(--toffee)}
+.experience .texte{font-size:2.3cqw}
+.experience .parole{font-size:2.9cqw}
+.principe{margin-bottom:2.8cqw}
+.principe p{font-size:2.2cqw}
+.memo{display:grid;grid-template-columns:1fr 1fr;gap:2cqw;flex:1;align-content:start}
+.memo div{background:var(--creme);padding:2.6cqw 2.8cqw}
+.memo b{display:block;font:700 2.2cqw var(--jo);text-transform:uppercase;letter-spacing:.14em;color:var(--brun)!important;margin-bottom:1.4cqw}
+.memo ul{list-style:none;padding:0;margin:0;display:grid;gap:1.1cqw}
+.memo li{position:relative;padding-left:3.4cqw;font-size:2.15cqw;line-height:1.4;color:var(--brun)!important}
+.memo li::before{content:'';position:absolute;left:0;top:.5cqw;width:2cqw;height:2cqw;border:.35cqw solid var(--brun);border-radius:.4cqw}
+.memo-pied{margin:2.4cqw 0 0;text-align:center;font-size:2.3cqw}
+.memo-pied b{text-transform:uppercase;letter-spacing:.12em}
+/* QA */
+.val6{gap:1.4cqw}
+.val6 div{padding:1.8cqw 2.2cqw}
+.forces-l{margin-top:2cqw;padding:2cqw;margin-bottom:1.4cqw}
+.forces-l .lbl{white-space:nowrap}
+.geant-g{font-size:11cqw}
+.page.rose .texte{font-size:2.6cqw}
+.duo h3{font-size:3.3cqw}
+.duo p{font-size:2.25cqw}
+.std-grille{gap:2cqw}
+.std{padding:2.8cqw}
+.std-photo{position:absolute;left:8cqw;right:8cqw;bottom:9cqw;height:26cqw}
+.geant-g{font-size:9cqw;white-space:nowrap}
+.forces-l{gap:1.2cqw;padding:1.8cqw 1.6cqw}
+.forces-l b{font-size:2.15cqw;letter-spacing:.08em}
+.forces-l img{width:3.6cqw}
+.forces-l .lbl{font-size:1.6cqw;margin-right:.8cqw}
+.std-grille{flex:1;align-content:space-evenly}
+.std .n{font-size:7cqw}
+.std b{font-size:3.1cqw}
+.std p{font-size:2.3cqw}
