@@ -2,7 +2,7 @@
    aplats toffee / sauge / pastel rosé, photo en encart, titres en capitales + accroche manuscrite noire. */
 :root{
   --toffee:#CAB6A0; --toffee-f:#B59981; --sauge:#9FACA4; --sauge-f:#81968C;
-  --rose:#DCA39A; --rose-f:#CE817B; --creme:#F5F1EA; --titre:#8F7060; --brun:#70574A;
+  --rose:#DCA39A; --rose-f:#CE817B; --creme:#F5F1EA; --titre:#70574A; --brun:#70574A;
   --encre:#000; --blanc:#FFFFFF;
   --creme2:rgba(202,182,160,.26); --rosep:rgba(220,163,154,.24); --saugep:rgba(159,172,164,.26); --ligne:#CAB6A0;
   --rosef:var(--titre); --doux:var(--brun);
@@ -10,7 +10,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-height:100vh;color:var(--brun);font-family:var(--jo);display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
+body{background:#F5F1EA;min-height:100vh;color:var(--brun);font-family:var(--jo);display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
 .scene{width:min(1520px,96vw,calc((100vh - 130px) * 1.5));margin:28px auto 8px;flex:none}
 .livre{margin:0 auto}
 
@@ -24,11 +24,11 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 .p-in.plein{padding:0}
 .folio{position:absolute;bottom:3.4cqw;right:5cqw;margin:0;font:500 2.1cqw var(--jo);letter-spacing:.2em;color:var(--titre)}
 .page:nth-child(even) .folio{right:auto;left:5cqw}
-.folio.clair{color:rgba(0,0,0,.55)}
+.folio.clair{color:#000}
 .fond{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .voile{position:absolute;inset:0;background:linear-gradient(180deg,rgba(112,87,74,.55) 0%,rgba(112,87,74,.15) 40%,rgba(112,87,74,.75) 100%)}
 .voile.bas{background:linear-gradient(180deg,rgba(112,87,74,.05) 30%,rgba(112,87,74,.88) 100%)}
-.clair{color:var(--blanc)!important}
+.clair{color:#000!important}
 .clair-doux{color:var(--encre);margin-top:auto}
 
 .rubrique{font:500 1.95cqw var(--jo);letter-spacing:.3em;text-transform:uppercase;color:var(--titre);margin:0 0 2cqw}
@@ -37,14 +37,14 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 .rubrique.clair::after{background-image:url(../../marque/trait-court-noir.png);width:9cqw}
 .titre{font:700 5.6cqw/1.08 var(--pf);text-transform:uppercase;margin:0 0 3.4cqw;color:var(--titre)}
 .titre i,.mega i{display:block;font:400 6.4cqw/1.05 var(--al);text-transform:none;font-style:normal;color:var(--encre);margin-top:.4cqw;letter-spacing:0}
-.mega{font:700 9.6cqw/1 var(--pf);text-transform:uppercase;margin:0;color:var(--blanc)}
+.mega{font:700 9.6cqw/1 var(--pf);text-transform:uppercase;margin:0;color:#000}
 .mega i{font-size:10.5cqw}
 .titre i.en-ligne{display:inline;font-size:8cqw;margin-left:1.2cqw}
 .lbl{font:500 1.85cqw var(--jo);letter-spacing:.24em;text-transform:uppercase;color:var(--titre);margin:3.2cqw 0 1.4cqw}
 .chapeau{font:400 3.4cqw/1.45 var(--pf);font-style:italic;color:var(--brun);margin:0}
 .citation{font:600 4.4cqw/1.3 var(--pf);color:var(--brun);margin:0 0 3cqw;padding-left:3cqw;border-left:.6cqw solid var(--rose)}
 .petit{font-size:2cqw;color:var(--doux);margin-top:auto}
-.aconf{display:inline-block;font:600 1.5cqw var(--jo);letter-spacing:.08em;text-transform:uppercase;background:var(--rosep);color:var(--brun);border-radius:99px;padding:.3cqw 1.4cqw;vertical-align:.3cqw;margin-left:.6cqw}
+.aconf{display:inline-block;font:600 1.5cqw var(--jo);letter-spacing:.08em;text-transform:uppercase;background:var(--rosep);color:#000;border-radius:99px;padding:.3cqw 1.4cqw;vertical-align:.3cqw;margin-left:.6cqw}
 
 /* Logo officiel (PNG du dossier Image de marque) */
 .logo-img{display:block;width:30cqw;height:auto;margin:0 auto}
@@ -61,7 +61,7 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 .couv-txt{position:absolute;left:8cqw;right:8cqw;top:84cqw;text-align:center;color:var(--encre)}
 .sur{font:500 2cqw var(--jo);letter-spacing:.3em;text-transform:uppercase;margin:0 0 2cqw}
 .couv-sous{font:400 2.9cqw/1.45 var(--jo);color:var(--encre);max-width:84%;margin:3cqw auto 0}
-.couv-pied{position:absolute;left:0;right:0;bottom:5cqw;text-align:center;margin:0;font:500 1.9cqw var(--jo);letter-spacing:.24em;text-transform:uppercase;color:var(--brun)}
+.couv-pied{position:absolute;left:0;right:0;bottom:5cqw;text-align:center;margin:0;font:500 1.9cqw var(--jo);letter-spacing:.24em;text-transform:uppercase;color:#000}
 
 /* Mot de Gabrielle */
 .mot{display:grid;grid-template-columns:34% 1fr;gap:5cqw;align-items:start;margin-top:2cqw}
@@ -85,7 +85,7 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 /* Problématique */
 .questions{list-style:none;padding:0;margin:2cqw 0;display:grid;gap:3cqw}
 .questions li{display:flex;gap:3cqw;align-items:baseline}
-.questions span{font:700 9cqw/1 var(--pf);color:var(--blanc)}
+.questions span{font:700 9cqw/1 var(--pf);color:#000}
 .questions p{margin:0;font:500 4.4cqw/1.25 var(--pf);font-style:italic;color:var(--encre)}
 
 /* Offre */
@@ -103,7 +103,7 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 /* Processus et plan */
 .etapes,.plan{list-style:none;padding:0;margin:0;display:grid;gap:2.4cqw}
 .etapes li,.plan li{display:grid;grid-template-columns:12cqw 1fr;gap:3cqw;align-items:start;border-top:1px solid var(--ligne);padding-top:2.2cqw}
-.etapes span{font:700 7cqw/1 var(--pf);color:var(--rose)}
+.etapes span{font:700 7cqw/1 var(--pf);color:#8F7060}
 .plan span{font:500 2cqw var(--jo);letter-spacing:.14em;text-transform:uppercase;color:var(--titre);padding-top:.8cqw}
 .etapes b,.plan b{font:600 3.2cqw/1.25 var(--pf);color:var(--brun)}
 .etapes p,.plan p{margin:.6cqw 0 0;font-size:2.3cqw;color:var(--doux)}
@@ -111,8 +111,8 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 
 /* Tarifs */
 .tarif{background:var(--sauge);color:var(--encre);border-radius:0;padding:4cqw;text-align:center;margin-top:1cqw}
-.tarif-chiffre{font:700 11cqw/1 var(--pf);margin:0;color:var(--blanc)}
-.tarif-chiffre small{font-size:4cqw;color:var(--blanc)}
+.tarif-chiffre{font:700 11cqw/1 var(--pf);margin:0;color:#000}
+.tarif-chiffre small{font-size:4cqw;color:#000}
 .tarif-sous{margin:1.6cqw 0 0;color:var(--encre)}
 .facteurs{display:grid;grid-template-columns:repeat(2,1fr);gap:1.6cqw}
 .facteurs div{background:var(--blanc);border-radius:0;padding:2.2cqw 2.6cqw;font-size:2.4cqw}
@@ -129,7 +129,7 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 .chiffres{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw;margin-bottom:2.4cqw}
 .chiffres div{background:var(--toffee);border-radius:0;padding:2cqw;text-align:center}
 .chiffres div:nth-child(2){background:var(--sauge)}.chiffres div:nth-child(3){background:var(--rose)}
-.chiffres b{display:block;font:700 5.4cqw/1.1 var(--pf);color:var(--blanc)}
+.chiffres b{display:block;font:700 5.4cqw/1.1 var(--pf);color:#000}
 .chiffres span{color:var(--encre)!important}
 .chiffres span{font-size:1.9cqw;color:var(--doux)}
 .ventes{width:100%;border-collapse:collapse;font-size:2.05cqw}
@@ -155,7 +155,7 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 .invest p{margin:0}
 .cta{margin-top:auto;background:var(--toffee);color:var(--encre);border-radius:0;padding:3cqw 3.4cqw;display:flex;flex-direction:column;gap:.6cqw}
 .cta p{margin:0;font:500 1.8cqw var(--jo);letter-spacing:.24em;text-transform:uppercase;color:var(--encre)}
-.cta b{font:700 4.2cqw var(--pf);text-transform:uppercase;color:var(--blanc)}
+.cta b{font:700 4.2cqw var(--pf);text-transform:uppercase;color:#000}
 
 /* Dos */
 .dos-in{background:var(--toffee);color:var(--encre);align-items:center;justify-content:center;text-align:center;gap:4cqw}
@@ -164,16 +164,16 @@ body{background:radial-gradient(ellipse at top,#8F7060 0%,#70574A 75%);min-heigh
 .dos-in::after{content:'';position:absolute;left:0;right:0;bottom:0;height:14cqw;background:url(../../marque/motif-maison-twist-horizontal-toffee.png) center/90cqw auto repeat-x}
 .contacts{display:grid;gap:3cqw}
 .contacts div{display:flex;flex-direction:column;gap:.4cqw}
-.contacts b{font:700 3.2cqw var(--pf);text-transform:uppercase;letter-spacing:.03em;color:var(--blanc)}
+.contacts b{font:700 3.2cqw var(--pf);text-transform:uppercase;letter-spacing:.03em;color:#000}
 .contacts span{font-size:2.2cqw;color:var(--encre)}
-.dos-site{font:500 2cqw var(--jo);letter-spacing:.24em;text-transform:uppercase;color:var(--brun);margin:0;position:relative;z-index:1}
+.dos-site{font:500 2cqw var(--jo);letter-spacing:.24em;text-transform:uppercase;color:#000;margin:0;position:relative;z-index:1}
 
 /* Commandes */
-.commandes{display:flex;align-items:center;gap:14px;margin:14px 0 4px;color:var(--creme);font:500 14px var(--jo)}
-.commandes button{width:42px;height:42px;border-radius:50%;border:1px solid rgba(245,241,234,.3);background:transparent;color:var(--creme);font-size:24px;line-height:1;cursor:pointer}
-.commandes button:hover{background:rgba(245,241,234,.1)}
-.commandes a{color:var(--toffee);margin-left:10px}
-.astuce{color:rgba(245,241,234,.55);font:400 13px var(--jo);margin:0 0 24px;text-align:center;padding:0 16px}
+.commandes{display:flex;align-items:center;gap:14px;margin:14px 0 4px;color:var(--brun);font:500 14px var(--jo)}
+.commandes button{width:42px;height:42px;border-radius:50%;border:1px solid var(--brun);background:transparent;color:var(--brun);font-size:24px;line-height:1;cursor:pointer}
+.commandes button:hover{background:var(--brun);color:var(--creme)}
+.commandes a{color:var(--brun);margin-left:10px}
+.astuce{color:var(--brun);font:400 13px var(--jo);margin:0 0 24px;text-align:center;padding:0 16px}
 @media (max-width:640px){.scene{margin-top:16px}}
 
 /* Version PDF : toutes les pages, une par feuille */
@@ -187,3 +187,8 @@ body.impression .page{width:560px;height:747px;margin:0 auto 24px;box-shadow:0 0
 }
 
 @media (max-width:700px){.scene{width:min(96vw,calc((100vh - 130px) * .75))}}
+
+/* Les pages se détachent du fond lait frappé */
+.livre{filter:drop-shadow(0 14px 30px rgba(112,87,74,.28))}
+.page.couverture,.page{outline:1px solid rgba(112,87,74,.12)}
+body.impression .page{outline:0}

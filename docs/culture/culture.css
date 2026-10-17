@@ -8,7 +8,7 @@
 .sommaire{list-style:none;padding:0;margin:1cqw 0 0;display:grid;gap:0}
 .sommaire li{display:grid;grid-template-columns:9cqw 1fr;gap:2cqw;align-items:baseline;border-top:1px solid var(--ligne);padding:1.9cqw 0}
 .sommaire li:last-child{border-bottom:1px solid var(--ligne)}
-.sommaire span{font:700 4.6cqw/1 var(--pf);color:var(--rose)}
+.sommaire span{font:700 4.6cqw/1 var(--pf);color:#8F7060}
 .sommaire b{display:block;font:600 3cqw/1.2 var(--pf);color:var(--brun)}
 .sommaire small{display:block;font-size:2.05cqw;color:var(--doux);margin-top:.4cqw}
 
@@ -46,7 +46,7 @@
 .forces{display:flex;flex-direction:column;gap:3cqw;margin:auto 0 5cqw}
 .forces span:nth-child(2){padding-left:8cqw}.forces span:nth-child(3){padding-left:16cqw}
 .texte.fin{margin-bottom:auto}
-.forces span{font:700 7.4cqw/1 var(--pf);text-transform:uppercase;color:var(--blanc)}
+.forces span{font:700 7.4cqw/1 var(--pf);text-transform:uppercase;color:#000}
 
 /* Mots (expérience, personnalité) */
 .mots{display:flex;flex-wrap:wrap;gap:1.6cqw;margin:2cqw 0 3.4cqw}
@@ -65,7 +65,7 @@
 /* Standards (variante de .plan) */
 .standards{list-style:none;padding:0;margin:0;display:grid;gap:1.7cqw}
 .standards li{display:grid;grid-template-columns:8cqw 1fr;gap:2.6cqw;align-items:start;border-top:1px solid var(--ligne);padding-top:1.7cqw}
-.standards li>span{font:700 6cqw/1 var(--pf);color:var(--rose)}
+.standards li>span{font:700 6cqw/1 var(--pf);color:#8F7060}
 .standards b{font:600 3cqw/1.25 var(--pf);color:var(--brun)}
 .standards p{margin:.5cqw 0 0;font-size:2.2cqw;color:var(--doux)}
 
