@@ -372,6 +372,7 @@ function vueAccueil() {
         ? `Nous travaillons sur ${pluriel(enCours.length, 'votre demande de changement', 'vos demandes de changement')}. Nous vous écrivons dès que c'est prêt.`
         : 'Merci! Nous vous écrivons dès qu\'il y a du nouveau. Vous pouvez fermer cette page.'));
 
+  const video = el('button', { type: 'button', class: 'lien voir-video', onclick: ouvrirVideo }, '▶ Voir comment ça marche (1 min)');
   const liste = el('details', { class: 'docs tous-docs' }, el('summary', {}, 'Voir tous mes documents'),
     el('div', { class: 'docs-grille' }, LIVRABLES.map((L) => {
       const [txt, cls] = etatDoc(L);
@@ -380,7 +381,7 @@ function vueAccueil() {
         el('div', { class: 'doc-txt' }, el('h3', {}, L.titre), el('p', {}, L.sous)),
         el('span', { class: 'statut' }, txt));
     })));
-  return el('div', {}, intro, lot, liste);
+  return el('div', {}, intro, lot, video, liste);
 }
 
 // ---------- Un document + sa zone de validation ----------
@@ -1184,9 +1185,22 @@ function ouvrirIntro() {
         el('li', {}, el('span', { class: 'g-ico modif' }, svg(ICO.micro)), el('div', {}, el('b', {}, 'Je veux un changement'), el('small', {}, 'dites-le par écrit ou à voix haute')))),
       el('div', { class: 'modale-actions' },
         reste.length ? el('button', { type: 'button', class: 'bouton grand', onclick: () => { fermer(); demarrerParcours(); } }, 'C\'est parti', svg(ICO.fleche)) : null,
-        el('button', { type: 'button', class: reste.length ? 'lien' : 'bouton', onclick: fermer }, reste.length ? 'Plus tard' : 'Compris'))));
+        el('button', { type: 'button', class: reste.length ? 'lien' : 'bouton', onclick: fermer }, reste.length ? 'Plus tard' : 'Compris')),
+      el('button', { type: 'button', class: 'lien voir-video', onclick: () => { fermer(); ouvrirVideo(); } }, '▶ Voir comment ça marche (1 min)')));
   document.body.append(fond);
   fond.querySelector('.bouton')?.focus();
+}
+
+// ---------- Vidéo « comment ça marche » ----------
+function ouvrirVideo() {
+  const fermer = () => { document.removeEventListener('keydown', esc); fond.remove(); };
+  const esc = (e) => { if (e.key === 'Escape') fermer(); };
+  const fond = el('div', { class: 'modale-fond video-fond', onclick: (e) => { if (e.target === fond) fermer(); } },
+    el('div', { class: 'video-boite', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Comment ça marche' },
+      el('video', { src: 'medias/videos/guide-gabrielle.mp4', poster: 'medias/videos/guide-gabrielle.jpg', controls: '', autoplay: '', playsinline: '' }),
+      el('button', { type: 'button', class: 'bouton', onclick: fermer }, 'Fermer')));
+  document.addEventListener('keydown', esc);
+  document.body.append(fond);
 }
 
 demarrer();

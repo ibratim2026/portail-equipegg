@@ -590,3 +590,10 @@ body.client #deconnexion{display:none}
 .k-p-donnees li{background:var(--creme);border-radius:8px;padding:4px 9px;font-size:13px}
 .k-p-donnees li span{font-weight:600;margin-right:5px}
 .k-p-contact a{color:var(--encre);font-weight:500}
+
+/* Vidéo « comment ça marche » */
+.voir-video{display:block;margin:14px auto 0;font-weight:600}
+.lot + .voir-video{margin:16px 0 0}
+.video-fond{display:grid;place-items:center;padding:16px}
+.video-boite{display:flex;flex-direction:column;align-items:center;gap:12px;max-height:100%}
+.video-boite video{display:block;height:min(80dvh,860px);max-width:calc(100vw - 32px);aspect-ratio:9/16;background:#70574A;border-radius:18px;object-fit:contain}
