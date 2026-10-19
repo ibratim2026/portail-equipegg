@@ -30,6 +30,20 @@
 .tache b{display:block;font:600 18px/1.3 'Playfair Display',serif;color:#70574A;margin-bottom:4px}
 .tache p{margin:0;font-size:15px;line-height:1.5}
 .duree{font:700 13px Jost,sans-serif;letter-spacing:.06em;background:#F5F1EA;color:#70574A;padding:5px 10px;border-radius:99px;white-space:nowrap}
+/* Le temps de chacun */
+.temps2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:46px 0 0}
+.t-pers{display:flex;gap:18px;align-items:flex-start;background:#70574A;color:#F5F1EA;padding:24px 26px}
+.t-pers .av{width:64px;height:64px;border-radius:50%;flex:none;background:#DCA39A center/cover no-repeat;display:grid;place-items:center;font:700 22px Jost,sans-serif;color:#000}
+.t-pers>div{flex:1}
+.t-qui{margin:0;font:700 14px Jost,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#F5F1EA}
+.t-total{margin:4px 0 0;font:700 40px/1.05 Jost,sans-serif;color:#F5F1EA}
+.t-total small{font-size:16px;font-weight:500}
+.t-sem{margin:2px 0 12px;font-size:14.5px;color:#F5F1EA}
+.t-pers ul{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid rgba(245,241,234,.35);display:grid;gap:6px}
+.t-pers li{display:flex;justify-content:space-between;gap:10px;font-size:14.5px;color:#F5F1EA}
+.t-pers li b{color:#F5F1EA;font-weight:600}
+.t-note{text-align:center;font-size:13.5px;margin:12px 0 0}
+@media (max-width:760px){.temps2{grid-template-columns:1fr}}
 /* Le temps */
 .temps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:46px 0 0}
 .temps div{background:#70574A;color:#F5F1EA;padding:20px 22px;text-align:center}
@@ -56,10 +70,10 @@
     <div class="r-tete"><span class="ic"><img src="../marque/fleche-toffee-fonce.png" alt=""></span><div><h2>Chaque jour</h2><p>Garder l'œil ouvert.</p></div></div>
     <div class="r-corps">
       <div class="col"><h3><span class="mini" style="background-image:url(site/images/gabrielle.jpg)"></span>Gabrielle</h3>
-        <div class="tache"><div><b>Veille des réseaux sociaux</b><p>Répondre aux messages et aux commentaires, voir ce qui se passe sur ses comptes.</p></div></div>
+        <div class="tache"><div><b>Veille des réseaux sociaux</b><p>Répondre aux messages et aux commentaires, voir ce qui se passe sur ses comptes.</p></div><span class="duree">15 min</span></div>
       </div>
       <div class="col"><h3><span class="mini">W</span>William</h3>
-        <div class="tache"><div><b>Veille des publicités</b><p>Vérifier que les publicités roulent bien et réagir au besoin.</p></div></div>
+        <div class="tache"><div><b>Veille des publicités</b><p>Vérifier que les publicités roulent bien et réagir au besoin.</p></div><span class="duree">10 min</span></div>
       </div>
     </div>
   </section>
@@ -68,7 +82,7 @@
     <div class="r-tete"><span class="ic"><img src="../marque/maison-pastel-rose-fonce.png" alt=""></span><div><h2>Chaque semaine</h2><p>Préparer la semaine suivante.</p></div></div>
     <div class="r-corps">
       <div class="col"><h3><span class="mini" style="background-image:url(site/images/gabrielle.jpg)"></span>Gabrielle</h3>
-        <div class="tache"><div><b>Valider le contenu</b><p>Dans son espace de validation : elle approuve, ou dit ce qu'elle changerait.</p></div></div>
+        <div class="tache"><div><b>Valider le contenu</b><p>Dans son espace de validation : elle approuve, ou dit ce qu'elle changerait.</p></div><span class="duree">30 min</span></div>
       </div>
       <div class="col"><h3><span class="mini">W</span>William</h3>
         <div class="tache"><div><b>Créer et planifier le contenu</b><p>Les publications de la semaine suivante, prêtes et planifiées.</p></div><span class="duree">2 h</span></div>
@@ -80,7 +94,7 @@
     <div class="r-tete"><span class="ic"><img src="../marque/sapin-sauge-fonce.png" alt=""></span><div><h2>Chaque mois</h2><p>Tourner, mesurer, ajuster.</p></div></div>
     <div class="r-corps">
       <div class="col"><h3><span class="mini" style="background-image:url(site/images/gabrielle.jpg)"></span>Gabrielle</h3>
-        <div class="tache"><div><b>Tournage et montage de 12 Reels</b><p>Les vidéos du mois, dans ses maisons et son quotidien.</p></div></div>
+        <div class="tache"><div><b>Tournage et montage de 12 Reels</b><p>Les vidéos du mois, dans ses maisons et son quotidien. Environ une demi-journée de tournage et 6 h de montage.</p></div><span class="duree">10 h</span></div>
       </div>
       <div class="col"><h3><span class="mini">W</span>William</h3>
         <div class="tache"><div><b>Rapport de performance et ajustements</b><p>Ce que le marketing a donné ce mois-ci, et ce qu'on ajuste dans la stratégie.</p></div><span class="duree">2 h</span></div>
@@ -89,11 +103,15 @@
     </div>
   </section>
 
-  <div class="temps">
-    <div><b>12 Reels</b><span>par mois pour Gabrielle</span></div>
-    <div><b>2 h</b><span>par semaine pour William</span></div>
-    <div><b>5 h</b><span>par mois pour William, en plus</span></div>
+  <div class="temps2">
+    <div class="t-pers"><span class="av" style="background-image:url(site/images/gabrielle.jpg)" role="img" aria-label="Gabrielle"></span>
+      <div><p class="t-qui">Gabrielle</p><p class="t-total">≈ 17 h <small>par mois</small></p><p class="t-sem">environ 4 h par semaine</p>
+      <ul><li><span>Veille des réseaux</span><b>5 h</b></li><li><span>Validations</span><b>2 h</b></li><li><span>12 Reels</span><b>10 h</b></li></ul></div></div>
+    <div class="t-pers"><span class="av" aria-hidden="true">W</span>
+      <div><p class="t-qui">William</p><p class="t-total">≈ 16 h 30 <small>par mois</small></p><p class="t-sem">environ 4 h par semaine</p>
+      <ul><li><span>Veille des publicités</span><b>3 h 30</b></li><li><span>Contenu de la semaine</span><b>8 h</b></li><li><span>Rapport et ajustements</span><b>2 h</b></li><li><span>Campagne de pub</span><b>3 h</b></li></ul></div></div>
   </div>
+  <p class="t-note">Un mois compte environ 20 jours ouvrables et 4 semaines.</p>
 
   <footer class="pied"><span>L'équipe Gabrielle Germain · Royal LePage Altitude</span><span>« Faire équipe, à chaque étape. »</span></footer>
 </main>
