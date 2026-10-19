@@ -78,8 +78,8 @@ export const RESSOURCES = [
 
 <h3>Qui fait quoi</h3>
 <div class="r-qui">
-  <div><b>Vous et votre équipe</b><p>Filmer environ 10 minutes par jour ouvrable · rappeler les nouveaux contacts · valider ici, environ une fois par semaine.</p></div>
-  <div><b>William</b><p>Préparer et publier le contenu · gérer les publicités · mesurer chaque semaine · préparer le rendez-vous mensuel.</p></div>
+  <div><b>Vous et votre équipe</b><p>Chaque jour : veille de vos réseaux sociaux · chaque semaine : valider ici · chaque mois : tourner et monter 12 Reels.</p></div>
+  <div><b>William</b><p>Chaque jour : veille des publicités · chaque semaine : créer et planifier le contenu (2 h) · chaque mois : rapport de performance et ajustements (2 h), campagne de pub (3 h).</p></div>
 </div>
 
 <h3>Les mots à connaître</h3>
