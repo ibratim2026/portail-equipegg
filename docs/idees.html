@@ -53,13 +53,40 @@
   .grille9 .tete{display:none}
   .etage{grid-template-columns:44px 1fr;width:100%!important}.etage .part{grid-column:2;text-align:left}
 }
+/* Banque de mots et d'emojis */
+.banque{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.bq{background:#fff;border:1px solid #CAB6A0;padding:22px 24px}
+.bq.large{grid-column:1/-1}
+.bq h3{margin:0 0 4px;font:700 14px Jost,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#70574A}
+.bq .src-c{margin:0 0 14px;font-size:13.5px}
+.mots-b{display:flex;flex-wrap:wrap;gap:8px}
+.mots-b span{padding:8px 14px;font:600 15px Jost,sans-serif;color:#000}
+.mots-b.t span{background:#CAB6A0}.mots-b.r span{background:#DCA39A}.mots-b.s span{background:#9FACA4}
+.mots-b.signature span{font:400 30px/1.1 'Ms Madi',cursive;background:none;color:#000;padding:2px 10px 2px 0}
+.phrases{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.phrases li{font:500 italic 17px/1.4 'Playfair Display',serif;color:#70574A;padding-left:18px;position:relative}
+.phrases li::before{content:'';position:absolute;left:0;top:.6em;width:8px;height:8px;border-radius:50%;background:#DCA39A}
+.plutot{width:100%;border-collapse:collapse;font-size:15px}
+.plutot th{text-align:left;font:700 12px Jost,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#70574A;padding:0 10px 8px 0;border-bottom:1px solid #CAB6A0}
+.plutot td{padding:9px 10px 9px 0;border-bottom:1px solid #EAE2D7;vertical-align:top}
+.plutot td:first-child{text-decoration:line-through;text-decoration-color:#CE817B}
+.plutot td:last-child{font-weight:600}
+.emojis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.emo{display:flex;align-items:center;gap:12px;background:#F5F1EA;padding:10px 12px}
+.emo i{font-style:normal;font-size:28px;line-height:1}
+.emo b{display:block;font:600 14px Jost,sans-serif;color:#70574A}
+.emo span{font-size:12.5px}
+.emo.non{background:#fff;border:1px dashed #CE817B}
+.regle{display:flex;gap:14px;align-items:center;background:#70574A;color:#F5F1EA;padding:16px 20px;margin-top:16px;font-size:15px}
+.regle b{color:#F5F1EA;font-size:30px;line-height:1}
+@media (max-width:820px){.banque{grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="couv.css"><link rel="stylesheet" href="../marque/marque.css">
 </head><body>
 <header class="couv"><div class="couv-in">
   <img class="logo" src="../marque/logo-equipe_fond-moyen.png" alt="L'équipe Gabrielle Germain" width="900" height="463">
   <p class="sur">Plan de contenu</p><h1>Vos publications</h1><span class="script">et leur logique</span>
-  <p class="chapo">Chaque publication a un rôle : se faire connaître, obtenir le contact ou donner confiance. Voici la logique, puis 9 exemples à valider.</p>
+  <p class="chapo">Chaque publication a un rôle : se faire connaître, obtenir le contact ou donner confiance. Voici la logique, 9 exemples à valider et nos mots à nous.</p>
   <p class="meta">Royal LePage Altitude · Québec et Lévis · Octobre 2026</p></div><div class="motif" aria-hidden="true"></div></header>
 
 <main class="wrap">
@@ -95,6 +122,55 @@
     <article class="pub"><div class="vis tel"><div class="mq mq-terre"><p class="citation-s">« Je recommande Gabrielle à tout le monde! Elle est super compétente, à l'écoute. »<small>Jeremy, client</small></p></div></div><div class="txt"><span class="n-idee">Story</span><h3>Jeremy : « Je recommande Gabrielle à tout le monde »</h3><p class="act"><b>Ensuite :</b> elle réserve son plan d'achat de 20 minutes.</p></div></article>
   </div>
   <p class="reste">Les 51 autres idées suivent la même logique. Elles sont gardées pour les prochains mois : on vous les présentera au fil du calendrier.</p>
+</section>
+
+<section id="banque">
+  <span class="num">3 · Notre façon de parler</span><h2>La banque de mots et d'emojis</h2>
+  <p class="intro-p" style="margin-top:0">Les mots qu'on répète d'une publication à l'autre, pour qu'on reconnaisse l'équipe sans même voir le logo. Ils viennent de votre guide culture.</p>
+  <div class="banque">
+    <div class="bq large"><h3>Notre signature</h3><p class="src-c">La promesse : on la glisse partout, en accroche ou en fin de légende.</p>
+      <div class="mots-b signature"><span>Faire équipe, à chaque étape.</span><span>En mode immobilier</span></div></div>
+    <div class="bq"><h3>Ce que le client ressent</h3><p class="src-c">L'expérience client</p>
+      <div class="mots-b r"><span>à l'aise</span><span>ensemble</span><span>clair</span><span>rassuré</span><span>accompagné</span></div></div>
+    <div class="bq"><h3>Nos valeurs</h3><p class="src-c">Les 6 valeurs</p>
+      <div class="mots-b t"><span>qualité</span><span>ambition</span><span>équilibre</span><span>proximité</span><span>engagement</span><span>confiance</span></div></div>
+    <div class="bq"><h3>Notre méthode</h3><p class="src-c">Le positionnement et la façon de faire</p>
+      <div class="mots-b s"><span>les yeux de l'acheteur</span><span>pleine valeur</span><span>le bon plan</span><span>les vraies affaires</span><span>jusqu'au bout</span></div></div>
+    <div class="bq"><h3>Notre ton</h3><p class="src-c">La personnalité</p>
+      <div class="mots-b t"><span>sérieuse</span><span>chaleureuse</span><span>énergique</span><span>accomplie</span></div></div>
+    <div class="bq large"><h3>Des phrases qui nous ressemblent</h3><p class="src-c">À reprendre telles quelles dans les légendes et les vidéos.</p>
+      <ul class="phrases">
+        <li>On voit votre maison comme l'acheteur la verra.</li>
+        <li>Elle a les outils pour vendre ma propriété, peu importe laquelle.</li>
+        <li>On vous dit les vraies affaires : le prix, les délais, les risques.</li>
+        <li>Vous repartez avec un plan clair : budget, secteurs, échéancier.</li>
+        <li>Présents à chaque étape, jusqu'au bout.</li>
+      </ul></div>
+    <div class="bq large"><h3>Ce qu'on évite, et ce qu'on dit plutôt</h3><p class="src-c">Jamais vendeuse ni alarmiste, aucune promesse de résultat.</p>
+      <table class="plutot"><tr><th>On évite</th><th>On dit plutôt</th></tr>
+        <tr><td>« Une occasion à ne pas manquer! »</td><td>« Elle vous ressemble? Écrivez-moi. »</td></tr>
+        <tr><td>« Vendu en un temps record, garanti! »</td><td>« Vendue en 2 jours, au-dessus du prix demandé. »</td></tr>
+        <tr><td>« Dépêchez-vous, les prix montent! »</td><td>« Voici ce que disent les chiffres ce mois-ci. »</td></tr>
+        <tr><td>« Le meilleur courtier en ville »</td><td>« Une équipe qui fait équipe avec vous. »</td></tr>
+        <tr><td>« Tu » (sauf dans une citation de client)</td><td>« Vous », toujours</td></tr>
+      </table></div>
+    <div class="bq large"><h3>Nos emojis</h3><p class="src-c">Doux et utiles, jamais pour faire peur ou presser.</p>
+      <div class="emojis">
+        <div class="emo"><i>✨</i><div><b>La signature</b><span>à la fin de chaque légende</span></div></div>
+        <div class="emo"><i>🏡</i><div><b>La maison</b><span>vendre, acheter, chez soi</span></div></div>
+        <div class="emo"><i>🔑</i><div><b>Les clés</b><span>une vente, un premier achat</span></div></div>
+        <div class="emo"><i>🤝</i><div><b>Faire équipe</b><span>l'équipe, l'accompagnement</span></div></div>
+        <div class="emo"><i>👉</i><div><b>L'action</b><span>la seule chose à faire</span></div></div>
+        <div class="emo"><i>☕</i><div><b>Les coulisses</b><span>le vrai quotidien</span></div></div>
+        <div class="emo"><i>📍</i><div><b>Le secteur</b><span>fiches de propriété</span></div></div>
+        <div class="emo"><i>💲</i><div><b>Le prix</b><span>fiches de propriété</span></div></div>
+        <div class="emo"><i>🛏️</i><div><b>Les chambres</b><span>fiches de propriété</span></div></div>
+        <div class="emo"><i>🛁</i><div><b>Les salles de bain</b><span>fiches de propriété</span></div></div>
+        <div class="emo non"><i>🔥</i><div><b>Jamais</b><span>ni 🚨 💥 💰 : trop pressants</span></div></div>
+      </div>
+      <div class="regle"><b>3</b><span>Au plus 3 emojis par publication. Le ✨ en fait toujours partie.</span></div>
+    </div>
+  </div>
 </section>
 
 <footer class="pied"><span>L'équipe Gabrielle Germain · Royal LePage Altitude</span><span>« Faire équipe, à chaque étape. »</span></footer>
