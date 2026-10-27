@@ -144,6 +144,7 @@ body{background:#F5F1EA;min-height:100vh;color:var(--brun);font-family:var(--jo)
 .distinctions div{background:var(--blanc);border-radius:0;padding:1.8cqw 2.2cqw}
 .distinctions b{display:block;font:600 3cqw var(--pf);color:var(--brun)}
 .distinctions span{font-size:2cqw;color:var(--doux)}
+.distinctions div:last-child:nth-child(odd){grid-column:1/-1}
 
 /* Promesse */
 .promesse-mots{display:flex;gap:1.6cqw;margin:4cqw 0 3cqw}
