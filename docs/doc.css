@@ -74,6 +74,7 @@ section>h2::after{content:'';display:block;width:150px;height:14px;margin-top:8p
 @media print{
   body{background:#fff;font-size:12pt}
   .num,.mots span,.stage,.liste .n{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  section{break-inside:avoid-page}
+  section{break-inside:auto}
+  h2,h3{break-after:avoid}
   .valeur,.carte,.liste li{break-inside:avoid}
 }

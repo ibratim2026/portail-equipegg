@@ -165,7 +165,7 @@
 .retenir p{margin:0;font:600 1.8cqw var(--jo);letter-spacing:.3em;text-transform:uppercase;color:#000}
 
 /* ---------- 17 · L'équipe ---------- */
-.equipe-g{display:grid;grid-template-columns:repeat(3,1fr);gap:2.6cqw;margin-top:2cqw}
+.equipe-g{display:grid;grid-template-columns:repeat(4,1fr);gap:2cqw;margin-top:2cqw}
 .membre{text-align:center}
 .membre .ph{position:relative;aspect-ratio:3/4;overflow:hidden;margin-bottom:2cqw;box-shadow:1.6cqw 1.6cqw 0 var(--rose)}
 .membre:nth-child(2) .ph{box-shadow:1.6cqw 1.6cqw 0 var(--sauge)}
@@ -276,3 +276,11 @@
 .dos-c::before{content:'';position:absolute;inset:0;background:url(../../marque/motif-maison-twist-horizontal-toffee.png) repeat center/64cqw auto;opacity:.55}
 .dos-c>*{position:relative;z-index:1}
 .couv-c::before{content:'';position:absolute;inset:0;background:url(../../marque/motif-maison-twist-horizontal-toffee.png) repeat center/64cqw auto;opacity:.35}
+/* Équipe de 7 (28 oct. 2026) : photos carrées pour que la grille tienne sous le titre */
+.equipe-g .membre .ph{aspect-ratio:1/1;margin-bottom:1.4cqw;box-shadow:1.2cqw 1.2cqw 0 var(--rose)}
+.equipe-g .membre:nth-child(2) .ph,.equipe-g .membre:nth-child(6) .ph{box-shadow:1.2cqw 1.2cqw 0 var(--sauge)}
+.equipe-g .membre:nth-child(3) .ph,.equipe-g .membre:nth-child(7) .ph{box-shadow:1.2cqw 1.2cqw 0 var(--toffee)}
+.equipe-g .membre .ph img{object-position:50% 15%}
+.equipe-g .membre b{font-size:1.9cqw}
+.equipe-g .membre span{font-size:1.6cqw}
+.equipe-g{row-gap:3cqw}
