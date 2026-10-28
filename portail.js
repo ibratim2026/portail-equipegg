@@ -141,7 +141,6 @@ function rendre() {
     el('img', { class: 'logo', src: 'marque/logo-equipe_fond-clair.png', alt: 'L\'équipe Gabrielle Germain' }),
     el('nav', { 'aria-label': 'Sections' }, bouton(items[0]), el('div', { class: 'sep' }), items.slice(1).map((c) => bouton(c))),
     el('div', { class: 'bas' },
-      el('div', { class: 'partage' }, el('span', { class: 'av g' }, 'G'), el('span', { class: 'av w' }, 'W'), 'Gabrielle et William voient la même chose'),
       etat.membre?.role === 'admin' && !DEMO ? el('a', { class: 'lien', href: 'ancien.html' }, 'Console et prospects') : null,
       DEMO ? null : el('button', { type: 'button', class: 'lien', style: 'text-align:left', onclick: () => { try { localStorage.removeItem('gg-jeton'); } catch { /* rien */ } lienInvalide(); } }, 'Quitter')));
   const mob = el('nav', { class: 'onglets-mob', 'aria-label': 'Sections' }, items.map((c) => bouton(c, true)));
