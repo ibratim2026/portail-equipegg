@@ -3,32 +3,17 @@
  "titre": "Semaine du 2 novembre 2026",
  "elements": [
   {
-   "cle": "pub-2026-11-02-1",
+   "cle": "pub-2026-11-02-v3-1",
    "section_id": "contenu",
    "groupe": "2026-11-02",
-   "titre": "Les coûts autour de l'achat",
-   "sous_titre": "Préparation, sérénité",
-   "corps": "Le prix de la maison n'est pas le seul montant à prévoir. 🏡\n\nÀ l'achat : la mise de fonds, l'inspection, le notaire.\nAprès : la taxe de bienvenue, l'assurance prêt si votre mise de fonds est sous 20 %, le déménagement.\n\nVous repartez avec un plan clair : budget, secteurs, échéancier. Enregistrez-le pour votre budget.\n\nFaire équipe, à chaque étape. ✨\n\n#premierachat #budgetmaison #immobilierquebec #quebec #levis\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+   "titre": "« Un courtier, ça coûte cher à l'acheteur. » Mythe.",
+   "sous_titre": "Soulagement",
+   "corps": "Un courtier, ça coûte cher? 🏡\n\nPour l'acheteur, notre accompagnement est sans frais. On s'occupe du tri, des visites, de l'offre et de la négociation, avec vous.\n\nUn futur premier acheteur autour de vous? Partagez-le-lui.\n\nFaire équipe, à chaque étape. ✨\n\n#premierachat #immobilierquebec #courtierimmobilier #quebec #levis\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
    "medias": [
     {
-     "src": "contenu/2026-11-02/p1-1.jpg",
-     "type": "image",
-     "legende": "Page 1/4"
-    },
-    {
-     "src": "contenu/2026-11-02/p1-2.jpg",
-     "type": "image",
-     "legende": "Page 2/4"
-    },
-    {
-     "src": "contenu/2026-11-02/p1-3.jpg",
-     "type": "image",
-     "legende": "Page 3/4"
-    },
-    {
-     "src": "contenu/2026-11-02/p1-4.jpg",
-     "type": "image",
-     "legende": "Page 4/4"
+     "src": "contenu/2026-11-02/p1-reel.mp4",
+     "type": "video",
+     "affiche": "contenu/2026-11-02/p1-affiche.jpg"
     }
    ],
    "meta": {
@@ -36,52 +21,27 @@
     "jour": "Lundi 2 nov.",
     "heure": "18 h 30",
     "etage": "TOFU",
-    "format": "Carrousel",
+    "format": "Reel",
     "vendeur": false,
     "reserve": false,
-    "plateformes": "Instagram · Facebook"
+    "plateformes": "Instagram · Facebook · TikTok"
    },
    "ordre": 1,
    "statut": "a_valider",
    "version": 1
   },
   {
-   "cle": "pub-2026-11-02-2",
+   "cle": "pub-2026-11-02-v3-2",
    "section_id": "contenu",
    "groupe": "2026-11-02",
-   "titre": "Promesse d'achat acceptée ≠ propriétaire",
-   "sous_titre": "Soulagement",
-   "corps": "Votre offre est acceptée. Bravo! 🔑\n\nMais à ce moment-là, la maison ne vous appartient pas encore. Il reste les conditions (souvent l'inspection et le financement), leurs délais, puis la signature chez le notaire.\n\nC'est là que vous devenez propriétaire. Et là, on célèbre.\n\nEnregistrez-le pour votre premier achat. On vous accompagne à chaque étape.\n\nFaire équipe, à chaque étape. ✨\n\n#premierachat #immobilierquebec #promessedachat #quebec #levis\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+   "titre": "Rencontrez l'équipe",
+   "sous_titre": "Proximité, confiance",
+   "corps": "Une équipe, un même standard. 🤝\n\nAvec Gabrielle, des courtiers et une adjointe vous accompagnent, du premier appel jusqu'après la remise des clés. Toujours quelqu'un pour vous répondre.\n\nDans les prochaines semaines, on vous les présente un à un.\n\nFaire équipe, à chaque étape. ✨\n\n#equipeimmobiliere #immobilierquebec #remax1erchoix #quebec #levis\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
    "medias": [
     {
      "src": "contenu/2026-11-02/p2-1.jpg",
      "type": "image",
-     "legende": "Page 1/6"
-    },
-    {
-     "src": "contenu/2026-11-02/p2-2.jpg",
-     "type": "image",
-     "legende": "Page 2/6"
-    },
-    {
-     "src": "contenu/2026-11-02/p2-3.jpg",
-     "type": "image",
-     "legende": "Page 3/6"
-    },
-    {
-     "src": "contenu/2026-11-02/p2-4.jpg",
-     "type": "image",
-     "legende": "Page 4/6"
-    },
-    {
-     "src": "contenu/2026-11-02/p2-5.jpg",
-     "type": "image",
-     "legende": "Page 5/6"
-    },
-    {
-     "src": "contenu/2026-11-02/p2-6.jpg",
-     "type": "image",
-     "legende": "Page 6/6"
+     "legende": "Page 1/1"
     }
    ],
    "meta": {
@@ -89,7 +49,7 @@
     "jour": "Mardi 3 nov.",
     "heure": "18 h 30",
     "etage": "TOFU",
-    "format": "Carrousel",
+    "format": "Photo",
     "vendeur": false,
     "reserve": false,
     "plateformes": "Instagram · Facebook"
@@ -99,7 +59,7 @@
    "version": 1
   },
   {
-   "cle": "pub-2026-11-02-3",
+   "cle": "pub-2026-11-02-v3-3",
    "section_id": "contenu",
    "groupe": "2026-11-02",
    "titre": "La liste à vérifier avant votre première visite",
@@ -147,7 +107,7 @@
    "version": 1
   },
   {
-   "cle": "pub-2026-11-02-4",
+   "cle": "pub-2026-11-02-v3-4",
    "section_id": "contenu",
    "groupe": "2026-11-02",
    "titre": "Avant / après : petits gestes, grande différence",
@@ -190,52 +150,17 @@
    "version": 1
   },
   {
-   "cle": "pub-2026-11-02-5",
+   "cle": "pub-2026-11-02-v3-5",
    "section_id": "contenu",
    "groupe": "2026-11-02",
-   "titre": "Le vocabulaire de l'immobilier en 60 secondes",
-   "sous_titre": "Confiance",
-   "corps": "Préapprobation, inspection, certificat de localisation… 🔑\n\nLes mots de l'immobilier peuvent intimider. Voici les 6 qui reviennent le plus quand on achète, expliqués simplement.\n\nUn mot vous échappe? Écrivez-nous, on vous l'explique.\n\nFaire équipe, à chaque étape. ✨\n\n#premierachat #immobilierquebec #lexiqueimmobilier #quebec #levis\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+   "titre": "Le mot de Gabrielle",
+   "sous_titre": "Confiance, proximité",
+   "corps": "« Pour moi, vendre une maison, c'est beaucoup plus qu'une transaction. » 🏡\n\nC'est relié aux émotions, aux rêves et aux projets de vie qui viennent ensuite. C'est pour ça qu'on voit votre maison comme l'acheteur la verra, et qu'on reste jusqu'au bout.\n\nFaire équipe, à chaque étape. ✨\n\n#vendremamaison #immobilierquebec #courtiereimmobiliere #quebec #levis\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
    "medias": [
     {
      "src": "contenu/2026-11-02/p5-1.jpg",
      "type": "image",
-     "legende": "Page 1/8"
-    },
-    {
-     "src": "contenu/2026-11-02/p5-2.jpg",
-     "type": "image",
-     "legende": "Page 2/8"
-    },
-    {
-     "src": "contenu/2026-11-02/p5-3.jpg",
-     "type": "image",
-     "legende": "Page 3/8"
-    },
-    {
-     "src": "contenu/2026-11-02/p5-4.jpg",
-     "type": "image",
-     "legende": "Page 4/8"
-    },
-    {
-     "src": "contenu/2026-11-02/p5-5.jpg",
-     "type": "image",
-     "legende": "Page 5/8"
-    },
-    {
-     "src": "contenu/2026-11-02/p5-6.jpg",
-     "type": "image",
-     "legende": "Page 6/8"
-    },
-    {
-     "src": "contenu/2026-11-02/p5-7.jpg",
-     "type": "image",
-     "legende": "Page 7/8"
-    },
-    {
-     "src": "contenu/2026-11-02/p5-8.jpg",
-     "type": "image",
-     "legende": "Page 8/8"
+     "legende": "Page 1/1"
     }
    ],
    "meta": {
@@ -243,8 +168,8 @@
     "jour": "Vendredi 6 nov.",
     "heure": "18 h 30",
     "etage": "TOFU",
-    "format": "Carrousel",
-    "vendeur": false,
+    "format": "Image",
+    "vendeur": true,
     "reserve": false,
     "plateformes": "Instagram · Facebook"
    },
@@ -253,65 +178,45 @@
    "version": 1
   },
   {
-   "cle": "pub-2026-11-02-6",
+   "cle": "pub-2026-11-02-v3-6",
    "section_id": "contenu",
    "groupe": "2026-11-02",
-   "titre": "5 questions à poser pendant une visite libre",
+   "titre": "Visite libre ce weekend?",
    "sous_titre": "Préparation",
-   "corps": "Visite libre demain? Posez ces 5 questions. 🏡\n\n1. Depuis quand est-elle en vente?\n2. Pourquoi les propriétaires vendent-ils?\n3. Quels travaux ont été faits, et quand?\n4. Combien coûtent le chauffage et l'électricité?\n5. Y a-t-il déjà eu de l'eau?\n\nLes bonnes questions révèlent ce que la fiche ne dit pas.\n\n👉 Pour recevoir les propriétés qui vous ressemblent, écrivez « ALERTE » en message. C'est gratuit.\n\nFaire équipe, à chaque étape. ✨\n\n#visitelibre #premierachat #immobilierquebec #levis #quebec\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+   "corps": "Stories du samedi matin, 3 écrans dans l'ordre. Sur le 3e, on ajoute le sticker « Message » ou un lien vers l'Alerte.\n\n\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
    "medias": [
     {
      "src": "contenu/2026-11-02/p6-1.jpg",
      "type": "image",
-     "legende": "Page 1/7"
+     "legende": "Page 1/3"
     },
     {
      "src": "contenu/2026-11-02/p6-2.jpg",
      "type": "image",
-     "legende": "Page 2/7"
+     "legende": "Page 2/3"
     },
     {
      "src": "contenu/2026-11-02/p6-3.jpg",
      "type": "image",
-     "legende": "Page 3/7"
-    },
-    {
-     "src": "contenu/2026-11-02/p6-4.jpg",
-     "type": "image",
-     "legende": "Page 4/7"
-    },
-    {
-     "src": "contenu/2026-11-02/p6-5.jpg",
-     "type": "image",
-     "legende": "Page 5/7"
-    },
-    {
-     "src": "contenu/2026-11-02/p6-6.jpg",
-     "type": "image",
-     "legende": "Page 6/7"
-    },
-    {
-     "src": "contenu/2026-11-02/p6-7.jpg",
-     "type": "image",
-     "legende": "Page 7/7"
+     "legende": "Page 3/3"
     }
    ],
    "meta": {
     "semaine": "Semaine du 2 novembre 2026",
     "jour": "Samedi 7 nov.",
-    "heure": "18 h 30",
+    "heure": "9 h",
     "etage": "MOFU",
-    "format": "Carrousel",
+    "format": "Story",
     "vendeur": false,
     "reserve": false,
-    "plateformes": "Instagram · Facebook"
+    "plateformes": "Stories Instagram · Facebook"
    },
    "ordre": 6,
    "statut": "a_valider",
    "version": 1
   },
   {
-   "cle": "pub-2026-11-02-7",
+   "cle": "pub-2026-11-02-v3-7",
    "section_id": "contenu",
    "groupe": "2026-11-02",
    "titre": "Vendue en 2 jours à Limoilou : 374 900 $ demandé, 395 000 $ obtenu",
@@ -321,17 +226,7 @@
     {
      "src": "contenu/2026-11-02/p7-1.jpg",
      "type": "image",
-     "legende": "Page 1/3"
-    },
-    {
-     "src": "contenu/2026-11-02/p7-2.jpg",
-     "type": "image",
-     "legende": "Page 2/3"
-    },
-    {
-     "src": "contenu/2026-11-02/p7-3.jpg",
-     "type": "image",
-     "legende": "Page 3/3"
+     "legende": "Page 1/1"
     }
    ],
    "meta": {
@@ -339,7 +234,7 @@
     "jour": "Dimanche 8 nov.",
     "heure": "10 h",
     "etage": "BOFU",
-    "format": "Carrousel",
+    "format": "Image",
     "vendeur": true,
     "reserve": false,
     "plateformes": "Instagram · Facebook"
@@ -349,37 +244,27 @@
    "version": 1
   },
   {
-   "cle": "pub-2026-11-02-8",
+   "cle": "pub-2026-11-02-v3-8",
    "section_id": "contenu",
    "groupe": "2026-11-02",
-   "titre": "Les 3 erreurs des vendeurs pressés",
-   "sous_titre": "Lucidité",
-   "corps": "Vendre vite, oui. Trop vite, non. 🏡\n\nLes 3 erreurs qu'on voit le plus souvent :\n1. Le prix mal fixé.\n2. Les photos ratées.\n3. La maison pas prête.\n\nOn bâtit le bon plan avec vous, dès le départ. Partagez-le à un propriétaire qui pense vendre.\n\nFaire équipe, à chaque étape. ✨\n\n#vendremamaison #immobilierquebec #conseilsvendeurs #levis #quebec\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+   "titre": "Promesse d'achat acceptée ≠ propriétaire",
+   "sous_titre": "Soulagement",
+   "corps": "Votre offre est acceptée. Bravo! 🔑\n\nMais à ce moment-là, la maison ne vous appartient pas encore. Il reste les conditions (souvent l'inspection et le financement), leurs délais, puis la signature chez le notaire.\n\nC'est là que vous devenez propriétaire. Et là, on célèbre.\n\nEnregistrez-le pour votre premier achat. On vous accompagne à chaque étape.\n\nFaire équipe, à chaque étape. ✨\n\n#premierachat #immobilierquebec #promessedachat #quebec #levis\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
    "medias": [
     {
      "src": "contenu/2026-11-02/p8-1.jpg",
      "type": "image",
-     "legende": "Page 1/5"
+     "legende": "Page 1/3"
     },
     {
      "src": "contenu/2026-11-02/p8-2.jpg",
      "type": "image",
-     "legende": "Page 2/5"
+     "legende": "Page 2/3"
     },
     {
      "src": "contenu/2026-11-02/p8-3.jpg",
      "type": "image",
-     "legende": "Page 3/5"
-    },
-    {
-     "src": "contenu/2026-11-02/p8-4.jpg",
-     "type": "image",
-     "legende": "Page 4/5"
-    },
-    {
-     "src": "contenu/2026-11-02/p8-5.jpg",
-     "type": "image",
-     "legende": "Page 5/5"
+     "legende": "Page 3/3"
     }
    ],
    "meta": {
@@ -388,7 +273,7 @@
     "heure": "—",
     "etage": "TOFU",
     "format": "Carrousel",
-    "vendeur": true,
+    "vendeur": false,
     "reserve": true,
     "plateformes": "Instagram · Facebook"
    },

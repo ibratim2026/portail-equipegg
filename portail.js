@@ -157,6 +157,9 @@ function rendre() {
 
 // ---------- Validation : elle descend et valide une publication après l'autre ----------
 function carrousel(medias) {
+  if (medias[0]?.type === 'video') {
+    return el('div', { class: 'car' }, el('video', { class: 'reel', src: medias[0].src, poster: medias[0].affiche || null, controls: true, playsinline: true, preload: 'metadata' }));
+  }
   const piste = el('div', { class: 'piste' }, medias.map((m, i) => el('img', { src: m.src, alt: `Image ${i + 1} sur ${medias.length}`, loading: i ? 'lazy' : 'eager' })));
   const car = el('div', { class: 'car' }, piste);
   if (medias.length > 1) {
