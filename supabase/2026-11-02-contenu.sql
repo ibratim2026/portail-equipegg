@@ -51,7 +51,7 @@ Faire équipe, à chaque étape! ✨
 #vendremamaison #immobilierquebec #conseilsvendeurs #levis #quebec
 
 Gabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière', '[{"src": "contenu/2026-11-02/p4-1.jpg", "type": "image", "legende": "Page 1/4"}, {"src": "contenu/2026-11-02/p4-2.jpg", "type": "image", "legende": "Page 2/4"}, {"src": "contenu/2026-11-02/p4-3.jpg", "type": "image", "legende": "Page 3/4"}, {"src": "contenu/2026-11-02/p4-4.jpg", "type": "image", "legende": "Page 4/4"}]'::jsonb, '{"semaine": "Semaine du 2 novembre 2026", "jour": "Jeudi 5 nov.", "heure": "18 h 30", "etage": "TOFU", "format": "Carrousel", "vendeur": true, "reserve": false, "plateformes": "Instagram · Facebook"}'::jsonb, 4, 'a_valider'),
-  ('pub-2026-11-02-v3-5', 'contenu', '2026-11-02', 'Le mot de Gabrielle', 'Confiance, proximité', '« Pour moi, vendre une maison, c''est beaucoup plus qu''une transaction. » 🏡
+  ('pub-2026-11-02-v3-5', 'contenu', '2026-11-02', 'Le mot de Gabrielle', 'Confiance, proximité', '« Vendre une maison, c''est beaucoup plus qu''une transaction. » 🏡
 
 C''est relié aux émotions, aux rêves et aux projets de vie qui viennent ensuite. C''est pour ça qu''on voit votre maison comme l''acheteur la verra, et qu''on reste jusqu''au bout!
 
