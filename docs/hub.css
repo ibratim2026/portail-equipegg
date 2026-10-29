@@ -389,7 +389,7 @@ nav.onglets label small{display:block;font-size:11px;font-weight:400;opacity:.75
 .y-var{font-size:14px;background:#fff;border:1px dashed var(--ligne);border-radius:8px;padding:8px 10px;margin:8px 0 0}
 .y-flou{position:absolute;inset:0;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);background:rgba(112,87,74,.15)}
 .y-pano{gap:0}
-.y-pp{flex:0 0 170px;width:170px;padding:0;border-radius:0;border:0;border-right:1px dashed rgba(255,255,255,.5);background:#B59981 url('site/images/lac-automne.jpg') no-repeat;background-size:510px auto;background-position:var(--x) 30%;overflow:hidden;justify-content:flex-end}
+.y-pp{flex:0 0 170px;width:170px;padding:0;border-radius:0;border:0;border-right:1px dashed rgba(255,255,255,.5);background:#B59981;background-size:510px auto;background-position:var(--x) 30%;overflow:hidden;justify-content:flex-end}
 .y-pp:last-child{border-right:0}
 .y-pp::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;background:#B59981}
 .y-pp-logo{position:absolute;top:8px;left:10px;z-index:2;font:600 7.5px Jost,sans-serif;letter-spacing:.14em;color:#fff;background:#70574A;padding:3px 5px}
