@@ -239,7 +239,7 @@ function vueValidation() {
     faits === pubs.length ? el('div', { class: 'merci' }, el('span', { class: 'script' }, 'merci ' + prenom + '!'), el('p', {}, 'Tout est revu. William prépare la programmation de la semaine.')) : null);
 }
 
-// ---------- Publicités : 1 le but, 2 le budget (avec son impact), 3 chaque pub. Mots simples, une décision à la fois. ----------
+// ---------- Publicités : 1 le but, 2 le budget (avec son impact), 3 chaque pub. Mots simples; tout est visible, l'ordre guide. ----------
 function zoneBudget(p) {
   const m = p.meta || {}, opts = m.options || [], reco = m.recommande ?? opts.length - 1;
   if (p.statut !== 'a_valider' && !etat.ouverts.has(p.id)) {
@@ -261,7 +261,6 @@ function vuePublicites() {
   }
   const items = [objectif, budget, ...ads].filter(Boolean);
   const faits = items.filter((x) => x.statut !== 'a_valider').length;
-  const pret = [objectif, budget].every((x) => !x || x.statut !== 'a_valider');
   const etape = (n, titre, sous) => el('div', { class: 'etape-t' }, el('span', { class: 'num' }, n), el('div', {}, el('h2', {}, titre), sous ? el('p', {}, sous) : null));
   const carte = (p, contenu, zone) => el('article', { class: 'pub etape ' + (etat.ouverts.has(p.id) ? '' : p.statut) }, contenu, el('div', { class: 'pub-val' }, zone));
   return el('div', {},
@@ -275,7 +274,7 @@ function vuePublicites() {
       budget ? [etape('2', 'Le budget', 'Choisissez. Le chiffre sous chaque montant, c\'est ce que ça peut vous rapporter.'),
         carte(budget, zoneBudget(budget), el('p', { class: 'note-b' }, [budget.corps, budget.meta?.note].filter(Boolean).join(' ')))] : null,
       etape('3', 'Vos ' + ads.length + ' pubs', 'Regardez chaque pub. Une phrase ne vous ressemble pas? Dites-le.'),
-      pret ? ads.map((p) => {
+      ads.map((p) => {
         const m = p.meta || {};
         return el('article', { class: 'pub ' + (etat.ouverts.has(p.id) ? '' : p.statut), id: 'ad-' + p.ordre },
           carrousel(p.medias || []),
@@ -286,7 +285,7 @@ function vuePublicites() {
             el('div', { class: 'leg' }, (p.corps || '').replace(/\n+Gabrielle Germain, courtière[^\n]*$/, '').replace(/\n+Sources? :[^\n]*/g, '')), // la mention et les sources : utiles pour Meta, superflues pour elle
             m.condition ? el('p', { class: 'cond-pub' }, el('b', {}, 'À savoir : '), m.condition) : null),
           el('div', { class: 'pub-val' }, zoneValidation(p, 'On la lance telle quelle.')));
-      }) : el('div', { class: 'vide' }, 'Vos pubs s\'affichent ici dès que le but et le budget sont réglés.')),
+      })),
     faits === items.length ? el('div', { class: 'merci' }, el('span', { class: 'script' }, 'merci ' + prenom + '!'), el('p', {}, 'Tout est revu. William prépare le lancement.')) : null);
 }
 
