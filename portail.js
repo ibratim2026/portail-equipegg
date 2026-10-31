@@ -117,15 +117,15 @@ function semaine() {
   return { titre: liste[0].meta?.semaine || 'La semaine', pubs: liste };
 }
 const aValider = () => semaine().pubs.filter((x) => x.statut === 'a_valider').length;
-// Les publicités du mois le plus récent (section « publicites ») et leur plan (le document « doc-pub »).
+// Les publicités du mois le plus récent (section « publicites ») : d'abord les étapes (le but, le budget), puis les pubs.
 function campagne() {
-  const ads = etat.elements.filter((x) => x.section_id === 'publicites');
-  const plan = etat.elements.find((x) => x.cle === 'doc-pub') || null;
-  if (!ads.length) return { plan, ads: [] };
-  const dernier = ads.map((x) => x.groupe).sort().at(-1);
-  return { plan, ads: ads.filter((x) => x.groupe === dernier).sort((a, b) => a.ordre - b.ordre) };
+  const tout = etat.elements.filter((x) => x.section_id === 'publicites');
+  if (!tout.length) return { objectif: null, budget: null, ads: [] };
+  const dernier = tout.map((x) => x.groupe).sort().at(-1);
+  const mois = tout.filter((x) => x.groupe === dernier).sort((a, b) => a.ordre - b.ordre);
+  return { objectif: mois.find((x) => x.meta?.etape === 'objectif') || null, budget: mois.find((x) => x.meta?.etape === 'budget') || null, ads: mois.filter((x) => !x.meta?.etape) };
 }
-const aValiderPubs = () => { const { plan, ads } = campagne(); return ads.filter((x) => x.statut === 'a_valider').length + (plan?.statut === 'a_valider' ? 1 : 0); };
+const aValiderPubs = () => { const { objectif, budget, ads } = campagne(); return [objectif, budget, ...ads].filter((x) => x?.statut === 'a_valider').length; };
 const compte = (id) => (id === 'val-pub' ? aValider() : id === 'val-ads' ? aValiderPubs() : 0);
 const derniereNote = (id) => etat.commentaires.filter((c) => c.element_id === id && c.type === 'modifications').sort((a, b) => (a.cree_le < b.cree_le ? 1 : -1))[0]?.texte;
 
@@ -239,49 +239,54 @@ function vueValidation() {
     faits === pubs.length ? el('div', { class: 'merci' }, el('span', { class: 'script' }, 'merci ' + prenom + '!'), el('p', {}, 'Tout est revu. William prépare la programmation de la semaine.')) : null);
 }
 
-// ---------- Publicités : le plan, puis chaque pub (le visuel à gauche, le texte à droite) ----------
+// ---------- Publicités : 1 le but, 2 le budget (avec son impact), 3 chaque pub. Mots simples, une décision à la fois. ----------
+function zoneBudget(p) {
+  const m = p.meta || {}, opts = m.options || [], reco = m.recommande ?? opts.length - 1;
+  if (p.statut !== 'a_valider' && !etat.ouverts.has(p.id)) {
+    const choix = p.statut === 'approuve' ? `${opts[reco]?.montant} par mois` : (derniereNote(p.id) || 'Modification envoyée à William');
+    return el('div', { class: 'fait ' + p.statut }, el('span', {}, '✓ Votre choix : ' + choix),
+      el('button', { type: 'button', class: 'lien', onclick: () => { etat.ouverts.add(p.id); rendre(); } }, 'Changer d\'avis'));
+  }
+  return el('div', { class: 'choix-budget' }, opts.map((o, i) => el('button', { type: 'button', class: 'option' + (i === reco ? ' reco' : ''),
+    onclick: (e) => { e.currentTarget.disabled = true; i === reco ? decider(p, 'approbation') : decider(p, 'modifications', o.choix + ' par mois.'); } },
+    i === reco ? el('span', { class: 'conseil' }, 'Ce que je recommande') : null,
+    el('b', {}, o.montant), el('span', { class: 'par' }, o.par), el('span', { class: 'impact' }, o.impact), el('span', { class: 'cta' }, o.choix))));
+}
 function vuePublicites() {
-  const { plan, ads } = campagne();
-  const items = [plan, ...ads].filter(Boolean);
-  if (!items.length) {
+  const { objectif, budget, ads } = campagne();
+  const prenom = (etat.membre?.nom || 'Gabrielle').split(' ')[0];
+  if (!objectif && !ads.length) {
     return el('div', {}, el('div', { class: 'tete' }, el('h1', {}, 'Publicités')),
       el('div', { class: 'vide' }, el('span', { class: 'script' }, 'rien à valider'), 'Vos prochaines publicités arriveront ici. Vous recevrez un message de William.'));
   }
+  const items = [objectif, budget, ...ads].filter(Boolean);
   const faits = items.filter((x) => x.statut !== 'a_valider').length;
-  const prenom = (etat.membre?.nom || 'Gabrielle').split(' ')[0];
-  const fiche = (p) => {
-    const m = p.meta || {};
-    return el('dl', { class: 'fiche-pub' },
-      el('dt', {}, 'Titre'), el('dd', {}, m.titre_meta || ''), el('dt', {}, 'Sous le titre'), el('dd', {}, m.sous_titre_meta || ''),
-      el('dt', {}, 'Bouton'), el('dd', {}, m.bouton || ''), el('dt', {}, 'Il mène'), el('dd', {}, m.mene || ''));
-  };
+  const pret = [objectif, budget].every((x) => !x || x.statut !== 'a_valider');
+  const etape = (n, titre, sous) => el('div', { class: 'etape-t' }, el('span', { class: 'num' }, n), el('div', {}, el('h2', {}, titre), sous ? el('p', {}, sous) : null));
+  const carte = (p, contenu, zone) => el('article', { class: 'pub etape ' + (etat.ouverts.has(p.id) ? '' : p.statut) }, contenu, el('div', { class: 'pub-val' }, zone));
   return el('div', {},
     el('div', { class: 'tete' },
       el('div', {}, el('span', { class: 'script', style: 'font-size:36px;color:var(--script)' }, 'bonjour ' + prenom), el('h1', {}, 'Vos publicités de novembre')),
-      el('div', { class: 'sous' }, 'Avant le lancement')),
+      el('div', { class: 'sous' }, '3 étapes, environ 10 minutes')),
     el('div', { class: 'prog' }, el('div', { class: 'prog-t' }, `${faits} sur ${items.length} revues`), el('div', { class: 'prog-b' }, el('i', { style: `width:${faits / items.length * 100}%` }))),
     el('div', { class: 'fil' },
-      plan ? el('article', { class: 'pub plan ' + (etat.ouverts.has(plan.id) ? '' : plan.statut) },
-        el('div', { class: 'plan-tuile' },
-          el('div', { class: 'plan-chiffres' }, (plan.meta?.chiffres || []).map(([c, l]) => el('div', {}, el('b', {}, c), el('span', {}, l)))),
-          el('a', { class: 'btn plein', href: plan.meta?.doc || 'docs/publicite.html', target: '_blank', rel: 'noopener' }, 'Lire le plan')),
-        el('div', { class: 'pub-txt' },
-          el('div', { class: 'pub-meta' }, el('span', { class: 'etiq' }, 'Le plan')),
-          el('h2', {}, 'Le plan de la campagne'),
-          el('div', { class: 'leg' }, plan.corps || 'Le budget, qui verra vos pubs, ce que chaque pub doit rapporter, et 6 questions pour vous.')),
-        el('div', { class: 'pub-val' }, zoneValidation(plan, 'Le plan me convient.'))) : null,
-      ads.map((p) => {
+      objectif ? [etape('1', 'Le but', 'Est-ce bien ce que vous voulez?'),
+        carte(objectif, el('div', { class: 'leg grand' }, objectif.corps || ''), zoneValidation(objectif, 'C\'est bien ça, le but.'))] : null,
+      budget ? [etape('2', 'Le budget', 'Choisissez. Le chiffre sous chaque montant, c\'est ce que ça peut vous rapporter.'),
+        carte(budget, zoneBudget(budget), el('p', { class: 'note-b' }, [budget.corps, budget.meta?.note].filter(Boolean).join(' ')))] : null,
+      etape('3', 'Vos ' + ads.length + ' pubs', 'Regardez chaque pub. Une phrase ne vous ressemble pas? Dites-le.'),
+      pret ? ads.map((p) => {
         const m = p.meta || {};
         return el('article', { class: 'pub ' + (etat.ouverts.has(p.id) ? '' : p.statut), id: 'ad-' + p.ordre },
           carrousel(p.medias || []),
           el('div', { class: 'pub-txt' },
-            el('div', { class: 'pub-meta' }, el('span', { class: 'jr' }, 'Pub ' + p.ordre), m.groupe_pub ? el('span', { class: 'etiq' }, m.groupe_pub) : null, m.format ? el('span', { class: 'etiq' }, m.format) : null, m.budget ? el('span', { class: 'etiq' }, m.budget) : null),
+            el('div', { class: 'pub-meta' }, el('span', { class: 'jr' }, 'Pub ' + p.ordre), m.pour ? el('span', { class: 'etiq' }, m.pour) : null),
             el('h2', {}, p.titre),
-            el('div', { class: 'leg' }, p.corps || ''),
-            fiche(p),
-            m.condition ? el('p', { class: 'cond-pub' }, el('b', {}, 'Avant de la lancer : '), m.condition) : null),
+            m.role ? el('p', { class: 'role-pub' }, m.role) : null,
+            el('div', { class: 'leg' }, (p.corps || '').replace(/\n+Gabrielle Germain, courtière[^\n]*$/, '').replace(/\n+Sources? :[^\n]*/g, '')), // la mention et les sources : utiles pour Meta, superflues pour elle
+            m.condition ? el('p', { class: 'cond-pub' }, el('b', {}, 'À savoir : '), m.condition) : null),
           el('div', { class: 'pub-val' }, zoneValidation(p, 'On la lance telle quelle.')));
-      })),
+      }) : el('div', { class: 'vide' }, 'Vos pubs s\'affichent ici dès que le but et le budget sont réglés.')),
     faits === items.length ? el('div', { class: 'merci' }, el('span', { class: 'script' }, 'merci ' + prenom + '!'), el('p', {}, 'Tout est revu. William prépare le lancement.')) : null);
 }
 

@@ -152,3 +152,26 @@ main.page{padding:30px 34px 90px;min-width:0;max-width:1180px}
 .fiche-pub dt{font-weight:600;color:var(--brun)}
 .fiche-pub dd{margin:0}
 .cond-pub{background:var(--rose-pale);border-radius:10px;padding:10px 12px;font-size:14.5px;margin:0}
+
+/* Publicités en 3 étapes (31 oct. 2026) : le but, le budget, les pubs */
+.etape-t{display:flex;gap:14px;align-items:flex-start;margin:18px 0 -4px}
+.etape-t .num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--brun);color:#fff;display:grid;place-items:center;font:600 16px Jost}
+.etape-t h2{font:600 24px/1.2 'Playfair Display',serif;margin:2px 0 0}
+.etape-t p{margin:4px 0 0;color:var(--brun);font-size:15px}
+.pub.etape{display:block}
+.leg.grand{font-size:18px;line-height:1.6}
+.note-b{font-size:14px;color:var(--brun);margin:10px 0 0}
+.choix-budget{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.choix-budget .option{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:var(--papier);border:2px solid var(--ligne);border-radius:16px;padding:18px 18px 16px;cursor:pointer}
+.choix-budget .option.reco{border-color:var(--brun)}
+.choix-budget .option:hover{border-color:var(--brun)}
+.choix-budget .conseil{font-size:12.5px;font-weight:600;color:var(--brun)}
+.choix-budget b{font:600 32px/1.1 'Playfair Display',serif}
+.choix-budget .par{font-size:14px;color:var(--brun)}
+.choix-budget .impact{font-size:16px;font-weight:600;margin-top:6px}
+.choix-budget .cta{margin-top:10px;font-size:14.5px;font-weight:600;color:var(--brun);text-decoration:underline}
+.role-pub{font-size:16px;font-weight:500;margin:0}
+@media (max-width:760px){.choix-budget{grid-template-columns:1fr}}
+.pub.etape .note-b{margin:0}
+.pub.etape .choix-budget+.pub-val,.pub.etape > .choix-budget{margin-bottom:4px}
+.choix-budget b,.plan-chiffres b{font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1}
