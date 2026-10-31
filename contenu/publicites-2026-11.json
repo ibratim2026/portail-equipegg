@@ -126,35 +126,6 @@
       }
     },
     {
-      "cle": "pub-2026-11-p4",
-      "section_id": "publicites",
-      "groupe": "2026-11",
-      "titre": "Rémi & Valérie",
-      "sous_titre": "Pour les acheteurs",
-      "corps": "Vous avez peur de ne rien trouver dans votre budget?\n\nRémi et Valérie aussi. Aujourd'hui, ils sont propriétaires.\n\nCommencez par l'Alerte immobilière gratuite : les propriétés qui vous ressemblent, et une équipe qui vous aide à y voir clair. Sans frais pour l'acheteur.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
-      "medias": [
-        {
-          "src": "docs/pub/p4-fil.jpg",
-          "type": "image",
-          "legende": "Fil"
-        },
-        {
-          "src": "docs/pub/p4-story.jpg",
-          "type": "image",
-          "legende": "Story"
-        }
-      ],
-      "ordre": 4,
-      "statut": "a_valider",
-      "version": 1,
-      "meta": {
-        "pour": "Pour les acheteurs",
-        "role": "Elle rassure les premiers acheteurs avec les mots de Rémi et Valérie.",
-        "bouton": "S'inscrire",
-        "condition": "L'accord écrit de Rémi et Valérie. Sans lui, cette pub reste en pause."
-      }
-    },
-    {
       "cle": "pub-2026-11-p5",
       "section_id": "publicites",
       "groupe": "2026-11",
@@ -173,7 +144,7 @@
           "legende": "Story"
         }
       ],
-      "ordre": 5,
+      "ordre": 4,
       "statut": "a_valider",
       "version": 1,
       "meta": {
@@ -181,35 +152,6 @@
         "role": "Elle montre ce que l'Alerte envoie : seulement les propriétés qui leur ressemblent.",
         "bouton": "S'inscrire",
         "condition": null
-      }
-    },
-    {
-      "cle": "pub-2026-11-p6",
-      "section_id": "publicites",
-      "groupe": "2026-11",
-      "titre": "Combien vaut votre maison aux yeux d'un acheteur?",
-      "sous_titre": "Pour les vendeurs",
-      "corps": "Vous pensez vendre, mais vous ne savez pas par où commencer?\n\nAvant les photos, avant le prix, on regarde votre propriété avec les yeux de l'acheteur : ce qui lui donne de la valeur, ce qui lui en enlève, ce qu'on peut améliorer.\n\nRecevez une évaluation honnête de votre propriété, sans engagement.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
-      "medias": [
-        {
-          "src": "docs/pub/p6-fil.jpg",
-          "type": "image",
-          "legende": "Fil"
-        },
-        {
-          "src": "docs/pub/p6-story.jpg",
-          "type": "image",
-          "legende": "Story"
-        }
-      ],
-      "ordre": 6,
-      "statut": "a_valider",
-      "version": 1,
-      "meta": {
-        "pour": "Pour les vendeurs",
-        "role": "Elle offre une évaluation aux gens qui pensent vendre.",
-        "bouton": "En savoir plus",
-        "condition": "Votre accord pour l'évaluation gratuite. Sans lui, cette pub reste en pause."
       }
     },
     {
@@ -231,7 +173,7 @@
           "legende": "Story"
         }
       ],
-      "ordre": 7,
+      "ordre": 5,
       "statut": "a_valider",
       "version": 1,
       "meta": {
@@ -239,35 +181,6 @@
         "role": "Elle prouve votre méthode avec une vraie vente, à Limoilou.",
         "bouton": "En savoir plus",
         "condition": "Votre accord pour l'évaluation gratuite. Sans lui, cette pub reste en pause."
-      }
-    },
-    {
-      "cle": "pub-2026-11-p8",
-      "section_id": "publicites",
-      "groupe": "2026-11",
-      "titre": "20 minutes. Un plan clair.",
-      "sous_titre": "Pour ceux qui vous connaissent déjà",
-      "corps": "Vous y pensez depuis un moment?\n\n20 minutes avec l'équipe pour bâtir votre plan d'achat : votre budget, vos secteurs, votre échéancier. Vous repartez avec un plan clair, même si vous n'achetez pas avant un an.\n\nSans frais pour l'acheteur.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
-      "medias": [
-        {
-          "src": "docs/pub/p8-fil.jpg",
-          "type": "image",
-          "legende": "Fil"
-        },
-        {
-          "src": "docs/pub/p8-story.jpg",
-          "type": "image",
-          "legende": "Story"
-        }
-      ],
-      "ordre": 8,
-      "statut": "a_valider",
-      "version": 1,
-      "meta": {
-        "pour": "Pour ceux qui vous connaissent déjà",
-        "role": "Elle parle seulement aux gens qui vous connaissent déjà, et leur propose 20 minutes.",
-        "bouton": "Réserver",
-        "condition": "Elle commence le 16 novembre."
       }
     }
   ]
