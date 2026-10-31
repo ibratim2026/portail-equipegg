@@ -1,4 +1,4 @@
-// Les 7 livrables présentés à Gabrielle : chaque document fini + sa zone de validation.
+// Les 8 livrables présentés à Gabrielle : chaque document fini + sa zone de validation.
 // cle = l'élément correspondant dans Supabase (section « livrables »). doc = la page à afficher.
 // min = temps de lecture estimé (minutes), utilisé à l'accueil et dans le courriel de rappel.
 // detail = la section dont les éléments peuvent être validés un par un (facultatif).
@@ -11,4 +11,5 @@ export const LIVRABLES = [
   { cle: 'doc-styles', min: 4, n: 5, court: 'Styles', titre: 'Les styles de publication', sous: 'Reels, carrousels, photos, stories : un exemple de chaque style, à approuver.', doc: 'docs/styles.html', detail: 'styles', usage: 'Le guide pour toute personne qui produit votre contenu.' },
   { cle: 'doc-idees', min: 4, n: 6, court: 'Publications', titre: 'Vos publications et leur logique', sous: 'La logique (se faire connaître, obtenir le contact, donner confiance), 9 publications à valider et notre banque de mots et d\'emojis.', doc: 'docs/idees.html', detail: 'idees', usage: 'Comment chaque publication vous amène des clients.' },
   { cle: 'doc-roles', min: 2, n: 7, court: 'Qui fait quoi', titre: 'Qui fait quoi', sous: 'Vos routines et celles de William : chaque jour, chaque semaine, chaque mois.', doc: 'docs/qui-fait-quoi.html', usage: 'Pour que chacun sache ce qu\'il a à faire.' },
+  { cle: 'doc-pub', min: 5, n: 8, court: 'Publicité', titre: 'La campagne publicitaire', sous: 'Le budget, sa répartition, et les 8 pubs avec leur texte.', doc: 'docs/publicite.html', usage: 'La campagne Facebook et Instagram du premier mois.' },
 ];
