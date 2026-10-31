@@ -1,0 +1,289 @@
+{
+  "mois": "2026-11",
+  "titre": "Vos publicités de novembre",
+  "elements": [
+    {
+      "cle": "doc-pub",
+      "section_id": "livrables",
+      "groupe": "Documents",
+      "titre": "La campagne publicitaire",
+      "sous_titre": "",
+      "corps": "Le budget, qui verra vos pubs, ce que chaque pub doit rapporter, et 6 questions pour vous.",
+      "medias": [],
+      "ordre": 8,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "doc": "docs/publicite.html",
+        "chiffres": [
+          [
+            "1 500 $",
+            "du 2 nov. au 1er déc."
+          ],
+          [
+            "50 $",
+            "par soir, de 18 h à minuit"
+          ],
+          [
+            "8",
+            "pubs"
+          ]
+        ]
+      }
+    },
+    {
+      "cle": "pub-2026-11-p1",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "Sans frais",
+      "sous_titre": "Se faire connaître",
+      "corps": "Un courtier, ça coûte cher? 🏡\n\nPour l'acheteur, l'accompagnement de l'équipe est sans frais. On s'occupe du tri, des visites, de l'offre et de la négociation, avec vous.\n\nFaire équipe, à chaque étape.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p1-video.mp4",
+          "type": "video",
+          "affiche": "docs/pub/p1-affiche.jpg"
+        }
+      ],
+      "ordre": 1,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "groupe_pub": "Se faire connaître",
+        "format": "Vidéo verticale",
+        "budget": "10 puis 5 $/soir",
+        "titre_meta": "L'équipe Gabrielle Germain",
+        "sous_titre_meta": "Québec et Lévis",
+        "bouton": "En savoir plus",
+        "mene": "Vers votre page. On veut surtout une vue complète de la vidéo.",
+        "condition": null
+      }
+    },
+    {
+      "cle": "pub-2026-11-p2",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "La facture surprise",
+      "sous_titre": "Se faire connaître",
+      "corps": "Une maison de 400 000 $ à Québec? Prévoyez 4 110 $ de taxe de bienvenue. 🏡\n\nLa facture de la Ville arrive après l'achat. Bonne nouvelle : elle se paie en 3 versements sans intérêt. Et pour un premier achat, un nouveau crédit du Québec peut vous la rembourser, jusqu'à 5 875 $.\n\nEnregistrez-le pour votre budget.\n\nSources : barème 2026 de la Ville de Québec; crédit pour un premier achat annoncé par le gouvernement du Québec.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p2-video.mp4",
+          "type": "video",
+          "affiche": "docs/pub/p2-affiche.jpg"
+        }
+      ],
+      "ordre": 2,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "groupe_pub": "Se faire connaître",
+        "format": "Vidéo verticale",
+        "budget": "10 puis 5 $/soir",
+        "titre_meta": "L'équipe Gabrielle Germain",
+        "sous_titre_meta": "Québec et Lévis",
+        "bouton": "En savoir plus",
+        "mene": "Vers votre page. On veut surtout une vue complète de la vidéo.",
+        "condition": null
+      }
+    },
+    {
+      "cle": "pub-2026-11-p3",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "Encore ce soir à faire défiler les annonces?",
+      "sous_titre": "Acheteurs · Alerte immobilière",
+      "corps": "Encore ce soir à faire défiler les annonces? 🏡\n\nChercher une propriété à Québec ou à Lévis, ça peut vite devenir un deuxième emploi. Activez votre Alerte immobilière gratuite : vous recevez seulement les propriétés qui correspondent à vos critères, et une vraie personne de l'équipe répond à vos questions.\n\nGratuit. Aucun engagement.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p3-fil.jpg",
+          "type": "image",
+          "legende": "Fil"
+        },
+        {
+          "src": "docs/pub/p3-story.jpg",
+          "type": "image",
+          "legende": "Story"
+        }
+      ],
+      "ordre": 3,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "groupe_pub": "Acheteurs",
+        "format": "Image · fil et story",
+        "budget": "25 $/soir",
+        "titre_meta": "Alerte immobilière gratuite",
+        "sous_titre_meta": "Québec et Lévis",
+        "bouton": "S'inscrire",
+        "mene": "Vers un court formulaire, sans quitter Facebook. Les inscriptions arrivent dans Follow Up Boss.",
+        "condition": null
+      }
+    },
+    {
+      "cle": "pub-2026-11-p4",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "Rémi & Valérie",
+      "sous_titre": "Acheteurs · Alerte immobilière",
+      "corps": "Vous avez peur de ne rien trouver dans votre budget?\n\nRémi et Valérie aussi. Aujourd'hui, ils sont propriétaires.\n\nCommencez par l'Alerte immobilière gratuite : les propriétés qui vous ressemblent, et une équipe qui vous aide à y voir clair. Sans frais pour l'acheteur.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p4-fil.jpg",
+          "type": "image",
+          "legende": "Fil"
+        },
+        {
+          "src": "docs/pub/p4-story.jpg",
+          "type": "image",
+          "legende": "Story"
+        }
+      ],
+      "ordre": 4,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "groupe_pub": "Acheteurs",
+        "format": "Image · fil et story",
+        "budget": "25 $/soir",
+        "titre_meta": "Alerte immobilière gratuite",
+        "sous_titre_meta": "Sans frais pour l'acheteur",
+        "bouton": "S'inscrire",
+        "mene": "Vers un court formulaire, sans quitter Facebook. Les inscriptions arrivent dans Follow Up Boss.",
+        "condition": "L'accord écrit de Rémi et Valérie. Sans lui, cette pub reste en pause."
+      }
+    },
+    {
+      "cle": "pub-2026-11-p5",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "Arrêtez de chercher à l'aveugle",
+      "sous_titre": "Acheteurs · Alerte immobilière",
+      "corps": "Premier achat à Québec ou à Lévis? Vous n'avez pas à tout savoir pour commencer.\n\nDites-nous ce que vous cherchez : le type de propriété, les secteurs, votre budget. Vous recevez par courriel seulement ce qui correspond, et vous posez vos questions quand vous êtes prêts.\n\nGratuit. Aucun engagement.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p5-fil.jpg",
+          "type": "image",
+          "legende": "Fil"
+        },
+        {
+          "src": "docs/pub/p5-story.jpg",
+          "type": "image",
+          "legende": "Story"
+        }
+      ],
+      "ordre": 5,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "groupe_pub": "Acheteurs",
+        "format": "Image · fil et story",
+        "budget": "25 $/soir",
+        "titre_meta": "Alerte immobilière gratuite",
+        "sous_titre_meta": "Québec et Lévis",
+        "bouton": "S'inscrire",
+        "mene": "Vers un court formulaire, sans quitter Facebook. Les inscriptions arrivent dans Follow Up Boss.",
+        "condition": null
+      }
+    },
+    {
+      "cle": "pub-2026-11-p6",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "Combien vaut votre maison aux yeux d'un acheteur?",
+      "sous_titre": "Vendeurs · Évaluation gratuite",
+      "corps": "Vous pensez vendre, mais vous ne savez pas par où commencer?\n\nAvant les photos, avant le prix, on regarde votre propriété avec les yeux de l'acheteur : ce qui lui donne de la valeur, ce qui lui en enlève, ce qu'on peut améliorer.\n\nRecevez une évaluation honnête de votre propriété, sans engagement.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p6-fil.jpg",
+          "type": "image",
+          "legende": "Fil"
+        },
+        {
+          "src": "docs/pub/p6-story.jpg",
+          "type": "image",
+          "legende": "Story"
+        }
+      ],
+      "ordre": 6,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "groupe_pub": "Vendeurs",
+        "format": "Image · fil et story",
+        "budget": "15 $/soir",
+        "titre_meta": "Évaluation gratuite de votre propriété",
+        "sous_titre_meta": "Sans engagement",
+        "bouton": "En savoir plus",
+        "mene": "Vers un court formulaire d'évaluation. Les demandes arrivent dans Follow Up Boss.",
+        "condition": "Votre accord pour l'évaluation gratuite. Sans lui, cette pub reste en pause."
+      }
+    },
+    {
+      "cle": "pub-2026-11-p7",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "Vendue en 2 jours à Limoilou",
+      "sous_titre": "Vendeurs · Évaluation gratuite",
+      "corps": "Affichée à 374 900 $. Vendue 395 000 $. En 2 jours. 🔑\n\nDerrière ce résultat : une mise en marché pensée pour l'acheteur, et une équipe présente à chaque étape.\n\nChaque propriété est différente. Pour savoir ce que la vôtre peut aller chercher, commencez par une évaluation gratuite.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p7-fil.jpg",
+          "type": "image",
+          "legende": "Fil"
+        },
+        {
+          "src": "docs/pub/p7-story.jpg",
+          "type": "image",
+          "legende": "Story"
+        }
+      ],
+      "ordre": 7,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "groupe_pub": "Vendeurs",
+        "format": "Image · fil et story",
+        "budget": "15 $/soir",
+        "titre_meta": "Évaluation gratuite de votre propriété",
+        "sous_titre_meta": "Sans engagement",
+        "bouton": "En savoir plus",
+        "mene": "Vers un court formulaire d'évaluation. Les demandes arrivent dans Follow Up Boss.",
+        "condition": "Votre accord pour l'évaluation gratuite. Sans lui, cette pub reste en pause."
+      }
+    },
+    {
+      "cle": "pub-2026-11-p8",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "20 minutes. Un plan clair.",
+      "sous_titre": "Relance",
+      "corps": "Vous y pensez depuis un moment?\n\n20 minutes avec l'équipe pour bâtir votre plan d'achat : votre budget, vos secteurs, votre échéancier. Vous repartez avec un plan clair, même si vous n'achetez pas avant un an.\n\nSans frais pour l'acheteur.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p8-fil.jpg",
+          "type": "image",
+          "legende": "Fil"
+        },
+        {
+          "src": "docs/pub/p8-story.jpg",
+          "type": "image",
+          "legende": "Story"
+        }
+      ],
+      "ordre": 8,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "groupe_pub": "Relance",
+        "format": "Image · fil et story",
+        "budget": "5 $/soir",
+        "titre_meta": "Votre plan d'achat en 20 minutes",
+        "sous_titre_meta": "Sans frais pour l'acheteur",
+        "bouton": "Réserver",
+        "mene": "Vers une page de réservation d'un appel de 20 minutes.",
+        "condition": "Elle commence le 16 novembre."
+      }
+    }
+  ]
+}

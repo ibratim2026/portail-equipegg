@@ -11,7 +11,15 @@ const DEMO = new URLSearchParams(location.search).has('demo');
 const SEMAINE_DEMO = '2026-11-02';
 const app = document.getElementById('app');
 
-const etat = { jeton: null, membre: null, elements: [], commentaires: [], vue: lire('vue2') || 'Validation', ouverts: new Set() };
+const etat = { jeton: null, membre: null, elements: [], commentaires: [], vue: lire('vue2') || 'val-pub', ouverts: new Set() };
+if (etat.vue === 'Validation') etat.vue = 'val-pub';
+const MOIS_DEMO = '2026-11';
+
+// Le haut du menu : ce qui attend sa validation (décision de William, 31 oct. 2026).
+const VALS = [
+  { id: 'val-pub', label: 'Publications', coul: 'var(--rose)' },
+  { id: 'val-ads', label: 'Publicités', coul: 'var(--noisette)' },
+];
 
 // Les documents validés une première fois, rangés par catégorie (décision de William, 28 oct. 2026).
 const BIBLIO = {
@@ -28,7 +36,7 @@ const CATS = [
   { id: 'Culture', coul: 'var(--toffee)', fond: '#EFE6DC' },
   { id: 'Offres', coul: 'var(--rose)', fond: '#F3DCD6' },
   { id: 'Site web', coul: 'var(--sauge)', fond: '#E3E8E5' },
-  { id: 'Publications', coul: 'var(--toffee)', fond: '#EFE6DC' },
+  { id: 'Publications', label: 'Guides de contenu', coul: 'var(--toffee)', fond: '#EFE6DC' },
   { id: 'Équipe', coul: 'var(--sauge)', fond: '#E3E8E5' },
   { id: 'Outils', coul: 'var(--noisette)', fond: '#EFE6DC' },
 ];
@@ -79,8 +87,9 @@ function lienInvalide(msg) {
 async function charger() {
   if (DEMO) {
     const s = await fetch(`contenu/${SEMAINE_DEMO}/semaine.json`).then((r) => r.json());
+    const a = await fetch(`contenu/publicites-${MOIS_DEMO}.json`).then((r) => r.json()).catch(() => ({ elements: [] }));
     etat.membre = { nom: 'Démo', role: 'admin' };
-    etat.elements = s.elements.map((x, i) => ({ ...x, id: 'demo-' + i }));
+    etat.elements = [...s.elements, ...a.elements].map((x, i) => ({ ...x, id: 'demo-' + i }));
     etat.commentaires = [];
     return rendre();
   }
@@ -95,7 +104,7 @@ async function charger() {
   etat.membre = data.membre;
   etat.elements = data.elements || [];
   etat.commentaires = data.commentaires || [];
-  if (new URLSearchParams(location.search).has('go')) etat.vue = 'Validation';
+  if (new URLSearchParams(location.search).has('go')) etat.vue = aValider() ? 'val-pub' : aValiderPubs() ? 'val-ads' : 'val-pub';
   rendre();
 }
 
@@ -108,6 +117,16 @@ function semaine() {
   return { titre: liste[0].meta?.semaine || 'La semaine', pubs: liste };
 }
 const aValider = () => semaine().pubs.filter((x) => x.statut === 'a_valider').length;
+// Les publicités du mois le plus récent (section « publicites ») et leur plan (le document « doc-pub »).
+function campagne() {
+  const ads = etat.elements.filter((x) => x.section_id === 'publicites');
+  const plan = etat.elements.find((x) => x.cle === 'doc-pub') || null;
+  if (!ads.length) return { plan, ads: [] };
+  const dernier = ads.map((x) => x.groupe).sort().at(-1);
+  return { plan, ads: ads.filter((x) => x.groupe === dernier).sort((a, b) => a.ordre - b.ordre) };
+}
+const aValiderPubs = () => { const { plan, ads } = campagne(); return ads.filter((x) => x.statut === 'a_valider').length + (plan?.statut === 'a_valider' ? 1 : 0); };
+const compte = (id) => (id === 'val-pub' ? aValider() : id === 'val-ads' ? aValiderPubs() : 0);
 const derniereNote = (id) => etat.commentaires.filter((c) => c.element_id === id && c.type === 'modifications').sort((a, b) => (a.cree_le < b.cree_le ? 1 : -1))[0]?.texte;
 
 async function decider(item, decision, texte) {
@@ -121,7 +140,7 @@ async function decider(item, decision, texte) {
     etat.commentaires = etat.commentaires.filter((c) => c.element_id !== item.id).concat(data.commentaires || []);
   }
   etat.ouverts.delete(item.id);
-  toast(decision === 'approbation' ? 'Approuvée ✓' : 'Modification envoyée à William');
+  toast(decision === 'approbation' ? 'Approuvé ✓' : 'Modification envoyée à William');
   rendre();
   return true;
 }
@@ -131,21 +150,26 @@ function aller(vue) { etat.vue = vue; ecrire('vue2', vue); rendre(); window.scro
 
 function rendre() {
   const y = rendre.vue === etat.vue ? window.scrollY : 0; rendre.vue = etat.vue;
-  const n = aValider();
+  const n = aValider() + aValiderPubs();
   document.title = (n ? `(${n}) ` : '') + 'Portail · L\'équipe Gabrielle Germain';
-  const items = [{ id: 'Validation', coul: 'var(--rose)' }, ...CATS];
-  const bouton = (c, mob) => el('button', { type: 'button', class: etat.vue === c.id ? 'on' : '', 'aria-current': etat.vue === c.id ? 'page' : null, onclick: () => aller(c.id) },
-    el('span', { class: 'pt', style: `background:${c.coul}` }), mob ? null : c.id,
-    c.id === 'Validation' && n ? el('span', { class: 'pastille', 'aria-label': `${n} à valider` }, String(n)) : null, mob ? c.id : null);
+  const bouton = (c, mob) => {
+    const k = compte(c.id);
+    return el('button', { type: 'button', class: etat.vue === c.id ? 'on' : '', 'aria-current': etat.vue === c.id ? 'page' : null, onclick: () => aller(c.id) },
+      el('span', { class: 'pt', style: `background:${c.coul}` }), mob ? null : (c.label || c.id),
+      k ? el('span', { class: 'pastille', 'aria-label': `${k} à valider` }, String(k)) : null, mob ? (c.label || c.id) : null);
+  };
   const cote = el('aside', { class: 'cote' },
     el('img', { class: 'logo', src: 'marque/logo-equipe_fond-clair.png', alt: 'L\'équipe Gabrielle Germain' }),
-    el('nav', { 'aria-label': 'Sections' }, bouton(items[0]), el('div', { class: 'sep' }), items.slice(1).map((c) => bouton(c))),
+    el('nav', { 'aria-label': 'Sections' },
+      el('div', { class: 'titre-nav' }, 'Validations'), VALS.map((c) => bouton(c)),
+      el('div', { class: 'sep' }), el('div', { class: 'titre-nav' }, 'Bibliothèque'), CATS.map((c) => bouton(c))),
     el('div', { class: 'bas' },
       etat.membre?.role === 'admin' && !DEMO ? el('a', { class: 'lien', href: 'ancien.html' }, 'Console et prospects') : null,
       DEMO ? null : el('button', { type: 'button', class: 'lien', style: 'text-align:left', onclick: () => { try { localStorage.removeItem('gg-jeton'); } catch { /* rien */ } lienInvalide(); } }, 'Quitter')));
-  const mob = el('nav', { class: 'onglets-mob', 'aria-label': 'Sections' }, items.map((c) => bouton(c, true)));
+  const mob = el('nav', { class: 'onglets-mob', 'aria-label': 'Sections' }, [...VALS, ...CATS].map((c) => bouton(c, true)));
   let contenu;
-  if (etat.vue === 'Validation') contenu = vueValidation();
+  if (etat.vue === 'val-pub') contenu = vueValidation();
+  else if (etat.vue === 'val-ads') contenu = vuePublicites();
   else if (etat.vue === 'Marque') contenu = vueMarque();
   else if (etat.vue === 'Équipe') contenu = vueEquipe();
   else if (etat.vue === 'Outils') contenu = vueOutils();
@@ -170,18 +194,18 @@ function carrousel(medias) {
   }
   return car;
 }
-function zoneValidation(p) {
+function zoneValidation(p, ok = 'On la publie telle quelle.') {
   const decide = p.statut !== 'a_valider' && !etat.ouverts.has(p.id);
   if (decide) {
     const note = p.statut === 'modifications' ? derniereNote(p.id) : null;
     return el('div', { class: 'fait ' + p.statut },
-      el('span', {}, p.statut === 'approuve' ? '✓ Approuvée' : 'Modification envoyée à William'),
+      el('span', {}, p.statut === 'approuve' ? '✓ Approuvé' : 'Modification envoyée à William'),
       el('button', { type: 'button', class: 'lien', onclick: () => { etat.ouverts.add(p.id); rendre(); } }, 'Changer d\'avis'),
       note ? el('div', { class: 'note' }, '« ' + note + ' »') : null);
   }
   const zone = el('textarea', { placeholder: 'Ce que vous aimeriez changer (visuel, texte, idée)…', 'aria-label': 'Votre modification' });
   return el('div', { class: 'deux' },
-    el('div', { class: 'zone ok' }, el('b', {}, 'C\'est parfait'), el('p', {}, 'On la publie telle quelle.'),
+    el('div', { class: 'zone ok' }, el('b', {}, 'C\'est parfait'), el('p', {}, ok),
       el('button', { type: 'button', class: 'btn ok', onclick: (e) => { e.currentTarget.disabled = true; decider(p, 'approbation'); } }, '✓ J\'approuve')),
     el('div', { class: 'zone modif' }, el('b', {}, 'Je changerais quelque chose'), zone,
       el('button', { type: 'button', class: 'btn modif', onclick: (e) => {
@@ -192,7 +216,7 @@ function zoneValidation(p) {
 function vueValidation() {
   const { titre, pubs } = semaine();
   if (!pubs.length) {
-    return el('div', {}, el('div', { class: 'tete' }, el('h1', {}, 'Validation')),
+    return el('div', {}, el('div', { class: 'tete' }, el('h1', {}, 'Publications')),
       el('div', { class: 'vide' }, el('span', { class: 'script' }, 'rien à valider'), 'Vos prochaines publications arriveront ici. Vous recevrez un message de William.'));
   }
   const faits = pubs.filter((x) => x.statut !== 'a_valider').length;
@@ -215,12 +239,58 @@ function vueValidation() {
     faits === pubs.length ? el('div', { class: 'merci' }, el('span', { class: 'script' }, 'merci ' + prenom + '!'), el('p', {}, 'Tout est revu. William prépare la programmation de la semaine.')) : null);
 }
 
+// ---------- Publicités : le plan, puis chaque pub (le visuel à gauche, le texte à droite) ----------
+function vuePublicites() {
+  const { plan, ads } = campagne();
+  const items = [plan, ...ads].filter(Boolean);
+  if (!items.length) {
+    return el('div', {}, el('div', { class: 'tete' }, el('h1', {}, 'Publicités')),
+      el('div', { class: 'vide' }, el('span', { class: 'script' }, 'rien à valider'), 'Vos prochaines publicités arriveront ici. Vous recevrez un message de William.'));
+  }
+  const faits = items.filter((x) => x.statut !== 'a_valider').length;
+  const prenom = (etat.membre?.nom || 'Gabrielle').split(' ')[0];
+  const fiche = (p) => {
+    const m = p.meta || {};
+    return el('dl', { class: 'fiche-pub' },
+      el('dt', {}, 'Titre'), el('dd', {}, m.titre_meta || ''), el('dt', {}, 'Sous le titre'), el('dd', {}, m.sous_titre_meta || ''),
+      el('dt', {}, 'Bouton'), el('dd', {}, m.bouton || ''), el('dt', {}, 'Il mène'), el('dd', {}, m.mene || ''));
+  };
+  return el('div', {},
+    el('div', { class: 'tete' },
+      el('div', {}, el('span', { class: 'script', style: 'font-size:36px;color:var(--script)' }, 'bonjour ' + prenom), el('h1', {}, 'Vos publicités de novembre')),
+      el('div', { class: 'sous' }, 'Avant le lancement')),
+    el('div', { class: 'prog' }, el('div', { class: 'prog-t' }, `${faits} sur ${items.length} revues`), el('div', { class: 'prog-b' }, el('i', { style: `width:${faits / items.length * 100}%` }))),
+    el('div', { class: 'fil' },
+      plan ? el('article', { class: 'pub plan ' + (etat.ouverts.has(plan.id) ? '' : plan.statut) },
+        el('div', { class: 'plan-tuile' },
+          el('div', { class: 'plan-chiffres' }, (plan.meta?.chiffres || []).map(([c, l]) => el('div', {}, el('b', {}, c), el('span', {}, l)))),
+          el('a', { class: 'btn plein', href: plan.meta?.doc || 'docs/publicite.html', target: '_blank', rel: 'noopener' }, 'Lire le plan')),
+        el('div', { class: 'pub-txt' },
+          el('div', { class: 'pub-meta' }, el('span', { class: 'etiq' }, 'Le plan')),
+          el('h2', {}, 'Le plan de la campagne'),
+          el('div', { class: 'leg' }, plan.corps || 'Le budget, qui verra vos pubs, ce que chaque pub doit rapporter, et 6 questions pour vous.')),
+        el('div', { class: 'pub-val' }, zoneValidation(plan, 'Le plan me convient.'))) : null,
+      ads.map((p) => {
+        const m = p.meta || {};
+        return el('article', { class: 'pub ' + (etat.ouverts.has(p.id) ? '' : p.statut), id: 'ad-' + p.ordre },
+          carrousel(p.medias || []),
+          el('div', { class: 'pub-txt' },
+            el('div', { class: 'pub-meta' }, el('span', { class: 'jr' }, 'Pub ' + p.ordre), m.groupe_pub ? el('span', { class: 'etiq' }, m.groupe_pub) : null, m.format ? el('span', { class: 'etiq' }, m.format) : null, m.budget ? el('span', { class: 'etiq' }, m.budget) : null),
+            el('h2', {}, p.titre),
+            el('div', { class: 'leg' }, p.corps || ''),
+            fiche(p),
+            m.condition ? el('p', { class: 'cond-pub' }, el('b', {}, 'Avant de la lancer : '), m.condition) : null),
+          el('div', { class: 'pub-val' }, zoneValidation(p, 'On la lance telle quelle.')));
+      })),
+    faits === items.length ? el('div', { class: 'merci' }, el('span', { class: 'script' }, 'merci ' + prenom + '!'), el('p', {}, 'Tout est revu. William prépare le lancement.')) : null);
+}
+
 // ---------- Bibliothèque ----------
 function vueCategorie(cat) {
   const c = CATS.find((x) => x.id === cat) || CATS[1];
   const docs = LIVRABLES.filter((L) => BIBLIO[L.cle]?.cat === cat);
   return el('div', {},
-    el('div', { class: 'tete' }, el('div', {}, el('h1', {}, cat), el('p', { class: 'sous' }, `${docs.length} document${docs.length > 1 ? 's' : ''} validé${docs.length > 1 ? 's' : ''}, prêt${docs.length > 1 ? 's' : ''} à télécharger`))),
+    el('div', { class: 'tete' }, el('div', {}, el('h1', {}, c.label || cat), el('p', { class: 'sous' }, `${docs.length} document${docs.length > 1 ? 's' : ''} validé${docs.length > 1 ? 's' : ''}, prêt${docs.length > 1 ? 's' : ''} à télécharger`))),
     el('div', { class: 'tuiles' }, docs.map((L) => {
       const b = BIBLIO[L.cle];
       return el('article', { class: 'tuile', style: `background:${c.fond}` },

@@ -140,3 +140,15 @@ main.page{padding:30px 34px 90px;min-width:0;max-width:1180px}
   .toast{bottom:90px}
   .cadre-outils{height:calc(100vh - 200px)}
 }
+
+/* Validations : Publications et Publicités (31 oct. 2026) */
+.cote .titre-nav{font-size:13px;font-weight:600;color:var(--brun);padding:4px 12px 6px}
+.plan-tuile{background:var(--brun);color:var(--creme);border-radius:14px;padding:26px 24px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.plan-chiffres{display:grid;gap:18px}
+.plan-chiffres b{display:block;font:600 34px/1.1 'Playfair Display',serif;color:#FFFDF9}
+.plan-chiffres span{font-size:14.5px;opacity:.9}
+.plan-tuile .btn.plein{align-self:flex-start;background:var(--creme);color:var(--encre)}
+.fiche-pub{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;margin:2px 0 0;padding-top:12px;border-top:1px solid var(--ligne);font-size:14.5px}
+.fiche-pub dt{font-weight:600;color:var(--brun)}
+.fiche-pub dd{margin:0}
+.cond-pub{background:var(--rose-pale);border-radius:10px;padding:10px 12px;font-size:14.5px;margin:0}
