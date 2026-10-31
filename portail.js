@@ -276,7 +276,8 @@ function vuePublicites() {
       etape('3', 'Vos ' + ads.length + ' pubs', 'Regardez chaque pub. Une phrase ne vous ressemble pas? Dites-le.'),
       ads.map((p) => {
         const m = p.meta || {};
-        return el('article', { class: 'pub ' + (etat.ouverts.has(p.id) ? '' : p.statut), id: 'ad-' + p.ordre },
+        // Jamais d'id « ad-… » : les bloqueurs de pub (uBlock, AdBlock) cachent ces éléments (31 oct.).
+        return el('article', { class: 'pub ' + (etat.ouverts.has(p.id) ? '' : p.statut), id: 'fiche-' + p.ordre },
           carrousel(p.medias || []),
           el('div', { class: 'pub-txt' },
             el('div', { class: 'pub-meta' }, el('span', { class: 'jr' }, 'Pub ' + p.ordre), m.pour ? el('span', { class: 'etiq' }, m.pour) : null),
