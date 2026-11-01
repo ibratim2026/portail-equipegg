@@ -49,30 +49,6 @@
       }
     },
     {
-      "cle": "pub-2026-11-p1",
-      "section_id": "publicites",
-      "groupe": "2026-11",
-      "titre": "Sans frais",
-      "sous_titre": "Pour se faire connaître",
-      "corps": "Un courtier, ça coûte cher? 🏡\n\nPour l'acheteur, l'accompagnement de l'équipe est sans frais. On s'occupe du tri, des visites, de l'offre et de la négociation, avec vous.\n\nFaire équipe, à chaque étape.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
-      "medias": [
-        {
-          "src": "docs/pub/p1-video.mp4",
-          "type": "video",
-          "affiche": "docs/pub/p1-affiche.jpg"
-        }
-      ],
-      "ordre": 1,
-      "statut": "a_valider",
-      "version": 1,
-      "meta": {
-        "pour": "Pour se faire connaître",
-        "role": "Elle défait une idée reçue : pour l'acheteur, un courtier est sans frais.",
-        "bouton": "En savoir plus",
-        "condition": null
-      }
-    },
-    {
       "cle": "pub-2026-11-p2",
       "section_id": "publicites",
       "groupe": "2026-11",
@@ -81,18 +57,42 @@
       "corps": "Une maison de 400 000 $ à Québec? Prévoyez 4 110 $ de taxe de bienvenue. 🏡\n\nLa facture de la Ville arrive après l'achat. Bonne nouvelle : elle se paie en 3 versements sans intérêt. Et pour un premier achat, un nouveau crédit du Québec peut vous la rembourser, jusqu'à 5 875 $.\n\nEnregistrez-le pour votre budget.\n\nSources : barème 2026 de la Ville de Québec; crédit pour un premier achat annoncé par le gouvernement du Québec.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
       "medias": [
         {
-          "src": "docs/pub/p2-video.mp4",
+          "src": "docs/pub/p2-video.mp4?v=v5b",
           "type": "video",
-          "affiche": "docs/pub/p2-affiche.jpg"
+          "affiche": "docs/pub/p2-affiche.jpg?v=v5b"
         }
       ],
-      "ordre": 2,
+      "ordre": 1,
       "statut": "a_valider",
       "version": 1,
       "meta": {
         "pour": "Pour se faire connaître",
         "role": "Elle donne un chiffre utile que peu d'acheteurs connaissent : la taxe de bienvenue.",
         "bouton": "En savoir plus",
+        "condition": null
+      }
+    },
+    {
+      "cle": "pub-2026-11-p1",
+      "section_id": "publicites",
+      "groupe": "2026-11",
+      "titre": "Sans frais",
+      "sous_titre": "Pour les acheteurs",
+      "corps": "Acheter avec un courtier, ça coûte cher? 🏡\n\nPour l'acheteur, l'accompagnement de l'équipe est sans frais. On s'occupe du tri, des visites, de l'offre et de la négociation, avec vous.\n\nActivez votre Alerte immobilière gratuite : vous recevez seulement les propriétés qui vous ressemblent.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
+      "medias": [
+        {
+          "src": "docs/pub/p1-video.mp4?v=v5b",
+          "type": "video",
+          "affiche": "docs/pub/p1-affiche.jpg?v=v5b"
+        }
+      ],
+      "ordre": 2,
+      "statut": "a_valider",
+      "version": 1,
+      "meta": {
+        "pour": "Pour les acheteurs",
+        "role": "Elle défait une idée reçue : pour l'acheteur, un courtier est sans frais. Puis elle invite à s'inscrire à votre Alerte.",
+        "bouton": "S'inscrire",
         "condition": null
       }
     },
@@ -105,12 +105,12 @@
       "corps": "Encore ce soir à faire défiler les annonces? 🏡\n\nChercher une propriété à Québec ou à Lévis, ça peut vite devenir un deuxième emploi. Activez votre Alerte immobilière gratuite : vous recevez seulement les propriétés qui correspondent à vos critères, et une vraie personne de l'équipe répond à vos questions.\n\nGratuit. Aucun engagement.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
       "medias": [
         {
-          "src": "docs/pub/p3-fil.jpg",
+          "src": "docs/pub/p3-fil.jpg?v=v5b",
           "type": "image",
           "legende": "Fil"
         },
         {
-          "src": "docs/pub/p3-story.jpg",
+          "src": "docs/pub/p3-story.jpg?v=v5b",
           "type": "image",
           "legende": "Story"
         }
@@ -134,12 +134,12 @@
       "corps": "Premier achat à Québec ou à Lévis? Vous n'avez pas à tout savoir pour commencer.\n\nDites-nous ce que vous cherchez : le type de propriété, les secteurs, votre budget. Vous recevez par courriel seulement ce qui correspond, et vous posez vos questions quand vous êtes prêts.\n\nGratuit. Aucun engagement.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
       "medias": [
         {
-          "src": "docs/pub/p5-fil.jpg",
+          "src": "docs/pub/p5-fil.jpg?v=v5b",
           "type": "image",
           "legende": "Fil"
         },
         {
-          "src": "docs/pub/p5-story.jpg",
+          "src": "docs/pub/p5-story.jpg?v=v5b",
           "type": "image",
           "legende": "Story"
         }
@@ -163,12 +163,12 @@
       "corps": "Affichée à 374 900 $. Vendue 395 000 $. En 2 jours. 🔑\n\nDerrière ce résultat : une mise en marché pensée pour l'acheteur, et une équipe présente à chaque étape.\n\nChaque propriété est différente. Pour savoir ce que la vôtre peut aller chercher, commencez par une évaluation gratuite.\n\nGabrielle Germain, courtière en immobilier résidentiel et commercial · RE/MAX 1er Choix inc., agence immobilière",
       "medias": [
         {
-          "src": "docs/pub/p7-fil.jpg",
+          "src": "docs/pub/p7-fil.jpg?v=v5b",
           "type": "image",
           "legende": "Fil"
         },
         {
-          "src": "docs/pub/p7-story.jpg",
+          "src": "docs/pub/p7-story.jpg?v=v5b",
           "type": "image",
           "legende": "Story"
         }
